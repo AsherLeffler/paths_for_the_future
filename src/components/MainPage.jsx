@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import Header from "./Header";
 import Footer from "./Footer";
 import "./css/MainPage.css";
@@ -6,6 +7,7 @@ import "./css/MainPage.css";
 const MainPage = () => {
   const [placeholderCareer, setPlaceholderCareer] = useState("Teacher");
   const i = useRef(0);
+
   useEffect(() => {
     let placeholderArray = [
       "Teacher...",
@@ -20,18 +22,18 @@ const MainPage = () => {
       "Musician...",
     ];
     const input = document.getElementById("searchInput");
-    input.addEventListener("keypress", (e) => {
+    input.addEventListener("keypress", async (e) => {
       if (e.key === "Enter") {
         const keyword = input.value;
-        fetch("https://api.example.com")
-          .then((response) => response.json())
-          .then((data) => {
-            // Handle successful response
-            // Do something with the response data
-          })
-          .catch(() => {
-            window.alert("An error occurred. Please try again later.");
-          });
+        try {
+          const response = await axios.post(
+            "http://localhost:5000/api/search",
+            { keyword }
+          );
+          console.log(response.data);
+        } catch {
+          window.alert("An error occurred. Please try again later.");
+        }
       }
     });
     setInterval(() => {
