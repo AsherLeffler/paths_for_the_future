@@ -1,6 +1,7 @@
 import express from "express";
 import axios from "axios";
 import cors from "cors";
+
 const app = express();
 
 app.use(
@@ -15,18 +16,18 @@ app.use(express.json());
 // POST route to handle API requests from the front-end
 app.post("/api/search", async (req, res) => {
   const { keyword } = req.body; // Extract keyword from the request body
-  console.log("Received keyword:", keyword);
+  const ONET_API_URL = `https://services.onetcenter.org/ws/mnm/search?keyword=${encodeURIComponent(keyword ? keyword : "")}`;
+    
   try {
-    // Make a request to the external API (for this example, we’ll use a placeholder)
-    const externalApiResponse = await axios.get(
-      `https://api.example.com/search`,
-      {
-        params: { query: keyword },
-        headers: {
-          Authorization: `Bearer YOUR_API_KEY`, // If your API requires an authorization key
-        },
-      }
-    );
+    const externalApiResponse = await axios.get(ONET_API_URL, {
+      auth: { 
+        username: "paths_for_the_future",
+        password: "4542dwb",
+      },
+      headers: {
+        Accept: "application/json",
+      },
+    });
 
     // Send the external API's response data back to the frontend
     res.json(externalApiResponse.data);
