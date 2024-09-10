@@ -1,0 +1,75 @@
+header {
+  background-color: #0073ff;
+  color: white;
+  text-align: center;
+  height: 80px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding-right: 20px;
+}
+header img {
+  height: 100%;
+  aspect-ratio: 1;
+}
+#logoLink {
+  height: 100%;
+}
+#pathsLink {
+    text-decoration: none;
+    width: max-content;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+header i {
+  font-size: 1.6rem;
+  color: white;
+  transition: 0.2s;
+}
+header nav {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+  height: fit-content;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+header nav .divider{
+    width: 3px;
+    height: 50px;
+    background-color: white;
+    border-radius: 2px;
+}
+header nav a {
+  width: max-content;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+}
+header nav a:hover i, #pathsLink:hover i {
+  scale: 1.1;
+}
+header nav h2 {
+  margin: 0;
+  font-family: var(--mainFont);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: normal;
+}
+footer {
+  background-color: #d4d4d4;
+  color: white;
+  text-align: center;
+  height: 80px;
+  width: 100%;
+}
