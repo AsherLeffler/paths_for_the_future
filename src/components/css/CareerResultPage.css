@@ -1,0 +1,38 @@
+.resultsCont {
+  width: 100%;
+  height: fit-content;
+  min-height: calc(100vh - 177px);
+  padding: 20px;
+}
+.careerBlock {
+  width: 100%;
+  height: fit-content;
+  border-top: 2px solid #303030;
+  border-bottom: 2px solid #303030;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.careerBlock h3 {
+  font-family: var(--mainFont);
+  font-size: 1.5rem;
+  margin: 10px 0 10px 10px;
+}
+.careerBlock i {
+  color: #0073ff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.moreCareers {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+.moreCareers h3 {
+  font-family: var(--mainFont);
+  font-size: 1.2rem;
+  margin: 0 10px;
+  cursor: pointer;
+}

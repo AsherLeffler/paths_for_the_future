@@ -16,11 +16,13 @@ app.use(express.json());
 // POST route to handle API requests from the front-end
 app.post("/api/search", async (req, res) => {
   const { keyword } = req.body; // Extract keyword from the request body
-  const ONET_API_URL = `https://services.onetcenter.org/ws/mnm/search?keyword=${encodeURIComponent(keyword ? keyword : "")}`;
-    
+  const ONET_API_URL = `https://services.onetcenter.org/ws/mnm/search?keyword=${encodeURIComponent(
+    keyword ? keyword : ""
+  )}`;
+
   try {
     const externalApiResponse = await axios.get(ONET_API_URL, {
-      auth: { 
+      auth: {
         username: "paths_for_the_future",
         password: "4542dwb",
       },

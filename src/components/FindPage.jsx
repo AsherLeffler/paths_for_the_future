@@ -7,7 +7,6 @@ const FindPage = () => {
     <>
       <Header></Header>
       <div className="main">
-        <div className="embed-onet-ip"></div>
       </div>
       <Footer></Footer>
     </>
