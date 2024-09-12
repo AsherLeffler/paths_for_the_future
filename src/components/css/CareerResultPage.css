@@ -23,6 +23,10 @@
   font-size: 1.4rem;
   cursor: pointer;
   margin-right: 10px;
+  transition: 0.2s;
+}
+.careerBlock i:hover {
+  transform: scale(1.1);
 }
 .moreCareers {
   display: flex;

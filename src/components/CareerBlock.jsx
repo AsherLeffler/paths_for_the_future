@@ -3,20 +3,29 @@ import PropTypes from "prop-types";
 import "./css/CareerResultPage.css";
 
 const CareerBlock = ({ career }) => {
-  const [saved, setSaved] = useState(false);
-  let savedCareers = JSON.parse(localStorage.getItem("savedCareers"))
-    ? JSON.parse(localStorage.getItem("savedCareers"))
-    : [];
+  const [savedCareers, setSavedCareers] = useState(
+    JSON.parse(localStorage.getItem("savedCareers"))
+      ? JSON.parse(localStorage.getItem("savedCareers"))
+      : []
+  );
+  const [saved, setSaved] = useState(
+    savedCareers.some((savedCareer) => savedCareer.code === career.code)
+  );
   const handleSave = () => {
+    const upToDateCareers = JSON.parse(localStorage.getItem("savedCareers"))
+      ? JSON.parse(localStorage.getItem("savedCareers"))
+      : [];
     setSaved((prev) => !prev);
     if (saved) {
-      savedCareers = savedCareers.filter(
-        (savedCareer) => savedCareer.code !== career.code
+      const newCareerList = upToDateCareers.filter(
+        (upToDateCareer) => upToDateCareer.code !== career.code
       );
-      localStorage.setItem("savedCareers", JSON.stringify(savedCareers));
+      setSavedCareers(newCareerList);
+      localStorage.setItem("savedCareers", JSON.stringify(newCareerList));
     } else if (!saved) {
-      savedCareers.push(career);
-      localStorage.setItem("savedCareers", JSON.stringify(savedCareers));
+      const newCareerList = [...upToDateCareers, career];
+      setSavedCareers(newCareerList);
+      localStorage.setItem("savedCareers", JSON.stringify(newCareerList));
     }
   };
   return (

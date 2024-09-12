@@ -67,7 +67,7 @@ const MainPage = () => {
         clearInterval(intervalID);
       };
     }
-  }, [i]);
+  }, []);
   return (
     <>
       <Header></Header>

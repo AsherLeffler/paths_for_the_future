@@ -12,6 +12,7 @@ const Header = () => {
         onClick={() => {
           currentPage.value = "default";
           results.value = null;
+          window.location.reload();
         }}
       >
         <img src={fistLogo} alt="" />

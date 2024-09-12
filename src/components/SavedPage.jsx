@@ -2,6 +2,7 @@ import Footer from "./Footer";
 import Header from "./Header"; // Assuming Header is also imported
 import { useEffect, useState, useRef } from "react";
 import SavedCareerComponent from "./SavedCareerComponent";
+import "./css/SavedPage.css";
 
 const SavedPage = () => {
   const usersCareers = useRef([]);
