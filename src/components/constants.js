@@ -1,6 +1,6 @@
 import { signal } from "@preact/signals-react";
 
+const careerToLearnAbout = signal(null);
 const currentPage = signal("default");
-const results = signal(null);
 
-export { currentPage, results };
+export { careerToLearnAbout, currentPage };

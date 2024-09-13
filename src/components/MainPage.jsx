@@ -3,14 +3,13 @@ import axios from "axios";
 import Header from "./Header";
 import Footer from "./Footer";
 import CareerResultPage from "./CareerResultPage";
+import { careerToLearnAbout, currentPage } from "./constants";
 import "./css/MainPage.css";
-import { currentPage, results } from "./constants";
-
-// Rest of the code remains the same
 
 const MainPage = () => {
   const [placeholderCareer, setPlaceholderCareer] = useState("Teacher");
   const [displayingLoader, setDisplayingLoader] = useState(false);
+  const results = useRef(null);
   const i = useRef(0);
 
   useEffect(() => {
@@ -26,6 +25,8 @@ const MainPage = () => {
       "Athlete...",
       "Musician...",
     ];
+    results.current = null;
+    currentPage.value = "default";
     const input = document.getElementById("searchInput");
     if (input) {
       input.addEventListener("keypress", async (e) => {
@@ -39,7 +40,7 @@ const MainPage = () => {
             if (response.statusText === "OK") {
               setDisplayingLoader(true);
               setTimeout(() => {
-                results.value = response.data;
+                results.current = response.data;
                 currentPage.value = "results";
                 setDisplayingLoader(false);
               }, 1600);
@@ -68,6 +69,24 @@ const MainPage = () => {
       };
     }
   }, []);
+
+  const check_job_zone = (job_zone) => {
+    switch (job_zone) {
+      case "1":
+        return "This occupation may require a high school diploma or GED certificate. Little or no previous work-related skill, knowledge, or experience is needed for this occupation.";
+      case "2":
+        return "This occupation most likely requires a high school diploma or GED certificate. Some previous work-related skill, knowledge, or experience is usually needed.";
+      case "3":
+        return "This occupation most likely requires training in it's vocational school, related on-the-job experience, or an associate's degree. Previous work-related skill, knowledge, or experience is required for this occupation.";
+      case "4":
+        return "This occupation most likely will require a four-year bachelor's degree. A considerable amount of work-related skill, knowledge, or experience is needed for these occupations.";
+      case "5":
+        return "This occupation most likely requires graduate school that goes into the related field. Extensive skill, knowledge, and experience are needed for these occupations.";
+      default:
+        return "This occupation does not have a specified education level.";
+    }
+  };
+
   return (
     <>
       <Header></Header>
@@ -96,8 +115,48 @@ const MainPage = () => {
           </div>
         </div>
       )}
-      {currentPage.value === "results" && results.value && (
-        <CareerResultPage careerInfo={results.value} />
+      {currentPage.value === "results" && results.current && (
+        <CareerResultPage
+          careerInfo={results.current}
+          results={results}
+          currentPage={currentPage}
+          careerToLearnAbout={careerToLearnAbout}
+        />
+      )}
+      {currentPage.value === "learnMoreAboutCareer" && careerToLearnAbout && (
+        <div className="learnCareerCont">
+          <h1>{careerToLearnAbout.value.career.title}</h1>
+          <h2>What They Do</h2>
+          <p>{careerToLearnAbout.value.career.what_they_do}</p>
+          {careerToLearnAbout.value.education && (
+            <>
+              <h2>Education</h2>
+              <p>{check_job_zone(careerToLearnAbout.value.education.job_zone)}</p>
+            </>
+          )}
+          {careerToLearnAbout.value.career.on_the_job && (
+            <>
+              <h2>Skills You Might Need</h2>
+              <ul>
+                {careerToLearnAbout.value.career.on_the_job.task.map((skill, index) => (
+                  <li key={skill + index}>{skill}</li>
+                ))}
+              </ul>
+            </>
+          )}
+          {careerToLearnAbout.value.technology && (
+            <>
+              <h2>Technology</h2>
+              <ul>
+                {careerToLearnAbout.value.technology.category.map((tech) =>
+                  tech.example.map((techSkill) => (
+                    <li key={techSkill.name}>{techSkill.name}</li>
+                  ))
+                )}
+              </ul>
+            </>
+          )}
+        </div>
       )}
       <Footer></Footer>
     </>

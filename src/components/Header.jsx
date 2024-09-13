@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import "./css/head&foot.css";
 import fistLogo from "/fist-logo.svg";
-import { currentPage, results } from "./constants";
 
 const Header = () => {
   return (
@@ -10,8 +9,6 @@ const Header = () => {
         to="/"
         id="logoLink"
         onClick={() => {
-          currentPage.value = "default";
-          results.value = null;
           window.location.reload();
         }}
       >

@@ -40,6 +40,116 @@ app.post("/api/search", async (req, res) => {
   }
 });
 
+app.post("/api/careerSearch", async (req, res) => {
+  const { careerLink } = req.body; // Extract careerLink from the request body
+  try {
+    const externalApiResponse = await axios.get(careerLink, {
+      auth: {
+        username: "paths_for_the_future",
+        password: "4542dwb",
+      },
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    const educationIndex = externalApiResponse.data.resources.resource.findIndex(
+      (resource) => resource.title === "Education"
+    );
+
+    let educationData = {};
+    if (educationIndex !== -1) {
+      educationData = await axios.get(
+        externalApiResponse.data.resources.resource[educationIndex].href,
+        {
+          auth: {
+            username: "paths_for_the_future",
+            password: "4542dwb",
+          },
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );  
+    }
+    const technologyIndex = externalApiResponse.data.resources.resource.findIndex(
+      (resource) => resource.title === "Technology"
+    );
+
+    let technologyData = {};
+    if (technologyIndex !== -1) {
+      technologyData = await axios.get(
+        externalApiResponse.data.resources.resource[technologyIndex].href,
+        {
+          auth: {
+            username: "paths_for_the_future",
+            password: "4542dwb",
+          },
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
+    }
+
+    // Send the external API's response data back to the frontend
+    const dataToSend = {
+      career: externalApiResponse.data,
+      education: educationData.data,
+      technology: technologyData.data,
+    };
+    res.json(dataToSend);
+  } catch (error) {
+    // Handle errors (e.g., if the external API request fails)
+    console.error("Error making API call:", error.message);
+    res.status(500).json({ error: "Failed to fetch data from external API" });
+  }
+});
+
+app.post("/api/prevPageSearch", async (req, res) => {
+  const { pageLink } = req.body; // Extract careerLink from the request body
+  try {
+    const externalApiResponse = await axios.get(pageLink, {
+      auth: {
+        username: "paths_for_the_future",
+        password: "4542dwb",
+      },
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    // Send the external API's response data back to the frontend
+    res.json(externalApiResponse.data);
+  } catch (error) {
+    // Handle errors (e.g., if the external API request fails)
+    console.error("Error making API call:", error.message);
+    res.status(500).json({ error: "Failed to fetch data from external API" });
+  }
+});
+
+app.post("/api/nextPageSearch", async (req, res) => {
+  const { pageLink } = req.body; // Extract careerLink from the request body
+  try {
+    const externalApiResponse = await axios.get(pageLink, {
+      auth: {
+        username: "paths_for_the_future",
+        password: "4542dwb",
+      },
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    // Send the external API's response data back to the frontend
+    res.json(externalApiResponse.data);
+  } catch (error) {
+    // Handle errors (e.g., if the external API request fails)
+    console.error("Error making API call:", error.message);
+    res.status(500).json({ error: "Failed to fetch data from external API" });
+  }
+});
+
 // Start the server
 const PORT = 5000;
 app.listen(PORT, () => {
