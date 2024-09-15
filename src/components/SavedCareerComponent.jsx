@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
 import axios from "axios";
-import { careerToLearnAbout, currentPage } from "./constants";
-import { Link } from "react-router-dom";
 
-const SavedCareerComponent = ({ careerInfo }) => {
+const SavedCareerComponent = ({
+  careerInfo,
+  setSavedCurrentPage,
+  setSavedCareerToLearnAbout,
+}) => {
   const career = careerInfo[0];
   const usersCareers = careerInfo[1];
 
@@ -32,21 +34,23 @@ const SavedCareerComponent = ({ careerInfo }) => {
         { careerLink }
       );
       if (response.statusText === "OK") {
-        careerToLearnAbout.value = response.data;
-        currentPage.value = "learnMoreAboutCareer";
+        setSavedCareerToLearnAbout(response.data);
+        setSavedCurrentPage("savedLearn");
       } else {
-        window.alert("Sorry, there was an error trying to get information about this career. Please try again later.");
+        window.alert(
+          "Sorry, there was an error trying to get information about this career. Please try again later."
+        );
       }
     } catch {
-      window.alert("Sorry, there was an error trying to get information about this career. Please try again later.");
+      window.alert(
+        "Sorry, there was an error trying to get information about this career. Please try again later."
+      );
     }
-  }
+  };
 
   return (
     <div className="savedCareerBlock">
-      <Link to="/">
-          <h3 onClick={handleRequestForCareer}>{career.title}</h3>
-      </Link>
+      <h3 onClick={handleRequestForCareer}>{career.title}</h3>
       <i className="fa-bookmark fa-solid" onClick={handleUnsave}></i>
     </div>
   );
@@ -61,6 +65,8 @@ SavedCareerComponent.propTypes = {
       filter: PropTypes.func,
     })
   ).isRequired,
+  setSavedCurrentPage: PropTypes.func.isRequired,
+  setSavedCareerToLearnAbout: PropTypes.func.isRequired,
 };
-  
+
 export default SavedCareerComponent;

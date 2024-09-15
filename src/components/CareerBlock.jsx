@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import "./css/CareerResultPage.css";
 
-const CareerBlock = ({ career, currentPage, careerToLearnAbout }) => {
+const CareerBlock = ({ career, setCurrentPage, setCareerToLearnAbout }) => {
   const [savedCareers, setSavedCareers] = useState(
     JSON.parse(localStorage.getItem("savedCareers"))
       ? JSON.parse(localStorage.getItem("savedCareers"))
@@ -37,8 +37,9 @@ const CareerBlock = ({ career, currentPage, careerToLearnAbout }) => {
         { careerLink }
       );
       if (response.statusText === "OK") {
-        careerToLearnAbout.value = response.data;
-        currentPage.value = "learnMoreAboutCareer";
+        setCareerToLearnAbout(response.data);
+        setCurrentPage("learnMoreAboutCareer");
+        console.log(response.data);
       } else {
         window.alert("Sorry, there was an error trying to get information about this career. Please try again later.");
       }
@@ -63,12 +64,8 @@ CareerBlock.propTypes = {
     code: PropTypes.string.isRequired,
     href: PropTypes.string.isRequired,
   }).isRequired,
-  currentPage: PropTypes.shape({
-    value: PropTypes.string.isRequired,
-  }).isRequired,
-  careerToLearnAbout: PropTypes.shape({
-    value: PropTypes.object,
-  }).isRequired,
+  setCurrentPage: PropTypes.func.isRequired,
+  setCareerToLearnAbout: PropTypes.func.isRequired,
 };
 
 export default CareerBlock;

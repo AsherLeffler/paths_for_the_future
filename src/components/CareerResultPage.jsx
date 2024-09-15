@@ -5,15 +5,17 @@ import "./css/CareerResultPage.css";
 
 const CareerResultPage = ({
   careerInfo,
-  currentPage,
-  careerToLearnAbout,
+  setCurrentPage,
+  setCareerToLearnAbout,
   results,
 }) => {
   const isNext = () => {
-    return careerInfo.link.some((link) => link.rel === "next");
+    const careerLink = careerInfo.link ? careerInfo.link : [];
+    return careerLink.some((link) => link.rel === "next");
   };
   const isPrev = () => {
-    return careerInfo.link.some((link) => link.rel === "prev");
+    const careerLink = careerInfo.link ? careerInfo.link : [];
+    return careerLink.some((link) => link.rel === "prev");
   };
 
   const handlePageSelect = async (direction) => {
@@ -29,7 +31,7 @@ const CareerResultPage = ({
         );
         if (response.statusText === "OK") {
           results.current = response.data;
-          currentPage.value = "results";
+          setCurrentPage("results");
         } else {
           window.alert(
             "Sorry, there was an error trying to get other related careers. Please try again later."
@@ -52,7 +54,7 @@ const CareerResultPage = ({
         );
         if (response.statusText === "OK") {
           results.current = response.data;
-          currentPage.value = "results";
+          setCurrentPage("results");
         } else {
           window.alert(
             "Sorry, there was an error trying to get information about this career. Please try again later."
@@ -74,8 +76,8 @@ const CareerResultPage = ({
             <CareerBlock
               key={career.title}
               career={career}
-              currentPage={currentPage}
-              careerToLearnAbout={careerToLearnAbout}
+              setCurrentPage={setCurrentPage}
+              setCareerToLearnAbout={setCareerToLearnAbout}
             />
           );
         })}
@@ -101,15 +103,13 @@ CareerResultPage.propTypes = {
         rel: PropTypes.string.isRequired,
         href: PropTypes.string.isRequired,
       })
-    ).isRequired,
-  }).isRequired,
-  currentPage: PropTypes.shape({
-    value: PropTypes.string.isRequired,
+    ),
   }).isRequired,
   results: PropTypes.shape({
     current: PropTypes.object.isRequired,
   }).isRequired,
-  careerToLearnAbout: PropTypes.object.isRequired,
+  setCareerToLearnAbout: PropTypes.func.isRequired,
+  setCurrentPage: PropTypes.func.isRequired,
 };
 
 export default CareerResultPage;

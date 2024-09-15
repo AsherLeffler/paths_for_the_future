@@ -1,6 +1,10 @@
 import express from "express";
 import axios from "axios";
 import cors from "cors";
+import path from "path";
+import dotenv from "dotenv";
+
+dotenv.config({ path: path.resolve("..", ".env") });
 
 const app = express();
 
@@ -13,6 +17,12 @@ app.use(
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
+// Sensitive Information
+// eslint-disable-next-line no-undef
+const ONET_USERNAME = process.env.ONET_USERNAME;
+// eslint-disable-next-line no-undef
+const ONET_PASSWORD = process.env.ONET_PASSWORD;
+
 // POST route to handle API requests from the front-end
 app.post("/api/search", async (req, res) => {
   const { keyword } = req.body; // Extract keyword from the request body
@@ -23,8 +33,8 @@ app.post("/api/search", async (req, res) => {
   try {
     const externalApiResponse = await axios.get(ONET_API_URL, {
       auth: {
-        username: "paths_for_the_future",
-        password: "4542dwb",
+        username: ONET_USERNAME,
+        password: ONET_PASSWORD,
       },
       headers: {
         Accept: "application/json",
@@ -45,17 +55,18 @@ app.post("/api/careerSearch", async (req, res) => {
   try {
     const externalApiResponse = await axios.get(careerLink, {
       auth: {
-        username: "paths_for_the_future",
-        password: "4542dwb",
+        username: ONET_USERNAME,
+        password: ONET_PASSWORD,
       },
       headers: {
         Accept: "application/json",
       },
     });
 
-    const educationIndex = externalApiResponse.data.resources.resource.findIndex(
-      (resource) => resource.title === "Education"
-    );
+    const educationIndex =
+      externalApiResponse.data.resources.resource.findIndex(
+        (resource) => resource.title === "Education"
+      );
 
     let educationData = {};
     if (educationIndex !== -1) {
@@ -63,18 +74,20 @@ app.post("/api/careerSearch", async (req, res) => {
         externalApiResponse.data.resources.resource[educationIndex].href,
         {
           auth: {
-            username: "paths_for_the_future",
-            password: "4542dwb",
+            username: ONET_USERNAME,
+            password: ONET_PASSWORD,
           },
           headers: {
             Accept: "application/json",
           },
         }
-      );  
+      );
     }
-    const technologyIndex = externalApiResponse.data.resources.resource.findIndex(
-      (resource) => resource.title === "Technology"
-    );
+
+    const technologyIndex =
+      externalApiResponse.data.resources.resource.findIndex(
+        (resource) => resource.title === "Technology"
+      );
 
     let technologyData = {};
     if (technologyIndex !== -1) {
@@ -82,8 +95,28 @@ app.post("/api/careerSearch", async (req, res) => {
         externalApiResponse.data.resources.resource[technologyIndex].href,
         {
           auth: {
-            username: "paths_for_the_future",
-            password: "4542dwb",
+            username: ONET_USERNAME,
+            password: ONET_PASSWORD,
+          },
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
+    }
+
+    const outlookIndex = externalApiResponse.data.resources.resource.findIndex(
+      (resource) => resource.title === "Job Outlook"
+    );
+
+    let outlookData = {};
+    if (outlookIndex !== -1) {
+      outlookData = await axios.get(
+        externalApiResponse.data.resources.resource[outlookIndex].href,
+        {
+          auth: {
+            username: ONET_USERNAME,
+            password: ONET_PASSWORD,
           },
           headers: {
             Accept: "application/json",
@@ -97,6 +130,7 @@ app.post("/api/careerSearch", async (req, res) => {
       career: externalApiResponse.data,
       education: educationData.data,
       technology: technologyData.data,
+      outlook: outlookData.data,
     };
     res.json(dataToSend);
   } catch (error) {
@@ -111,8 +145,8 @@ app.post("/api/prevPageSearch", async (req, res) => {
   try {
     const externalApiResponse = await axios.get(pageLink, {
       auth: {
-        username: "paths_for_the_future",
-        password: "4542dwb",
+        username: ONET_USERNAME,
+        password: ONET_PASSWORD,
       },
       headers: {
         Accept: "application/json",
@@ -133,8 +167,8 @@ app.post("/api/nextPageSearch", async (req, res) => {
   try {
     const externalApiResponse = await axios.get(pageLink, {
       auth: {
-        username: "paths_for_the_future",
-        password: "4542dwb",
+        username: ONET_USERNAME,
+        password: ONET_PASSWORD,
       },
       headers: {
         Accept: "application/json",

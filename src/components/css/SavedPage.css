@@ -22,3 +22,6 @@
 .savedCareerBlock i:hover{
     transform: scale(1.1);
 }
+.savedCareerBlock h3{
+    cursor: pointer;
+}

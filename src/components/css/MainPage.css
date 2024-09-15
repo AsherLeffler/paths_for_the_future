@@ -87,3 +87,44 @@
     box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
   }
 }
+.visualPathway{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 20px;
+}
+.pathWayBox{
+  border: 2px solid black;
+  width: max-content;
+  max-width: 240px;
+  height: fit-content;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pathWayBox *{
+  margin: 0;
+}
+.apprenticeShipCont{
+  display: flex;
+  height: fit-content;
+  width: max-content;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+}
+.pathWayBoxCont{
+  display: flex;
+  height: fit-content;
+  width: max-content;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}

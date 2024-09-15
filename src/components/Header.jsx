@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import "./css/head&foot.css";
 import fistLogo from "/fist-logo.svg";
+import PropTypes from 'prop-types';
 
-const Header = () => {
+const Header = ({ setSavedCurrentPage = () => {} }) => {
   return (
     <header>
       <Link
@@ -32,10 +33,13 @@ const Header = () => {
         </div>
       </nav>
       <Link to={"/saved"} id="pathsLink">
-        <i className="fa-regular fa-bookmark"></i>
+        <i className="fa-regular fa-bookmark" onClick={() => setSavedCurrentPage("defaultPage")}></i>
       </Link>
     </header>
   );
+};
+Header.propTypes = {
+  setSavedCurrentPage: PropTypes.func,
 };
 
 export default Header;

@@ -3,12 +3,13 @@ import axios from "axios";
 import Header from "./Header";
 import Footer from "./Footer";
 import CareerResultPage from "./CareerResultPage";
-import { careerToLearnAbout, currentPage } from "./constants";
 import "./css/MainPage.css";
 
 const MainPage = () => {
   const [placeholderCareer, setPlaceholderCareer] = useState("Teacher");
   const [displayingLoader, setDisplayingLoader] = useState(false);
+  const [careerToLearnAbout, setCareerToLearnAbout] = useState(null);
+  const [currentPage, setCurrentPage] = useState("default");
   const results = useRef(null);
   const i = useRef(0);
 
@@ -26,7 +27,7 @@ const MainPage = () => {
       "Musician...",
     ];
     results.current = null;
-    currentPage.value = "default";
+    setCurrentPage("default");
     const input = document.getElementById("searchInput");
     if (input) {
       input.addEventListener("keypress", async (e) => {
@@ -41,7 +42,7 @@ const MainPage = () => {
               setDisplayingLoader(true);
               setTimeout(() => {
                 results.current = response.data;
-                currentPage.value = "results";
+                setCurrentPage("results");
                 setDisplayingLoader(false);
               }, 1600);
             } else if (input.value === "") {
@@ -72,25 +73,52 @@ const MainPage = () => {
 
   const check_job_zone = (job_zone) => {
     switch (job_zone) {
-      case "1":
+      case 1:
         return "This occupation may require a high school diploma or GED certificate. Little or no previous work-related skill, knowledge, or experience is needed for this occupation.";
-      case "2":
+      case 2:
         return "This occupation most likely requires a high school diploma or GED certificate. Some previous work-related skill, knowledge, or experience is usually needed.";
-      case "3":
+      case 3:
         return "This occupation most likely requires training in it's vocational school, related on-the-job experience, or an associate's degree. Previous work-related skill, knowledge, or experience is required for this occupation.";
-      case "4":
+      case 4:
         return "This occupation most likely will require a four-year bachelor's degree. A considerable amount of work-related skill, knowledge, or experience is needed for these occupations.";
-      case "5":
-        return "This occupation most likely requires graduate school that goes into the related field. Extensive skill, knowledge, and experience are needed for these occupations.";
+      case 5:
+        return "This occupation most likely requires graduate school that goes into the related field. Extensive skill, knowledge, and experience is needed for this occupation.";
       default:
         return "This occupation does not have a specified education level.";
     }
   };
 
+  const check_visualJobZone = (job_zone) => {
+    switch (job_zone) {
+      case 1:
+        return "No previous work experience needed";
+      case 2:
+        return "High school diploma or GED certificate";
+      case 3:
+        return "Training through a course or program or school in the related field";
+      case 4:
+        return "Four-year bachelor's degree in the related field";
+      case 5:
+        return "Graduate school in the related field";
+      default:
+        return "❓";
+    }
+  };
+
+  const findSalary = (salary) => {
+    const salaryPropInData = salary.annual_median
+      ? salary.annual_median
+      : salary.annual_median_over;
+    let salaryNum = salaryPropInData
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return salaryNum;
+  };
+
   return (
     <>
       <Header></Header>
-      {currentPage.value === "default" && (
+      {currentPage === "default" && (
         <div className="mainBody">
           <h1 id="mainTitle">Paths for the Future</h1>
           <div className="searchBox">
@@ -115,40 +143,42 @@ const MainPage = () => {
           </div>
         </div>
       )}
-      {currentPage.value === "results" && results.current && (
+      {currentPage === "results" && results.current && (
         <CareerResultPage
           careerInfo={results.current}
           results={results}
-          currentPage={currentPage}
-          careerToLearnAbout={careerToLearnAbout}
+          setCurrentPage={setCurrentPage}
+          setCareerToLearnAbout={setCareerToLearnAbout}
         />
       )}
-      {currentPage.value === "learnMoreAboutCareer" && careerToLearnAbout && (
+      {currentPage === "learnMoreAboutCareer" && careerToLearnAbout && (
         <div className="learnCareerCont">
-          <h1>{careerToLearnAbout.value.career.title}</h1>
+          <h1>{careerToLearnAbout.career.title}</h1>
           <h2>What They Do</h2>
-          <p>{careerToLearnAbout.value.career.what_they_do}</p>
-          {careerToLearnAbout.value.education && (
+          <p>{careerToLearnAbout.career.what_they_do}</p>
+          {careerToLearnAbout.education && (
             <>
               <h2>Education</h2>
-              <p>{check_job_zone(careerToLearnAbout.value.education.job_zone)}</p>
+              <p>{check_job_zone(careerToLearnAbout.education.job_zone)}</p>
             </>
           )}
-          {careerToLearnAbout.value.career.on_the_job && (
+          {careerToLearnAbout.career.on_the_job && (
             <>
-              <h2>Skills You Might Need</h2>
+              <h2>What You&apos;ll Do On the Job</h2>
               <ul>
-                {careerToLearnAbout.value.career.on_the_job.task.map((skill, index) => (
-                  <li key={skill + index}>{skill}</li>
-                ))}
+                {careerToLearnAbout.career.on_the_job.task.map(
+                  (skill, index) => (
+                    <li key={skill + index}>{skill}</li>
+                  )
+                )}
               </ul>
             </>
           )}
-          {careerToLearnAbout.value.technology && (
+          {careerToLearnAbout.technology && (
             <>
               <h2>Technology</h2>
               <ul>
-                {careerToLearnAbout.value.technology.category.map((tech) =>
+                {careerToLearnAbout.technology.category.map((tech) =>
                   tech.example.map((techSkill) => (
                     <li key={techSkill.name}>{techSkill.name}</li>
                   ))
@@ -156,6 +186,51 @@ const MainPage = () => {
               </ul>
             </>
           )}
+          {careerToLearnAbout.outlook && (
+            <>
+              <h2>Annual Median Salary</h2>
+              <p>${findSalary(careerToLearnAbout.outlook.salary)}</p>
+              <br />
+              <h2>Job Outlook</h2>
+              <h3>{careerToLearnAbout.outlook.outlook.category}</h3>
+              <p>{careerToLearnAbout.outlook.outlook.description}</p>
+            </>
+          )}
+          <div className="visualPathway">
+            <h2>Visual Pathway</h2>
+            {careerToLearnAbout.education && (
+              <div className="educationPathway pathWayBox">
+                <p>
+                  {check_visualJobZone(careerToLearnAbout.education.job_zone)}
+                </p>
+              </div>
+            )}
+            {careerToLearnAbout.education.apprenticeships && (
+              <div className="apprenticeShipCont">
+                {careerToLearnAbout.education.apprenticeships.title.map(
+                  (apprenticeship, index) => (
+                    <div
+                      key={apprenticeship + index}
+                      className="apprenticeshipPathway pathWayBox"
+                    >
+                      {apprenticeship.name}
+                    </div>
+                  )
+                )}
+              </div>
+            )}
+            {/* {careerToLearnAbout.other_factors &&
+              careerToLearnAbout.other_factors.length > 0 && (
+                <div className="otherFactorsPathway pathWayBox">
+                  <h3>Other Factors</h3>
+                  <ul>
+                    {careerToLearnAbout.other_factors.map((factor, index) => (
+                      <li key={index}>{factor}</li>
+                    ))}
+                  </ul>
+                </div>
+              )} */}
+          </div>
         </div>
       )}
       <Footer></Footer>
