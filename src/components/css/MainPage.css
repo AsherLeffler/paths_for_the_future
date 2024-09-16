@@ -87,7 +87,7 @@
     box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
   }
 }
-.visualPathway{
+.visualPathway {
   width: 100%;
   height: fit-content;
   display: flex;
@@ -97,7 +97,7 @@
   gap: 40px;
   margin-top: 20px;
 }
-.pathWayBox{
+.pathWayBox {
   border: 2px solid black;
   width: max-content;
   max-width: 240px;
@@ -107,11 +107,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
-.pathWayBox *{
+.pathWayBox:not(.techCont .pathWayBox)::before,
+.techCont::before {
+  --height: 44px;
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: var(--height);
+  background-color: black;
+  z-index: 1;
+  top: calc(var(--height) * -1);
+  border-bottom:  4px solid grey;
+  border-top: 4px solid grey;
+}
+#finalResultBox::before {
+  display: none;
+}
+.pathWayBox * {
   margin: 0;
 }
-.apprenticeShipCont{
+.apprenticeShipCont {
   display: flex;
   height: fit-content;
   width: max-content;
@@ -119,7 +136,7 @@
   align-items: center;
   gap: 80px;
 }
-.pathWayBoxCont{
+.pathWayBoxCont {
   display: flex;
   height: fit-content;
   width: max-content;
@@ -127,4 +144,18 @@
   justify-content: center;
   align-items: center;
   gap: 40px;
+}
+.techCont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  height: fit-content;
+  width: max-content;
+  max-width: 500px;
+  border: 2px solid black;
+  border-radius: 8px;
+  padding: 10px;
+  position: relative;
 }

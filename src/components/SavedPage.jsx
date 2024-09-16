@@ -2,6 +2,7 @@ import Footer from "./Footer";
 import Header from "./Header"; // Assuming Header is also imported
 import { useEffect, useState, useRef } from "react";
 import SavedCareerComponent from "./SavedCareerComponent";
+import axios from "axios";
 import "./css/SavedPage.css";
 
 const SavedPage = () => {
@@ -102,6 +103,29 @@ const SavedPage = () => {
     }
   };
 
+  const handleRequestForCareer = async (link) => {
+    const careerLink = link;
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/careerSearch",
+        { careerLink }
+      );
+      if (response.statusText === "OK") {
+        setSavedCareerToLearnAbout(response.data);
+        setSavedCurrentPage("savedLearn");
+        console.log(response.data);
+      } else {
+        window.alert(
+          "Sorry, there was an error trying to get information about this career. Please try again later."
+        );
+      }
+    } catch {
+      window.alert(
+        "Sorry, there was an error trying to get information about this career. Please try again later."
+      );
+    }
+  };
+
   return (
     <>
       <Header setSavedCurrentPage={setSavedCurrentPage} />
@@ -160,7 +184,12 @@ const SavedPage = () => {
           {savedCareerToLearnAbout.outlook && (
             <>
               <h2>Annual Median Salary</h2>
-              <p>${findSalary(savedCareerToLearnAbout.outlook.salary)}</p>
+              <p>
+                ${findSalary(savedCareerToLearnAbout.outlook.salary)}
+                {savedCareerToLearnAbout.outlook.salary.annual_median_over
+                  ? "+"
+                  : ""}
+              </p>
               <br />
               <h2>Job Outlook</h2>
               <h3>{savedCareerToLearnAbout.outlook.outlook.category}</h3>
@@ -169,6 +198,9 @@ const SavedPage = () => {
           )}
           <div className="visualPathway">
             <h2>Visual Pathway</h2>
+            <div className="pathWayBox" id="finalResultBox">
+              <p>{savedCareerToLearnAbout.career.title}</p>
+            </div>
             {savedCareerToLearnAbout.education.apprenticeships && (
               <div className="apprenticeShipCont">
                 {savedCareerToLearnAbout.education.apprenticeships.title.map(
@@ -183,21 +215,38 @@ const SavedPage = () => {
                 )}
               </div>
             )}
+            {savedCareerToLearnAbout.technology && (
+              <div className="techCont">
+                {savedCareerToLearnAbout.technology.category.map((tech) =>
+                  tech.example.map((tech, i) => (
+                    <div key={tech.name + i} className="pathWayBox">
+                      <p key={`${tech} at index: ${i}`}>{tech.name}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
             {savedCareerToLearnAbout.education && (
               <div className="pathWayBoxCont">{see_career_info()}</div>
             )}
-            {/* {savedCareerToLearnAbout.other_factors &&
-              savedCareerToLearnAbout.other_factors.length > 0 && (
-                <div className="otherFactorsPathway pathWayBox">
-                  <h3>Other Factors</h3>
-                  <ul>
-                    {savedCareerToLearnAbout.other_factors.map((factor, index) => (
-                      <li key={index}>{factor}</li>
-                    ))}
-                  </ul>
-                </div>
-              )} */}
           </div>
+          {savedCareerToLearnAbout.otherJobs && (
+            <>
+              <h2>Explore More</h2>
+              <ul>
+                {savedCareerToLearnAbout.otherJobs.careers.career.map(
+                  (job, i) => (
+                    <li
+                      key={`${job.title} index is: ${i}`}
+                      onClick={() => handleRequestForCareer(job.href)}
+                    >
+                      {job.title}
+                    </li>
+                  )
+                )}
+              </ul>
+            </>
+          )}
         </div>
       )}
       <Footer />

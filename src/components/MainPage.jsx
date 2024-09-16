@@ -95,11 +95,20 @@ const MainPage = () => {
       case 2:
         return "High school diploma or GED certificate";
       case 3:
-        return "Training through a course or program or school in the related field";
+        return [
+          "Training through a course or program or school in the related field",
+          "High school diploma or GED certificate",
+        ];
       case 4:
-        return "Four-year bachelor's degree in the related field";
+        return [
+          "Four-year bachelor's degree in the related field",
+          "High school diploma or GED certificate",
+        ];
       case 5:
-        return "Graduate school in the related field";
+        return [
+          "Graduate school in the related field",
+          "High school diploma or GED certificate",
+        ];
       default:
         return "❓";
     }
@@ -113,6 +122,53 @@ const MainPage = () => {
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return salaryNum;
+  };
+
+  const see_career_info = () => {
+    if (careerToLearnAbout.education.job_zone >= 3) {
+      return check_visualJobZone(careerToLearnAbout.education.job_zone).map(
+        (educationLevel, index) => {
+          return (
+            <>
+              <div key={educationLevel + index + "zero"} className="pathWayBox">
+                <p key={educationLevel + index + "one"}>{educationLevel}</p>
+              </div>
+            </>
+          );
+        }
+      );
+    } else if (careerToLearnAbout.education.job_zone < 3) {
+      return (
+        <>
+          <div className="pathWayBox">
+            <p>{check_visualJobZone(careerToLearnAbout.education.job_zone)}</p>
+          </div>
+        </>
+      );
+    }
+  };
+
+  const handleRequestForCareer = async (link) => {
+    const careerLink = link;
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/careerSearch",
+        { careerLink }
+      );
+      if (response.statusText === "OK") {
+        setCareerToLearnAbout(response.data);
+        setCurrentPage("learnMoreAboutCareer");
+        console.log(response.data);
+      } else {
+        window.alert(
+          "Sorry, there was an error trying to get information about this career. Please try again later."
+        );
+      }
+    } catch {
+      window.alert(
+        "Sorry, there was an error trying to get information about this career. Please try again later."
+      );
+    }
   };
 
   return (
@@ -168,7 +224,7 @@ const MainPage = () => {
               <ul>
                 {careerToLearnAbout.career.on_the_job.task.map(
                   (skill, index) => (
-                    <li key={skill + index}>{skill}</li>
+                    <li key={`${skill} is at the index of ${index}`}>{skill}</li>
                   )
                 )}
               </ul>
@@ -180,7 +236,7 @@ const MainPage = () => {
               <ul>
                 {careerToLearnAbout.technology.category.map((tech) =>
                   tech.example.map((techSkill) => (
-                    <li key={techSkill.name}>{techSkill.name}</li>
+                    <li key={techSkill.name + `index of ${i}`}>{techSkill.name}</li>
                   ))
                 )}
               </ul>
@@ -189,7 +245,12 @@ const MainPage = () => {
           {careerToLearnAbout.outlook && (
             <>
               <h2>Annual Median Salary</h2>
-              <p>${findSalary(careerToLearnAbout.outlook.salary)}</p>
+              <p>
+                ${findSalary(careerToLearnAbout.outlook.salary)}
+                {careerToLearnAbout.outlook.salary.annual_median_over
+                  ? "+"
+                  : ""}
+              </p>
               <br />
               <h2>Job Outlook</h2>
               <h3>{careerToLearnAbout.outlook.outlook.category}</h3>
@@ -198,13 +259,9 @@ const MainPage = () => {
           )}
           <div className="visualPathway">
             <h2>Visual Pathway</h2>
-            {careerToLearnAbout.education && (
-              <div className="educationPathway pathWayBox">
-                <p>
-                  {check_visualJobZone(careerToLearnAbout.education.job_zone)}
-                </p>
-              </div>
-            )}
+            <div className="pathWayBox" id="finalResultBox">
+              <p>{careerToLearnAbout.career.title}</p>
+            </div>
             {careerToLearnAbout.education.apprenticeships && (
               <div className="apprenticeShipCont">
                 {careerToLearnAbout.education.apprenticeships.title.map(
@@ -219,18 +276,36 @@ const MainPage = () => {
                 )}
               </div>
             )}
-            {/* {careerToLearnAbout.other_factors &&
-              careerToLearnAbout.other_factors.length > 0 && (
-                <div className="otherFactorsPathway pathWayBox">
-                  <h3>Other Factors</h3>
-                  <ul>
-                    {careerToLearnAbout.other_factors.map((factor, index) => (
-                      <li key={index}>{factor}</li>
-                    ))}
-                  </ul>
-                </div>
-              )} */}
+            {careerToLearnAbout.technology && (
+              <div className="techCont">
+                {careerToLearnAbout.technology.category.map((tech) =>
+                  tech.example.map((tech, i) => (
+                    <div key={tech.name + i} className="pathWayBox">
+                      <p key={`${tech} at index: ${i}`}>{tech.name}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+            {careerToLearnAbout.education && (
+              <div className="pathWayBoxCont">{see_career_info()}</div>
+            )}
           </div>
+          {careerToLearnAbout.otherJobs && (
+            <>
+              <h2>Explore More</h2>
+              <ul>
+                {careerToLearnAbout.otherJobs.careers.career.map((job, i) => (
+                  <li
+                    key={`${job.title} index is: ${i}`}
+                    onClick={() => handleRequestForCareer(job.href)}
+                  >
+                    {job.title}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       )}
       <Footer></Footer>

@@ -36,6 +36,7 @@ const SavedCareerComponent = ({
       if (response.statusText === "OK") {
         setSavedCareerToLearnAbout(response.data);
         setSavedCurrentPage("savedLearn");
+        console.log(response.data);
       } else {
         window.alert(
           "Sorry, there was an error trying to get information about this career. Please try again later."
