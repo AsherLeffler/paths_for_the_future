@@ -5,6 +5,7 @@ const SavedCareerComponent = ({
   careerInfo,
   setSavedCurrentPage,
   setSavedCareerToLearnAbout,
+  setCareerData,
 }) => {
   const career = careerInfo[0];
   const usersCareers = careerInfo[1];
@@ -36,7 +37,7 @@ const SavedCareerComponent = ({
       if (response.statusText === "OK") {
         setSavedCareerToLearnAbout(response.data);
         setSavedCurrentPage("savedLearn");
-        console.log(response.data);
+        setCareerData(career);
       } else {
         window.alert(
           "Sorry, there was an error trying to get information about this career. Please try again later."
@@ -68,6 +69,7 @@ SavedCareerComponent.propTypes = {
   ).isRequired,
   setSavedCurrentPage: PropTypes.func.isRequired,
   setSavedCareerToLearnAbout: PropTypes.func.isRequired,
+  setCareerData: PropTypes.func.isRequired,
 };
 
 export default SavedCareerComponent;

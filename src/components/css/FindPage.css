@@ -1,5 +1,70 @@
-.main{
+.findMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding-top: 40px;
+}
+.findMain .question {
+  font-size: 1.8rem;
+  margin: 0;
+}
+.findMain ul {
+  margin: 0;
+}
+.recommendedJob {
+  cursor: pointer;
+}
+.recommendedJob:hover {
+  text-decoration: underline;
+  width: max-content;
+}
+.jobsList{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: fit-content;
+    width: 100%;
+}
+.jobsList div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    height: fit-content;
+    padding: 10px;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+.backButton{
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    cursor: pointer;
+}
+.jobsList h2{
+    margin: 0;
+}
+.jobsList i{
+    cursor: pointer;
+    transition: 0.2s;
+    color: #0073ff;
+    font-size: 1.4rem;
+}
+.jobsList i:hover{
+    scale: 1.1;
+}
+.findMain .inputsCont, .buttonsCont {
+    width: max-content;
+    height: fit-content;
+    margin: 0 auto 0 auto;
+}
+.findMain .inputsCont input {
+  margin-right: 20px;
+  cursor: pointer;
+}
+.findMain .inputsCont label {
+  cursor: pointer;
 }

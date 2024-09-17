@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
 import axios from "axios";
 import Header from "./Header";
 import Footer from "./Footer";
 import CareerResultPage from "./CareerResultPage";
 import "./css/MainPage.css";
 
-const MainPage = () => {
+const MainPage = ({ mainPageInfo }) => {
   const [placeholderCareer, setPlaceholderCareer] = useState("Teacher");
   const [displayingLoader, setDisplayingLoader] = useState(false);
-  const [careerToLearnAbout, setCareerToLearnAbout] = useState(null);
-  const [currentPage, setCurrentPage] = useState("default");
-  const results = useRef(null);
+  const { currentPage, setCurrentPage, results, careerToLearnAbout, setCareerToLearnAbout } = mainPageInfo;
+  const [savedCareerData, setSavedCareerData] = useState(null);
   const i = useRef(0);
 
   useEffect(() => {
@@ -26,8 +26,6 @@ const MainPage = () => {
       "Athlete...",
       "Musician...",
     ];
-    results.current = null;
-    setCurrentPage("default");
     const input = document.getElementById("searchInput");
     if (input) {
       input.addEventListener("keypress", async (e) => {
@@ -45,23 +43,25 @@ const MainPage = () => {
                 setCurrentPage("results");
                 setDisplayingLoader(false);
               }, 1600);
-            } else if (input.value === "") {
-              window.alert("Please enter a valid keyword.");
             } else {
-              window.alert("An error occurred. Please try again later.");
+              alert("An error occurred. Please try again later.");
             }
           } catch {
-            window.alert("An error occurred. Please try again later.");
+            alert("An error occurred. Please try again later.");
           }
+        } else if (e.key === "Enter" && input.value === "") {
+          alert("Please enter a valid keyword.");
         }
       });
       let intervalID = setInterval(() => {
         i.current =
           i.current === placeholderArray.length - 1 ? 0 : i.current + 1;
         input.style.setProperty("--placeholder-opacity", "0.2");
+        input.style.setProperty("--placeholder-scale", "0.9");
         setTimeout(() => {
           setPlaceholderCareer(placeholderArray[i.current]);
           input.style.setProperty("--placeholder-opacity", "1");
+          input.style.setProperty("--placeholder-scale", "1");
         }, 200);
       }, 3000);
       return () => {
@@ -69,7 +69,7 @@ const MainPage = () => {
         clearInterval(intervalID);
       };
     }
-  }, []);
+  }, [results, setCurrentPage]);
 
   const check_job_zone = (job_zone) => {
     switch (job_zone) {
@@ -130,8 +130,8 @@ const MainPage = () => {
         (educationLevel, index) => {
           return (
             <>
-              <div key={educationLevel + index + "zero"} className="pathWayBox">
-                <p key={educationLevel + index + "one"}>{educationLevel}</p>
+              <div key={`${educationLevel} is the education level and ${index} is the index`} className="pathWayBox">
+                <p>{educationLevel}</p>
               </div>
             </>
           );
@@ -158,7 +158,6 @@ const MainPage = () => {
       if (response.statusText === "OK") {
         setCareerToLearnAbout(response.data);
         setCurrentPage("learnMoreAboutCareer");
-        console.log(response.data);
       } else {
         window.alert(
           "Sorry, there was an error trying to get information about this career. Please try again later."
@@ -171,9 +170,42 @@ const MainPage = () => {
     }
   };
 
+  const handleSave = () => {
+    const upToDateCareers = JSON.parse(localStorage.getItem("savedCareers"))
+      ? JSON.parse(localStorage.getItem("savedCareers"))
+      : [];
+    const icon = document.querySelector(".saveIcon");
+    if (icon.classList.contains("fa-solid")) {
+      icon.classList.replace("fa-solid", "fa-regular");
+      const newCareerList = upToDateCareers.filter(
+        (upToDateCareer) => upToDateCareer.code !== savedCareerData.code
+      );
+      localStorage.setItem("savedCareers", JSON.stringify(newCareerList));
+    } else if (icon.classList.contains("fa-regular")) {
+      icon.classList.replace("fa-regular", "fa-solid");
+      const newCareerList = [...upToDateCareers, savedCareerData];
+      localStorage.setItem("savedCareers", JSON.stringify(newCareerList));
+    }
+  };
+
+  useEffect(() => {
+    if (savedCareerData) {
+      const icon = document.querySelector(".saveIcon");
+      const savedCareers = JSON.parse(localStorage.getItem("savedCareers"))
+        ? JSON.parse(localStorage.getItem("savedCareers"))
+        : [];
+      if (
+        savedCareers.some(
+          (savedCareer) => savedCareer.code === savedCareerData.code
+        )
+      )
+        icon.classList.replace("fa-regular", "fa-solid");
+    }
+  }, [savedCareerData]);
+
   return (
     <>
-      <Header></Header>
+      <Header setCurrentPage={setCurrentPage}></Header>
       {currentPage === "default" && (
         <div className="mainBody">
           <h1 id="mainTitle">Paths for the Future</h1>
@@ -205,10 +237,16 @@ const MainPage = () => {
           results={results}
           setCurrentPage={setCurrentPage}
           setCareerToLearnAbout={setCareerToLearnAbout}
+          setSavedCareerData={setSavedCareerData}
         />
       )}
       {currentPage === "learnMoreAboutCareer" && careerToLearnAbout && (
         <div className="learnCareerCont">
+          <p onClick={() => setCurrentPage("results")}>← Back</p>
+          <i
+            className="fa-regular fa-bookmark saveIcon"
+            onClick={handleSave}
+          ></i>
           <h1>{careerToLearnAbout.career.title}</h1>
           <h2>What They Do</h2>
           <p>{careerToLearnAbout.career.what_they_do}</p>
@@ -224,7 +262,9 @@ const MainPage = () => {
               <ul>
                 {careerToLearnAbout.career.on_the_job.task.map(
                   (skill, index) => (
-                    <li key={`${skill} is at the index of ${index}`}>{skill}</li>
+                    <li key={`${skill} is at the index of ${index}`}>
+                      {skill}
+                    </li>
                   )
                 )}
               </ul>
@@ -236,7 +276,9 @@ const MainPage = () => {
               <ul>
                 {careerToLearnAbout.technology.category.map((tech) =>
                   tech.example.map((techSkill) => (
-                    <li key={techSkill.name + `index of ${i}`}>{techSkill.name}</li>
+                    <li key={techSkill.name + `index of ${i}`}>
+                      {techSkill.name}
+                    </li>
                   ))
                 )}
               </ul>
@@ -297,7 +339,7 @@ const MainPage = () => {
               <ul>
                 {careerToLearnAbout.otherJobs.careers.career.map((job, i) => (
                   <li
-                    key={`${job.title} index is: ${i}`}
+                    key={`${job.title} index is: ${i}; Code is ${job.code}`}
                     onClick={() => handleRequestForCareer(job.href)}
                   >
                     {job.title}
@@ -311,6 +353,15 @@ const MainPage = () => {
       <Footer></Footer>
     </>
   );
+};
+MainPage.propTypes = {
+  mainPageInfo: PropTypes.shape({
+    currentPage: PropTypes.string.isRequired,
+    setCurrentPage: PropTypes.func.isRequired,
+    results: PropTypes.object.isRequired,
+  careerToLearnAbout: PropTypes.object,
+  setCareerToLearnAbout: PropTypes.func.isRequired,
+}).isRequired,
 };
 
 export default MainPage;

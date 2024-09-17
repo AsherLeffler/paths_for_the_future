@@ -11,8 +11,9 @@
   font-size: 4rem;
   font-weight: 700;
   margin: 50px 0;
+  text-align: center;
 }
-.mainBody #searchInput {
+.mainBody #searchInput, #resultSearchInput {
   flex: 1;
   height: 100%;
   padding: 0 10px;
@@ -20,15 +21,17 @@
   font-size: 1.2rem;
   margin: 20px 0;
   --placeholder-opacity: 1;
+  --placeholder-scale: 1;
   border: none;
   outline: 0;
   transition: 0.2s;
 }
 #searchInput::placeholder {
   opacity: var(--placeholder-opacity);
+  scale: var(--placeholder-scale);
   transition: 0.2s;
 }
-#searchInput:focus::placeholder {
+#searchInput:focus::placeholder, #resultSearchInput:focus::placeholder {
   opacity: 0;
 }
 .searchBox i {
@@ -43,12 +46,23 @@
   border-radius: 5px;
   padding: 8px;
 }
+.resultSearchBox {
+  width: 80%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 40px auto 0 auto;
+  border: 1px solid #303030;
+  border-radius: 5px;
+  padding: 8px;
+}
 .loader {
   align-items: center;
   justify-content: center;
   height: fit-content;
   width: max-content;
-  margin-top: 20px;
+  margin: 20px auto 0 auto;
 }
 .dot {
   height: 15px;
@@ -86,6 +100,22 @@
     background-color: #b3d4fc;
     box-shadow: 0 0 0 0 rgba(178, 212, 252, 0.7);
   }
+}
+.learnCareerCont {
+  position: relative;
+  padding: 10px;
+}
+.learnCareerCont i{
+  cursor: pointer;
+  transition: 0.2s;
+  color: #0073ff;
+  font-size: 1.8rem;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.learnCareerCont i:hover{
+  scale: 1.1;
 }
 .visualPathway {
   width: 100%;

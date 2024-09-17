@@ -2,17 +2,21 @@ import PropTypes from "prop-types";
 import CareerBlock from "./CareerBlock";
 import axios from "axios";
 import "./css/CareerResultPage.css";
+import { useEffect, useState } from "react";
 
 const CareerResultPage = ({
   careerInfo,
   setCurrentPage,
   setCareerToLearnAbout,
   results,
+  setSavedCareerData,
 }) => {
+  const [resultDisplayingLoader, setResultDisplayingLoader] = useState(false);
+
   const isNext = () => {
     const careerLink = careerInfo.link ? careerInfo.link : [];
     return careerLink.some((link) => link.rel === "next");
-  };
+};
   const isPrev = () => {
     const careerLink = careerInfo.link ? careerInfo.link : [];
     return careerLink.some((link) => link.rel === "prev");
@@ -68,8 +72,62 @@ const CareerResultPage = ({
     }
   };
 
+  useEffect(() => {
+    const input = document.getElementById("resultSearchInput");
+    if (input) {
+      input.addEventListener("keypress", async (e) => {
+        if (e.key === "Enter" && input.value !== "") {
+          const keyword = input.value;
+          try {
+            const response = await axios.post(
+              "http://localhost:5000/api/search",
+              { keyword }
+            );
+            if (response.statusText === "OK") {
+              setResultDisplayingLoader(true);
+                results.current = response.data;
+                setCurrentPage("results");
+                setTimeout(() => {
+                  setResultDisplayingLoader(false);
+                }, 1850);
+            } else if (input.value === "") {
+              window.alert("Please enter a valid keyword.");
+            } else {
+              window.alert("An error occurred. Please try again later.");
+            }
+          } catch {
+            window.alert("An error occurred. Please try again later.");
+          }
+        }
+      });
+      return () => {
+        input.removeEventListener("keypress", () => {});
+      };
+    }
+  }, [results, setCurrentPage, setResultDisplayingLoader]);
+
   return (
     <>
+      <div className="resultSearchBox">
+        <label htmlFor="resultSearchInput">
+          <i className="fa-solid fa-search"></i>
+        </label>
+        <input
+          id="resultSearchInput"
+          type="search"
+          placeholder={"Type your career"}
+        />
+      </div>
+      <div
+        className="loader"
+        style={{ display: resultDisplayingLoader ? "flex" : "none" }}
+      >
+        <div className="dot"></div>
+        <div className="dot"></div>
+        <div className="dot"></div>
+        <div className="dot"></div>
+        <div className="dot"></div>
+      </div>
       <div className="resultsCont">
         {careerInfo.career.map((career) => {
           return (
@@ -78,6 +136,7 @@ const CareerResultPage = ({
               career={career}
               setCurrentPage={setCurrentPage}
               setCareerToLearnAbout={setCareerToLearnAbout}
+              setSavedCareerData={setSavedCareerData}
             />
           );
         })}
@@ -110,6 +169,7 @@ CareerResultPage.propTypes = {
   }).isRequired,
   setCareerToLearnAbout: PropTypes.func.isRequired,
   setCurrentPage: PropTypes.func.isRequired,
+  setSavedCareerData: PropTypes.func.isRequired,
 };
 
 export default CareerResultPage;

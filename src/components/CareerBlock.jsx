@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import "./css/CareerResultPage.css";
 
-const CareerBlock = ({ career, setCurrentPage, setCareerToLearnAbout }) => {
+const CareerBlock = ({ career, setCurrentPage, setCareerToLearnAbout, setSavedCareerData }) => {
   const [savedCareers, setSavedCareers] = useState(
     JSON.parse(localStorage.getItem("savedCareers"))
       ? JSON.parse(localStorage.getItem("savedCareers"))
@@ -29,6 +29,7 @@ const CareerBlock = ({ career, setCurrentPage, setCareerToLearnAbout }) => {
       localStorage.setItem("savedCareers", JSON.stringify(newCareerList));
     }
   };
+  
   const handleRequestForCareer = async () => {
     const careerLink = career.href;
     try {
@@ -38,8 +39,8 @@ const CareerBlock = ({ career, setCurrentPage, setCareerToLearnAbout }) => {
       );
       if (response.statusText === "OK") {
         setCareerToLearnAbout(response.data);
+        setSavedCareerData(career);
         setCurrentPage("learnMoreAboutCareer");
-        console.log(response.data);
       } else {
         window.alert("Sorry, there was an error trying to get information about this career. Please try again later.");
       }
@@ -66,6 +67,7 @@ CareerBlock.propTypes = {
   }).isRequired,
   setCurrentPage: PropTypes.func.isRequired,
   setCareerToLearnAbout: PropTypes.func.isRequired,
+  setSavedCareerData: PropTypes.func.isRequired,
 };
 
 export default CareerBlock;

@@ -1,6 +1,6 @@
 import Footer from "./Footer";
 import Header from "./Header"; // Assuming Header is also imported
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import SavedCareerComponent from "./SavedCareerComponent";
 import axios from "axios";
 import "./css/SavedPage.css";
@@ -10,19 +10,33 @@ const SavedPage = () => {
   const [savedCareers, setSavedCareers] = useState([]);
   const [savedCurrentPage, setSavedCurrentPage] = useState("defaultPage");
   const [savedCareerToLearnAbout, setSavedCareerToLearnAbout] = useState(null);
+  const [careerData, setCareerData] = useState(null);
+
+  const handleSave = useCallback(() => {
+    const upToDateCareers = JSON.parse(localStorage.getItem("savedCareers"))
+      ? JSON.parse(localStorage.getItem("savedCareers"))
+      : [];
+    const icon = document.querySelector(".saveIcon");
+    if (icon.classList.contains("fa-solid")) {
+      icon.classList.replace("fa-solid", "fa-regular");
+      const newCareerList = upToDateCareers.filter(
+        (upToDateCareer) => upToDateCareer.code !== careerData.code
+      );
+      localStorage.setItem("savedCareers", JSON.stringify(newCareerList));
+    } else if (icon.classList.contains("fa-regular")) {
+      icon.classList.replace("fa-regular", "fa-solid");
+      const newCareerList = [...upToDateCareers, careerData];
+      localStorage.setItem("savedCareers", JSON.stringify(newCareerList));
+    }
+  }, [careerData]);
 
   useEffect(() => {
     const savedCareersFromLocalStorage = JSON.parse(
       localStorage.getItem("savedCareers")
     );
-    if (savedCareersFromLocalStorage) {
-      usersCareers.current = savedCareersFromLocalStorage;
-      setSavedCareers(usersCareers.current);
-    } else {
-      usersCareers.current = [];
-      setSavedCareers(usersCareers.current);
-    }
-  }, []);
+    usersCareers.current = savedCareersFromLocalStorage || [];
+    setSavedCareers(usersCareers.current);
+  }, [handleSave, savedCurrentPage]);
 
   const check_job_zone = (job_zone) => {
     switch (job_zone) {
@@ -113,7 +127,6 @@ const SavedPage = () => {
       if (response.statusText === "OK") {
         setSavedCareerToLearnAbout(response.data);
         setSavedCurrentPage("savedLearn");
-        console.log(response.data);
       } else {
         window.alert(
           "Sorry, there was an error trying to get information about this career. Please try again later."
@@ -125,6 +138,21 @@ const SavedPage = () => {
       );
     }
   };
+
+  useEffect(() => {
+    if (careerData) {
+      const icon = document.querySelector(".saveIcon");
+      const savedCareers = JSON.parse(localStorage.getItem("savedCareers"))
+        ? JSON.parse(localStorage.getItem("savedCareers"))
+        : [];
+      if (
+        savedCareers.some(
+          (savedCareer) => savedCareer.code === careerData.code
+        )
+      )
+        icon.classList.replace("fa-regular", "fa-solid");
+    }
+  }, [careerData]);
 
   return (
     <>
@@ -139,13 +167,19 @@ const SavedPage = () => {
                 careerInfo={[career, usersCareers]}
                 setSavedCurrentPage={setSavedCurrentPage}
                 setSavedCareerToLearnAbout={setSavedCareerToLearnAbout}
+                setCareerData={setCareerData}
               />
             ))}
           </div>
         </div>
       )}
       {savedCurrentPage === "savedLearn" && (
-        <div>
+        <div className="learnCareerCont">
+          <p onClick={() => {setSavedCurrentPage("defaultPage");}}>← Back</p>
+          <i
+            className="fa-regular fa-bookmark saveIcon"
+            onClick={handleSave}
+          ></i>
           <h1>{savedCareerToLearnAbout.career.title}</h1>
           <h2>What They Do</h2>
           <p>{savedCareerToLearnAbout.career.what_they_do}</p>
