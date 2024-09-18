@@ -190,7 +190,7 @@ const FindPage = ({ findPageInfo }) => {
         return "High school diploma or GED certificate";
       case 3:
         return [
-          "Training through a course or program or school in the related field",
+          "Training through a course, program, or school in the related field",
           "High school diploma or GED certificate",
         ];
       case 4:
@@ -223,11 +223,9 @@ const FindPage = ({ findPageInfo }) => {
       return check_visualJobZone(recCareerToLearnAbout.education.job_zone).map(
         (educationLevel, index) => {
           return (
-            <>
-              <div key={`${educationLevel} at ${index}`} className="pathWayBox">
-                <p>{educationLevel}</p>
-              </div>
-            </>
+            <div key={`${educationLevel}${index}`} className="pathWayBox">
+              <p>{educationLevel}</p>
+            </div>
           );
         }
       );
@@ -285,7 +283,7 @@ const FindPage = ({ findPageInfo }) => {
   };
 
   useEffect(() => {
-    if (careerData) {
+    if (careerData && currentQuizPage === "learnRecommendedCareer") {
       const icon = document.querySelector(".saveIcon");
       const savedCareers = JSON.parse(localStorage.getItem("savedCareers"))
         ? JSON.parse(localStorage.getItem("savedCareers"))
@@ -295,7 +293,7 @@ const FindPage = ({ findPageInfo }) => {
       )
         icon.classList.replace("fa-regular", "fa-solid");
     }
-  }, [careerData]);
+  }, [careerData, currentQuizPage]);
 
   return (
     <>
@@ -428,7 +426,7 @@ const FindPage = ({ findPageInfo }) => {
               {recommendedJobs.map((job, index) => (
                 <RecCareerComponent
                   key={job.title + index}
-                  info={{job, handleRequestForCareer, setCareerData}}
+                  info={{ job, handleRequestForCareer, setCareerData }}
                 ></RecCareerComponent>
               ))}
             </div>
@@ -533,14 +531,32 @@ const FindPage = ({ findPageInfo }) => {
                     <div className="pathWayBoxCont">{see_career_info()}</div>
                   )}
                 </div>
+                {recCareerToLearnAbout.resources && (
+                  <>
+                    <h2>Additional Resources</h2>
+                    <ul>
+                      {recCareerToLearnAbout.resources.source.map(
+                        (resource, i) => (
+                          <li key={resource.url + i}>
+                            <p>{resource.name}</p>
+                            <a href={resource.url} target="_blank">
+                              {resource.url}
+                            </a>
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </>
+                )}
                 {recCareerToLearnAbout.otherJobs && (
                   <>
-                    <h2>Explore More</h2>
+                    <h2>Related Careers</h2>
                     <ul>
                       {recCareerToLearnAbout.otherJobs.careers.career.map(
                         (job, i) => (
                           <li
                             key={`${job.title} index is: ${i}`}
+                            className="relatedCareer"
                             onClick={() => handleRequestForCareer(job.href)}
                           >
                             {job.title}

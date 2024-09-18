@@ -63,7 +63,7 @@ const SavedPage = () => {
         return "High school diploma or GED certificate";
       case 3:
         return [
-          "Training through a course or program or school in the related field",
+          "Training through a course, program, or school in the related field",
           "High school diploma or GED certificate",
         ];
       case 4:
@@ -97,11 +97,9 @@ const SavedPage = () => {
         savedCareerToLearnAbout.education.job_zone
       ).map((educationLevel, index) => {
         return (
-          <>
-            <div key={educationLevel + index + "0"} className="pathWayBox">
+            <div key={educationLevel + index} className="pathWayBox">
               <p key={educationLevel + index}>{educationLevel}</p>
             </div>
-          </>
         );
       });
     } else if (savedCareerToLearnAbout.education.job_zone < 3) {
@@ -146,9 +144,7 @@ const SavedPage = () => {
         ? JSON.parse(localStorage.getItem("savedCareers"))
         : [];
       if (
-        savedCareers.some(
-          (savedCareer) => savedCareer.code === careerData.code
-        )
+        savedCareers.some((savedCareer) => savedCareer.code === careerData.code)
       )
         icon.classList.replace("fa-regular", "fa-solid");
     }
@@ -158,8 +154,8 @@ const SavedPage = () => {
     <>
       <Header setSavedCurrentPage={setSavedCurrentPage} />
       {savedCurrentPage === "defaultPage" && (
-        <div>
-          <h1 id="mainTitle">Saved Paths</h1>
+        <div className="savedMain">
+          <h1 id="savedTitle">Saved Paths</h1>
           <div className="careerBlockContainer">
             {savedCareers.map((career) => (
               <SavedCareerComponent
@@ -175,7 +171,13 @@ const SavedPage = () => {
       )}
       {savedCurrentPage === "savedLearn" && (
         <div className="learnCareerCont">
-          <p onClick={() => {setSavedCurrentPage("defaultPage");}}>← Back</p>
+          <p
+            onClick={() => {
+              setSavedCurrentPage("defaultPage");
+            }}
+          >
+            ← Back
+          </p>
           <i
             className="fa-regular fa-bookmark saveIcon"
             onClick={handleSave}
@@ -264,14 +266,30 @@ const SavedPage = () => {
               <div className="pathWayBoxCont">{see_career_info()}</div>
             )}
           </div>
+          {savedCareerToLearnAbout.resources && (
+            <>
+              <h2>Additional Resources</h2>
+              <ul>
+                {savedCareerToLearnAbout.resources.source.map((resource, i) => (
+                  <li key={resource.url + i}>
+                    <p>{resource.name}</p>
+                    <a href={resource.url} target="_blank">
+                      {resource.url}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
           {savedCareerToLearnAbout.otherJobs && (
             <>
-              <h2>Explore More</h2>
+              <h2>Related Careers</h2>
               <ul>
                 {savedCareerToLearnAbout.otherJobs.careers.career.map(
                   (job, i) => (
                     <li
                       key={`${job.title} index is: ${i}`}
+                      className="relatedCareer"
                       onClick={() => handleRequestForCareer(job.href)}
                     >
                       {job.title}

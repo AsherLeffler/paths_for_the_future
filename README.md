@@ -1,8 +1,3 @@
-# React + Vite
+# Paths for the Future
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+A web app initially created for the 2024 congressional app challenge to help people find careers and see how they can get there. What makes Paths for the Future so unique is it allows you to visualize your pathway and how to get to a career. With all sorts of information and data to help your research a career, it can help you understand what it takes to get to your goals.

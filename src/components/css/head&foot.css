@@ -9,6 +9,7 @@ header {
   justify-content: space-between;
   position: relative;
   padding-right: 20px;
+  overflow: hidden;
 }
 header img {
   height: 100%;
@@ -67,14 +68,32 @@ header nav h2 {
   font-size: 1.2rem;
   font-weight: normal;
 }
-footer {
+.mainFooter {
+  background-color: hsla(0, 0%, 83%, 0.2);
+  color: white;
+  text-align: center;
+  height: 80px;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+}
+.mainFooter .textCredit {
+  font-family: var(--mainFont);
+  color: rgb(255, 255, 255);
+}
+.mainFooter a{
+  color: rgb(162, 227, 255);
+}
+.elseFooter {
   background-color: #d4d4d4;
   color: white;
   text-align: center;
   height: 80px;
   width: 100%;
+  overflow: hidden;
 }
-footer .textCredit{
+.elseFooter .textCredit{
   font-family: var(--mainFont);
   color: rgb(48, 48, 48);
 }

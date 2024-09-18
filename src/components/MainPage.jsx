@@ -5,11 +5,18 @@ import Header from "./Header";
 import Footer from "./Footer";
 import CareerResultPage from "./CareerResultPage";
 import "./css/MainPage.css";
+import backImg from "../assets/backImg.jpg";
 
 const MainPage = ({ mainPageInfo }) => {
   const [placeholderCareer, setPlaceholderCareer] = useState("Teacher");
   const [displayingLoader, setDisplayingLoader] = useState(false);
-  const { currentPage, setCurrentPage, results, careerToLearnAbout, setCareerToLearnAbout } = mainPageInfo;
+  const {
+    currentPage,
+    setCurrentPage,
+    results,
+    careerToLearnAbout,
+    setCareerToLearnAbout,
+  } = mainPageInfo;
   const [savedCareerData, setSavedCareerData] = useState(null);
   const i = useRef(0);
 
@@ -96,7 +103,7 @@ const MainPage = ({ mainPageInfo }) => {
         return "High school diploma or GED certificate";
       case 3:
         return [
-          "Training through a course or program or school in the related field",
+          "Training through a course, program, or school in the related field",
           "High school diploma or GED certificate",
         ];
       case 4:
@@ -129,11 +136,12 @@ const MainPage = ({ mainPageInfo }) => {
       return check_visualJobZone(careerToLearnAbout.education.job_zone).map(
         (educationLevel, index) => {
           return (
-            <>
-              <div key={`${educationLevel} is the education level and ${index} is the index`} className="pathWayBox">
+              <div
+                key={`${educationLevel}${index}`}
+                className="pathWayBox"
+              >
                 <p>{educationLevel}</p>
               </div>
-            </>
           );
         }
       );
@@ -208,6 +216,11 @@ const MainPage = ({ mainPageInfo }) => {
       <Header setCurrentPage={setCurrentPage}></Header>
       {currentPage === "default" && (
         <div className="mainBody">
+          <img
+            className="backImg"
+            src={backImg}
+            alt="Image of people working"
+          />
           <h1 id="mainTitle">Paths for the Future</h1>
           <div className="searchBox">
             <label htmlFor="searchInput">
@@ -333,12 +346,28 @@ const MainPage = ({ mainPageInfo }) => {
               <div className="pathWayBoxCont">{see_career_info()}</div>
             )}
           </div>
+          {careerToLearnAbout.resources && (
+            <>
+              <h2>Additional Resources</h2>
+              <ul>
+                {careerToLearnAbout.resources.source.map((resource, i) => (
+                  <li key={resource.url + i}>
+                    <p>{resource.name}</p>
+                    <a href={resource.url} target="_blank">
+                      {resource.url}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
           {careerToLearnAbout.otherJobs && (
             <>
-              <h2>Explore More</h2>
+              <h2>Related Careers</h2>
               <ul>
                 {careerToLearnAbout.otherJobs.careers.career.map((job, i) => (
                   <li
+                    className="relatedCareer"
                     key={`${job.title} index is: ${i}; Code is ${job.code}`}
                     onClick={() => handleRequestForCareer(job.href)}
                   >
@@ -350,7 +379,7 @@ const MainPage = ({ mainPageInfo }) => {
           )}
         </div>
       )}
-      <Footer></Footer>
+      <Footer opacity={currentPage === "default" ? true : false}></Footer>
     </>
   );
 };
@@ -359,9 +388,9 @@ MainPage.propTypes = {
     currentPage: PropTypes.string.isRequired,
     setCurrentPage: PropTypes.func.isRequired,
     results: PropTypes.object.isRequired,
-  careerToLearnAbout: PropTypes.object,
-  setCareerToLearnAbout: PropTypes.func.isRequired,
-}).isRequired,
+    careerToLearnAbout: PropTypes.object,
+    setCareerToLearnAbout: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default MainPage;

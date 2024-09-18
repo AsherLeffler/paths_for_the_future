@@ -1,27 +1,44 @@
-.savedCareerBlock{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
-    width: 100%;
+.savedMain{
     height: fit-content;
+    min-height: calc(100vh - 160px);
+    padding: 20px;
 }
-.savedCareerBlock h3{
-    font-family: var(--mainFont);
-    font-size: 1.5rem;
+#savedTitle{
+    font-size: 2.5rem;
     margin: 0;
+    margin-bottom: 20px;
 }
-.savedCareerBlock i{
-    color: #0073ff;
-    font-size: 1.4rem;
-    cursor: pointer;
-    transition: 0.2s;
+.savedCareerBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  width: 100%;
+  height: fit-content;
 }
-.savedCareerBlock i:hover{
-    transform: scale(1.1);
+.savedCareerBlock h3 {
+  font-family: var(--mainFont);
+  font-size: 1.5rem;
+  margin: 0;
 }
-.savedCareerBlock h3{
-    cursor: pointer;
+.savedCareerBlock i {
+  color: #0073ff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.savedCareerBlock i:hover {
+  transform: scale(1.1);
+}
+.savedCareerBlock h3 {
+  cursor: pointer;
+}
+.relatedCareer {
+  cursor: pointer;
+  transition: 0.2s;
+}
+.relatedCareer:hover {
+  scale: 1.01;
 }

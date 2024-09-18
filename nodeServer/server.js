@@ -146,6 +146,21 @@ app.post("/api/careerSearch", async (req, res) => {
       );
     }
 
+    let resourcesData = {};
+    const careerCode = externalApiResponse.data.code;
+    resourcesData = await axios.get(
+      `https://services.onetcenter.org/ws/online/occupations/${careerCode}/summary/additional_information`,
+      {
+        auth: {
+          username: ONET_USERNAME,
+          password: ONET_PASSWORD,
+        },
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
+
     // Send the external API's response data back to the frontend
     const dataToSend = {
       career: externalApiResponse.data,
@@ -153,6 +168,7 @@ app.post("/api/careerSearch", async (req, res) => {
       technology: technologyData.data,
       outlook: outlookData.data,
       otherJobs: otherJobsData.data,
+      resources: resourcesData.data,
     };
     res.json(dataToSend);
   } catch (error) {

@@ -4,16 +4,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #303030;
+  color: white;
+  position: relative;
 }
 .mainBody #mainTitle {
   font-family: var(--mainFont);
   font-size: 4rem;
   font-weight: 700;
-  margin: 50px 0;
+  margin: 0;
   text-align: center;
+  margin: 100px 0 0 0;
 }
-.mainBody #searchInput, #resultSearchInput {
+.mainBody #searchInput,
+#resultSearchInput {
   flex: 1;
   height: 100%;
   padding: 0 10px;
@@ -26,16 +29,56 @@
   outline: 0;
   transition: 0.2s;
 }
+
+#searchInput:-webkit-autofill,
+#searchInput:-webkit-autofill:hover,
+#searchInput:-webkit-autofill:focus,
+#searchInput:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px #23232329;
+}
+input[type="search" i]::-webkit-search-cancel-button {
+  cursor: pointer;
+  filter: brightness(2.8);
+}
+#searchInput {
+  background-color: transparent;
+  color: white;
+  box-shadow: 0 0 0px 1000px transparent inset !important; /* Ensure no shadow effect */
+}
+input:-moz-autofill {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+input:-ms-autofill {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+input:-o-autofill {
+  background-color: transparent !important;
+  color: white !important;
+}
+input:-webkit-autofill {
+  background-color: transparent !important;
+  color: white !important;
+  -webkit-text-fill-color: rgb(255, 255, 255) !important;
+}
+
 #searchInput::placeholder {
   opacity: var(--placeholder-opacity);
   scale: var(--placeholder-scale);
-  transition: 0.2s;
+  color: rgb(196, 196, 196);
+  transition: 0.2s ease-in-out;
 }
-#searchInput:focus::placeholder, #resultSearchInput:focus::placeholder {
+#searchInput:focus::placeholder,
+#resultSearchInput:focus::placeholder {
   opacity: 0;
 }
 .searchBox i {
   cursor: pointer;
+  color: white;
 }
 .searchBox {
   width: 80%;
@@ -45,6 +88,11 @@
   border: 1px solid #303030;
   border-radius: 5px;
   padding: 8px;
+  backdrop-filter: blur(15px);
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  translate: -50% -50%;
 }
 .resultSearchBox {
   width: 80%;
@@ -62,7 +110,10 @@
   justify-content: center;
   height: fit-content;
   width: max-content;
-  margin: 20px auto 0 auto;
+  position: absolute;
+  left: 50%;
+  top: 55%;
+  translate: -50% -50%;
 }
 .dot {
   height: 15px;
@@ -105,7 +156,7 @@
   position: relative;
   padding: 10px;
 }
-.learnCareerCont i{
+.learnCareerCont i {
   cursor: pointer;
   transition: 0.2s;
   color: #0073ff;
@@ -114,7 +165,7 @@
   right: 10px;
   top: 10px;
 }
-.learnCareerCont i:hover{
+.learnCareerCont i:hover {
   scale: 1.1;
 }
 .visualPathway {
@@ -149,7 +200,7 @@
   background-color: black;
   z-index: 1;
   top: calc(var(--height) * -1);
-  border-bottom:  4px solid grey;
+  border-bottom: 4px solid grey;
   border-top: 4px solid grey;
 }
 #finalResultBox::before {
@@ -161,10 +212,10 @@
 .apprenticeShipCont {
   display: flex;
   height: fit-content;
-  width: max-content;
+  width: 100%;
   justify-content: center;
   align-items: center;
-  gap: 80px;
+  gap: 40px;
 }
 .pathWayBoxCont {
   display: flex;
@@ -188,4 +239,21 @@
   border-radius: 8px;
   padding: 10px;
   position: relative;
+}
+.backImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  filter: brightness(0.45);
+  z-index: -1;
+}
+.relatedCareer {
+  cursor: pointer;
+  transition: 0.2s;
+}
+.relatedCareer:hover {
+  scale: 1.01;
 }
