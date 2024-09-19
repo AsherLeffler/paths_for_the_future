@@ -2,21 +2,20 @@ import PropTypes from "prop-types";
 import CareerBlock from "./CareerBlock";
 import axios from "axios";
 import "./css/CareerResultPage.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-const CareerResultPage = ({
-  careerInfo,
-  setCurrentPage,
-  setCareerToLearnAbout,
-  results,
-  setSavedCareerData,
-}) => {
-  const [resultDisplayingLoader, setResultDisplayingLoader] = useState(false);
+const CareerResultPage = ({ careerInfo, results, hooks }) => {
+  const {
+    setCurrentPage,
+    setCareerToLearnAbout,
+    setSavedCareerData,
+    setDisplayingLoader,
+  } = hooks;
 
   const isNext = () => {
     const careerLink = careerInfo.link ? careerInfo.link : [];
     return careerLink.some((link) => link.rel === "next");
-};
+  };
   const isPrev = () => {
     const careerLink = careerInfo.link ? careerInfo.link : [];
     return careerLink.some((link) => link.rel === "prev");
@@ -84,12 +83,12 @@ const CareerResultPage = ({
               { keyword }
             );
             if (response.statusText === "OK") {
-              setResultDisplayingLoader(true);
+              setDisplayingLoader(true);
+              setTimeout(() => {
                 results.current = response.data;
                 setCurrentPage("results");
-                setTimeout(() => {
-                  setResultDisplayingLoader(false);
-                }, 1850);
+                setDisplayingLoader(false);
+              }, 1600);
             } else if (input.value === "") {
               window.alert("Please enter a valid keyword.");
             } else {
@@ -104,29 +103,21 @@ const CareerResultPage = ({
         input.removeEventListener("keypress", () => {});
       };
     }
-  }, [results, setCurrentPage, setResultDisplayingLoader]);
+  }, [results, setCurrentPage, setDisplayingLoader]);
 
   return (
-    <>
-      <div className="resultSearchBox">
-        <label htmlFor="resultSearchInput">
-          <i className="fa-solid fa-search"></i>
-        </label>
-        <input
-          id="resultSearchInput"
-          type="search"
-          placeholder={"Type your career"}
-        />
-      </div>
-      <div
-        className="loader"
-        style={{ display: resultDisplayingLoader ? "flex" : "none" }}
-      >
-        <div className="dot"></div>
-        <div className="dot"></div>
-        <div className="dot"></div>
-        <div className="dot"></div>
-        <div className="dot"></div>
+    <div className="resultPage">
+      <div className="searchCont">
+        <div className="resultSearchBox">
+          <label htmlFor="resultSearchInput">
+            <i className="fa-solid fa-search"></i>
+          </label>
+          <input
+            id="resultSearchInput"
+            type="search"
+            placeholder={"Type your career"}
+          />
+        </div>
       </div>
       <div className="resultsCont">
         {careerInfo.career.map((career) => {
@@ -140,16 +131,26 @@ const CareerResultPage = ({
             />
           );
         })}
+        <div className="moreCareers">
+          {isPrev() && (
+            <h3
+              onClick={() => handlePageSelect("prev")}
+              className="prevPageBtn"
+            >
+              Previous Page
+            </h3>
+          )}
+          {isNext() && (
+            <h3
+              onClick={() => handlePageSelect("next")}
+              className="nextPageBtn"
+            >
+              Next Page
+            </h3>
+          )}
+        </div>
       </div>
-      <div className="moreCareers">
-        {isPrev() && (
-          <h3 onClick={() => handlePageSelect("prev")}>Previous Page</h3>
-        )}
-        {isNext() && (
-          <h3 onClick={() => handlePageSelect("next")}>Next Page</h3>
-        )}
-      </div>
-    </>
+    </div>
   );
 };
 
@@ -167,9 +168,12 @@ CareerResultPage.propTypes = {
   results: PropTypes.shape({
     current: PropTypes.object.isRequired,
   }).isRequired,
-  setCareerToLearnAbout: PropTypes.func.isRequired,
-  setCurrentPage: PropTypes.func.isRequired,
-  setSavedCareerData: PropTypes.func.isRequired,
+  hooks: PropTypes.shape({
+    setCareerToLearnAbout: PropTypes.func.isRequired,
+    setCurrentPage: PropTypes.func.isRequired,
+    setSavedCareerData: PropTypes.func.isRequired,
+    setDisplayingLoader: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default CareerResultPage;

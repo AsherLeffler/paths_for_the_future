@@ -25,6 +25,7 @@ const FindPage = ({ findPageInfo }) => {
     setRecommendedJobs,
   } = findPageInfo;
   const [careerData, setCareerData] = useState(null);
+  const [explain, setExplain] = useState(false);
 
   useEffect(() => {
     async function getQuestions() {
@@ -39,6 +40,7 @@ const FindPage = ({ findPageInfo }) => {
           questions.current = response.data.question;
           questions.current.push({ index: 13 }); // Add an empty object to the end of the array
           data.current = response.data;
+          setExplain(false);
         } else {
           window.alert(
             "Sorry, there was an error trying to get information about this career. Please try again later."
@@ -295,22 +297,68 @@ const FindPage = ({ findPageInfo }) => {
     }
   }, [careerData, currentQuizPage]);
 
+  const startExplanation = () => {
+    setExplain(true);
+  };
+
   return (
     <>
       <Header setCurrentQuizPage={setCurrentQuizPage}></Header>
       <div className="findMain">
         {currentQuizPage === "main" && (
           <>
-            <button onClick={getResults}>get results</button>
-            {!currentQuestion && (
-              <button onClick={getTheFirstQuestion}>Get questions</button>
+            <button onClick={getResults} className="byPassQuizBtn">
+              Bypass Quiz
+            </button>
+            {!currentQuestion && !explain && (
+              <>
+                <h1 className="quizTitle">
+                  Don&apos;t know what you want to be?
+                </h1>
+                <p className="quizDesc">
+                  Take our personality quiz to see what kind of person you are
+                  and find the perfect career for you!
+                </p>
+                <button className="advanceBtn" onClick={startExplanation}>
+                  Take the quiz
+                </button>
+              </>
             )}
-            <form id="findForm" onSubmit={handleSubmit}>
-              <h3 className="question">
-                {currentQuestion && currentQuestion.text}
-              </h3>
-              {currentQuestion &&
-                currentQuestion.index !== data.current.end + 1 && (
+            {!currentQuestion && explain && (
+              <>
+                <h1>What to do</h1>
+                <p>
+                  Answer the following questions to the best of your ability.
+                  The more honest you are, the more accurate your results will
+                  be.
+                </p>
+                <p>
+                  Answer the questions on a scale of how much you would enjoy
+                  the activity.
+                </p>
+                <ul>
+                  <li>☹️ - Strongly Dislike</li>
+                  <li>🫤 - Dislike</li>
+                  <li>😐 - Neutral</li>
+                  <li>🙂 - Like</li>
+                  <li>😆 - Strongly Like</li>
+                </ul>
+                <p>
+                  You must answer each question before moving to the next one.
+                </p>
+                <p>
+                  Once you move to the next section, YOU CANNOT GO BACK. Make
+                  sure you are certain of all of your answers before moving on
+                </p>
+                <button className="advanceBtn" onClick={getTheFirstQuestion}>Start</button>
+              </>
+            )}
+            {questions.current.length > 0 && currentQuestion && (
+              <form id="findForm" onSubmit={handleSubmit}>
+                <h3 className="question">
+                  {currentQuestion && currentQuestion.text}
+                </h3>
+                {currentQuestion.index !== data.current.end + 1 && (
                   <div className="inputsCont">
                     <label htmlFor="dislike">☹️</label>
                     <input
@@ -364,25 +412,19 @@ const FindPage = ({ findPageInfo }) => {
                     />
                   </div>
                 )}
-              {questions.current.length > 0 &&
-                currentQuestion &&
-                currentQuestion.index === data.current.end + 1 &&
-                data.current.end !== 60 && (
-                  <div className="inputsCont">
-                    <button onClick={goToNextSection}>Next Section</button>
-                  </div>
-                )}
-              {questions.current.length > 0 &&
-                currentQuestion &&
-                currentQuestion.index === data.current.end + 1 &&
-                data.current.end === 60 && (
-                  <div className="inputsCont">
-                    <button onClick={getResults}>Get Results</button>
-                  </div>
-                )}
-              {questions.current.length > 0 &&
-                currentQuestion &&
-                currentQuestion.index !== data.current.end + 1 && (
+                {currentQuestion.index === data.current.end + 1 &&
+                  data.current.end !== 60 && (
+                    <div className="inputsCont">
+                      <button onClick={goToNextSection}>Next Section</button>
+                    </div>
+                  )}
+                {currentQuestion.index === data.current.end + 1 &&
+                  data.current.end === 60 && (
+                    <div className="inputsCont">
+                      <button onClick={getResults}>Get Results</button>
+                    </div>
+                  )}
+                {currentQuestion.index !== data.current.end + 1 && (
                   <div className="buttonsCont">
                     {findIndex() !== 1 && (
                       <button onClick={() => handleQuestionChange("prev")}>
@@ -394,8 +436,9 @@ const FindPage = ({ findPageInfo }) => {
                     </button>
                   </div>
                 )}
-            </form>
-            <p>{questionNum} / 60</p>
+                {currentQuestion.index !== data.current.end + 1 && <p id="questionCount">{questionNum} / 60</p>}
+              </form>
+            )}
           </>
         )}
         {currentQuizPage === "results" && (

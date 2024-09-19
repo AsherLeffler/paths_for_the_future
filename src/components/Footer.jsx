@@ -1,9 +1,10 @@
 import "./css/head&foot.css";
 import PropTypes from 'prop-types';
 
-const Footer = ({ opacity = false }) => {
+const Footer = ({ style }) => {
+  const { opacity = false, color = false } = style || {};
   return (
-    <footer className={`${opacity ? "mainFooter" : "elseFooter"}`}>
+    <footer className={`${opacity ? "mainFooter" : "elseFooter"} ${color ? "resultsFooter" : ""}`}>
       <p className="textCredit">
         This site incorporates information from{" "}
         <a href="https://services.onetcenter.org/" target="_blank">O*NET Web Services</a> by the
@@ -15,7 +16,7 @@ const Footer = ({ opacity = false }) => {
 };
 
 Footer.propTypes = {
-  opacity: PropTypes.bool,
+  style: PropTypes.object,
 };
 
 export default Footer;

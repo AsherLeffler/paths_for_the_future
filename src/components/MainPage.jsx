@@ -36,8 +36,8 @@ const MainPage = ({ mainPageInfo }) => {
     const input = document.getElementById("searchInput");
     if (input) {
       input.addEventListener("keypress", async (e) => {
-        if (e.key === "Enter" && input.value !== "") {
-          const keyword = input.value;
+        if (e.key === "Enter" && input.value.trim() !== "") {
+          const keyword = input.value.trim();
           try {
             const response = await axios.post(
               "http://localhost:5000/api/search",
@@ -56,7 +56,7 @@ const MainPage = ({ mainPageInfo }) => {
           } catch {
             alert("An error occurred. Please try again later.");
           }
-        } else if (e.key === "Enter" && input.value === "") {
+        } else if (e.key === "Enter" && input.value.trim() === "") {
           alert("Please enter a valid keyword.");
         }
       });
@@ -136,12 +136,9 @@ const MainPage = ({ mainPageInfo }) => {
       return check_visualJobZone(careerToLearnAbout.education.job_zone).map(
         (educationLevel, index) => {
           return (
-              <div
-                key={`${educationLevel}${index}`}
-                className="pathWayBox"
-              >
-                <p>{educationLevel}</p>
-              </div>
+            <div key={`${educationLevel}${index}`} className="pathWayBox">
+              <p>{educationLevel}</p>
+            </div>
           );
         }
       );
@@ -214,6 +211,18 @@ const MainPage = ({ mainPageInfo }) => {
   return (
     <>
       <Header setCurrentPage={setCurrentPage}></Header>
+      <div
+        className="loadingCont"
+        style={{ display: displayingLoader ? "flex" : "none"}}
+      >
+        <div className="loader">
+          <div className="dot"></div>
+          <div className="dot"></div>
+          <div className="dot"></div>
+          <div className="dot"></div>
+          <div className="dot"></div>
+        </div>
+      </div>
       {currentPage === "default" && (
         <div className="mainBody">
           <img
@@ -232,25 +241,13 @@ const MainPage = ({ mainPageInfo }) => {
               placeholder={placeholderCareer}
             />
           </div>
-          <div
-            className="loader"
-            style={{ display: displayingLoader ? "flex" : "none" }}
-          >
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
-            <div className="dot"></div>
-          </div>
         </div>
       )}
       {currentPage === "results" && results.current && (
         <CareerResultPage
           careerInfo={results.current}
           results={results}
-          setCurrentPage={setCurrentPage}
-          setCareerToLearnAbout={setCareerToLearnAbout}
-          setSavedCareerData={setSavedCareerData}
+          hooks={{setCurrentPage, setCareerToLearnAbout, setSavedCareerData, setDisplayingLoader}}
         />
       )}
       {currentPage === "learnMoreAboutCareer" && careerToLearnAbout && (
@@ -379,7 +376,7 @@ const MainPage = ({ mainPageInfo }) => {
           )}
         </div>
       )}
-      <Footer opacity={currentPage === "default" ? true : false}></Footer>
+      <Footer style={{opacity: currentPage === "default" ? true : false, color: currentPage === "results" ? true : false}}></Footer>
     </>
   );
 };
