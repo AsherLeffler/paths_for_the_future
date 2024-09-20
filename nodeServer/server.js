@@ -281,6 +281,5 @@ app.post("/api/getRecommendedJobs", async (req, res) => {
   }
 });
 
-// Start the server
-const PORT = 5000;
-app.listen(PORT);
+// eslint-disable-next-line no-undef
+module.exports = app;
