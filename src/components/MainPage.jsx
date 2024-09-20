@@ -252,7 +252,7 @@ const MainPage = ({ mainPageInfo }) => {
       )}
       {currentPage === "learnMoreAboutCareer" && careerToLearnAbout && (
         <div className="learnCareerCont">
-          <p onClick={() => setCurrentPage("results")}>← Back</p>
+          <p onClick={() => setCurrentPage("results")} className="backButton">← Back</p>
           <i
             className="fa-regular fa-bookmark saveIcon"
             onClick={handleSave}

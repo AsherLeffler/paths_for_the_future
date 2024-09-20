@@ -70,21 +70,32 @@ const FindPage = ({ findPageInfo }) => {
       const newIndex =
         prev.index -
         Math.floor(data.current.end === 12 ? 0 : data.current.end - 12);
+
       if (direction === "next" && selectedAnswer !== null) {
-        if (currentQuestion.index !== data.current.end) {
-          setQuestionNum((prev) => prev + 1);
-          setSelectedAnswer(null);
-        }
         return questions.current[newIndex];
       } else if (direction === "prev" && newIndex !== 1) {
-        setQuestionNum((prev) => prev - 1);
-        setSelectedAnswer(null);
         return questions.current[newIndex - 2];
       } else {
         window.alert("Please select an answer before moving on.");
       }
-      return prev;
+      return prev; // Return the previous state if no updates
     });
+
+    // Handle question number and selected answer updates separately
+    const questionIndex =
+      currentQuestion.index -
+      Math.floor(data.current.end === 12 ? 0 : data.current.end - 12);
+    if (
+      direction === "next" &&
+      selectedAnswer !== null &&
+      currentQuestion.index !== data.current.end
+    ) {
+      setQuestionNum((prevNum) => prevNum + 1);
+      setSelectedAnswer(answers.current[currentQuestion.index] || null);
+    } else if (direction === "prev" && questionIndex !== 1) {
+      if (questionIndex !== 13) setQuestionNum((prevNum) => prevNum - 1);
+      setSelectedAnswer(answers.current[currentQuestion.index - 2]);
+    }
   };
 
   const handleAnswerChange = (question, answer) => {
@@ -183,8 +194,8 @@ const FindPage = ({ findPageInfo }) => {
     e.preventDefault();
   };
 
-  const handleGetJobs = async (answers = null) => {
-    const answersString = answers || answers.current.join("");
+  const handleGetJobs = async (prevAnswers) => {
+    const answersString = prevAnswers || answers.current.join("");
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/careers?answers=${answersString}`;
     try {
       const response = await axios.post(
@@ -593,33 +604,67 @@ const FindPage = ({ findPageInfo }) => {
                 )}
                 {currentQuestion.index === data.current.end + 1 &&
                   data.current.end !== 60 && (
-                    <div className="inputsCont">
-                      <button onClick={goToNextSection}>Next Section</button>
-                    </div>
+                    <>
+                      <h3 className="cant_go_back_text">
+                        Once you move on, you can not go back
+                      </h3>
+                      <div className="inputsCont">
+                        <button
+                          className="nextSetBtn endBtn"
+                          onClick={() => handleQuestionChange("prev")}
+                        >
+                          Previous
+                        </button>
+                        <button
+                          className="nextSetBtn"
+                          onClick={goToNextSection}
+                        >
+                          Next Section
+                        </button>
+                      </div>
+                    </>
                   )}
                 {currentQuestion.index === data.current.end + 1 &&
                   data.current.end === 60 && (
                     <div className="inputsCont">
-                      <button onClick={getResults}>Get Results</button>
+                      <button
+                        className="nextSetBtn endBtn"
+                        onClick={() => handleQuestionChange("prev")}
+                      >
+                        Previous
+                      </button>
+
+                      <button className="nextSetBtn" onClick={getResults}>
+                        Get Results
+                      </button>
                     </div>
                   )}
                 {currentQuestion.index !== data.current.end + 1 && (
                   <div className="buttonsCont">
                     <button
                       style={{
-                        visibility: findIndex() !== 1 ? "visible" : "hidden",
+                        filter: findIndex() !== 1 ? "none" : "grayscale(100%)",
+                        cursor: findIndex() !== 1 ? "pointer" : "not-allowed",
                       }}
-                      onClick={() => handleQuestionChange("prev")}
+                      onClick={
+                        findIndex() !== 1
+                          ? () => handleQuestionChange("prev")
+                          : () => {}
+                      }
+                      className="questionChangeButton"
                     >
-                      Previous Question
+                      Previous
                     </button>
-                    <button onClick={() => handleQuestionChange("next")}>
-                      Next Question
+                    <button
+                      onClick={() => handleQuestionChange("next")}
+                      className="questionChangeButton"
+                    >
+                      Next
                     </button>
                   </div>
                 )}
                 {currentQuestion.index !== data.current.end + 1 && (
-                  <p id="questionCount">{questionNum} / 60</p>
+                  <p id="questionCount">Question: {questionNum} / 60</p>
                 )}
               </form>
             )}
@@ -634,7 +679,7 @@ const FindPage = ({ findPageInfo }) => {
               });
               return (
                 <>
-                  <h3>Results</h3>
+                  <h3 className="resultsTitle">Results</h3>
                   <div className="prevResultCont">
                     <div className="scores-wrapper">
                       {quizResults.map((result, i) => (
@@ -673,8 +718,8 @@ const FindPage = ({ findPageInfo }) => {
             <p onClick={goBack} className="backButton">
               ← Back
             </p>
-            <h3>Recommendations</h3>
-            <div className="jobsList">
+            <h3 className="resultsTitle rec">Recommended Jobs</h3>
+            <div className="resultsCont">
               {recommendedJobs.map((job, index) => (
                 <RecCareerComponent
                   key={job.title + index}
@@ -688,7 +733,7 @@ const FindPage = ({ findPageInfo }) => {
           recCareerToLearnAbout && (
             <>
               <div className="learnCareerCont">
-                <p onClick={() => setCurrentQuizPage("recommendations")}>
+                <p className="backButton" onClick={() => setCurrentQuizPage("recommendations")}>
                   ← Back
                 </p>
                 <i

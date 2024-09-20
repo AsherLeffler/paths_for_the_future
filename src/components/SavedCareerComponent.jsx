@@ -51,7 +51,7 @@ const SavedCareerComponent = ({
   };
 
   return (
-    <div className="savedCareerBlock">
+    <div className="careerBlock">
       <h3 onClick={handleRequestForCareer}>{career.title}</h3>
       <i className="fa-bookmark fa-solid" onClick={handleUnsave}></i>
     </div>

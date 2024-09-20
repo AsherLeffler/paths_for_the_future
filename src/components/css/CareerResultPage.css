@@ -65,10 +65,13 @@
 .careerBlock h3 {
   font-family: var(--mainFont);
   font-size: 1.4rem;
-  width: 40%;
+  width: max-content;
   cursor: pointer;
   font-weight: normal;
   margin: 0;
+}
+.careerBlock h3:hover {
+  text-decoration: underline;
 }
 .careerBlock i {
   color: #0073ff;

@@ -156,7 +156,8 @@ const SavedPage = () => {
       {savedCurrentPage === "defaultPage" && (
         <div className="savedMain">
           <h1 id="savedTitle">Saved Paths</h1>
-          <div className="careerBlockContainer">
+          <hr className="divider" />
+          <div className="resultsCont">
             {savedCareers.map((career) => (
               <SavedCareerComponent
                 key={career.code}
@@ -175,6 +176,7 @@ const SavedPage = () => {
             onClick={() => {
               setSavedCurrentPage("defaultPage");
             }}
+            className="backButton"
           >
             ← Back
           </p>

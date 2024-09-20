@@ -30,8 +30,8 @@ const RecCareerComponent = ({ info }) => {
   };
 
   return (
-    <div>
-      <h2
+    <div className="careerBlock">
+      <h3
         className="recommendedJob"
         onClick={() => {
           handleRequestForCareer(job.href);
@@ -39,7 +39,7 @@ const RecCareerComponent = ({ info }) => {
         }}
       >
         {job.title}
-      </h2>
+      </h3>
       <i
         className={`${
           saved ? "fa-solid" : "fa-regular"

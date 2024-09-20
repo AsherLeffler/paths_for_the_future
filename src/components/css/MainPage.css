@@ -253,3 +253,15 @@ input:-webkit-autofill {
 .relatedCareer:hover {
   scale: 1.01;
 }
+.backButton {
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  cursor: pointer;
+  font-size: 1.3rem;
+  margin: 0;
+  transition: 0.2s;
+}
+.backButton:hover {
+  scale: 1.1;
+}
