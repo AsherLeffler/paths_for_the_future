@@ -4,7 +4,7 @@ import RecCareerComponent from "./RecCareerComponent";
 import "./css/FindPage.css";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 const FindPage = ({ findPageInfo }) => {
   const {
@@ -26,6 +26,12 @@ const FindPage = ({ findPageInfo }) => {
   } = findPageInfo;
   const [careerData, setCareerData] = useState(null);
   const [explain, setExplain] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const previousAnswers = useRef(
+    JSON.parse(localStorage.getItem("lastAnswers")) || null
+  );
+  const [prevResultsData, setPrevResultsData] = useState([]);
+  const fromPrevResults = useRef(false);
 
   useEffect(() => {
     async function getQuestions() {
@@ -61,20 +67,15 @@ const FindPage = ({ findPageInfo }) => {
       const newIndex =
         prev.index -
         Math.floor(data.current.end === 12 ? 0 : data.current.end - 12);
-      if (
-        direction === "next" &&
-        answers.current[currentQuestion.index - 1] !== undefined
-      ) {
+      if (direction === "next" && selectedAnswer !== null) {
         if (currentQuestion.index !== data.current.end) {
-          const radioButtons = document.querySelectorAll("input[type=radio]");
-          radioButtons.forEach((button) => {
-            button.checked = false;
-          });
           setQuestionNum((prev) => prev + 1);
+          setSelectedAnswer(null);
         }
         return questions.current[newIndex];
       } else if (direction === "prev" && newIndex !== 1) {
         setQuestionNum((prev) => prev - 1);
+        setSelectedAnswer(null);
         return questions.current[newIndex - 2];
       } else {
         window.alert("Please select an answer before moving on.");
@@ -85,12 +86,26 @@ const FindPage = ({ findPageInfo }) => {
 
   const handleAnswerChange = (question, answer) => {
     answers.current[question - 1] = answer;
+    setSelectedAnswer(answer);
+  };
+
+  const logAnswers = (answers) => {
+    const date = new Date().toLocaleDateString();
+    let answerData = previousAnswers.current
+      ? [...previousAnswers.current]
+      : [];
+
+    if (answerData.length >= 3) {
+      answerData.shift();
+    }
+
+    answerData.push({ dateCompleted: date, answers: answers });
+    localStorage.setItem("lastAnswers", JSON.stringify(answerData));
   };
 
   const getResults = async () => {
-    // const answersString = answers.current.join("");
-    const answersString =
-      "451412552232342422524231232141512242415141521351423511423155";
+    let answersString = answers.current.join("");
+    logAnswers(answersString);
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/results?answers=${answersString}`;
     try {
       const response = await axios.post(
@@ -107,6 +122,24 @@ const FindPage = ({ findPageInfo }) => {
       window.alert("Sorry, an error occured. Please try again later.");
     }
   };
+  const dataToAddRef = useRef([]);
+  const prevResults = useCallback(async (prevAnswers) => {
+    let answersString = prevAnswers;
+    const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/results?answers=${answersString}`;
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/getResultsForQuestions",
+        { link }
+      );
+      if (response.statusText === "OK") {
+        dataToAddRef.current = [...dataToAddRef.current, response.data.result];
+      } else {
+        window.alert("Sorry, an error occured. Please try again later.");
+      }
+    } catch {
+      window.alert("Sorry, an error occured. Please try again later.");
+    }
+  }, []);
 
   const getTheFirstQuestion = () => {
     setCurrentQuestion(questions.current[0]);
@@ -119,6 +152,7 @@ const FindPage = ({ findPageInfo }) => {
     return newIndex;
   };
   const goToNextSection = async () => {
+    setSelectedAnswer(null);
     const nextLinkIndex = data.current.link.findIndex(
       (link) => link.rel === "next"
     );
@@ -146,10 +180,8 @@ const FindPage = ({ findPageInfo }) => {
     e.preventDefault();
   };
 
-  const handleGetJobs = async () => {
-    // const answersString = answers.current.join("");
-    const answersString =
-      "451412552232342422524231232141512242415141521351423511423155";
+  const handleGetJobs = async (answers = null) => {
+    const answersString = answers || answers.current.join("");
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/careers?answers=${answersString}`;
     try {
       const response = await axios.post(
@@ -301,15 +333,50 @@ const FindPage = ({ findPageInfo }) => {
     setExplain(true);
   };
 
+  useEffect(() => {
+    if (currentQuizPage === "main") {
+      (async () => {
+        for (const answer of previousAnswers.current.slice().reverse()) {
+          await prevResults(answer.answers);
+        }
+        setPrevResultsData(dataToAddRef.current);
+      })();
+    }
+  }, [currentQuizPage, prevResults]);
+
+  const findPercent = (score, total) => {
+    return Math.round((score / total) * 100) + "%";
+  };
+
+  const findBackStyle = (area) => {
+    switch (area) {
+      case "Realistic":
+        return "#ffdddd";
+      case "Investigative":
+        return "#fdddfd";
+      case "Artistic":
+        return "#ddddff";
+      case "Social":
+        return "#ddfdfd";
+      case "Enterprising":
+        return "#ddffdd";
+      case "Conventional":
+        return "#fdfddd";
+      default:
+        return "#000000";
+    }
+  };
+
+  const goBack = () => {
+    fromPrevResults.current ? setCurrentQuizPage("main") : setCurrentQuizPage("results");
+  };
+
   return (
     <>
       <Header setCurrentQuizPage={setCurrentQuizPage}></Header>
       <div className="findMain">
         {currentQuizPage === "main" && (
           <>
-            <button onClick={getResults} className="byPassQuizBtn">
-              Bypass Quiz
-            </button>
             {!currentQuestion && !explain && (
               <>
                 <h1 className="quizTitle">
@@ -322,6 +389,60 @@ const FindPage = ({ findPageInfo }) => {
                 <button className="advanceBtn" onClick={startExplanation}>
                   Take the quiz
                 </button>
+                {previousAnswers.current && prevResultsData.length > 0 && (
+                  <h2>Previous Results</h2>
+                )}
+                {previousAnswers.current &&
+                  prevResultsData.length > 0 &&
+                  previousAnswers.current
+                    .slice()
+                    .reverse()
+                    .map((answer, i) => {
+                      if (prevResultsData[i]) {
+                        const newData = prevResultsData[i];
+                        let total = 0;
+                        newData.forEach((result) => {
+                          total += result.score;
+                        });
+                        return (
+                          <div
+                            key={answer.date + answer.answers}
+                            className="prevResultCont"
+                          >
+                            <div className="scores-wrapper">
+                              {newData &&
+                                newData.map((result, i) => (
+                                  <div
+                                    key={result.area + i}
+                                    className="scoreCont"
+                                    style={{
+                                      backgroundColor: findBackStyle(
+                                        result.area
+                                      ),
+                                    }}
+                                  >
+                                    <p className="score-area">{result.area}</p>
+                                    <h3 className="area-score">
+                                      {findPercent(result.score, total)}
+                                    </h3>
+                                  </div>
+                                ))}
+                            </div>
+                            <button
+                              onClick={() => {
+                                handleGetJobs(answer.answers);
+                                fromPrevResults.current = true;
+                              }}
+                            >
+                              Find Jobs
+                            </button>
+                            <h3 className="dateComp">
+                              Date Completed: {answer.dateCompleted}
+                            </h3>
+                          </div>
+                        );
+                      }
+                    })}
               </>
             )}
             {!currentQuestion && explain && (
@@ -350,7 +471,9 @@ const FindPage = ({ findPageInfo }) => {
                   Once you move to the next section, YOU CANNOT GO BACK. Make
                   sure you are certain of all of your answers before moving on
                 </p>
-                <button className="advanceBtn" onClick={getTheFirstQuestion}>Start</button>
+                <button className="advanceBtn" onClick={getTheFirstQuestion}>
+                  Start
+                </button>
               </>
             )}
             {questions.current.length > 0 && currentQuestion && (
@@ -360,56 +483,56 @@ const FindPage = ({ findPageInfo }) => {
                 </h3>
                 {currentQuestion.index !== data.current.end + 1 && (
                   <div className="inputsCont">
-                    <label htmlFor="dislike">☹️</label>
-                    <input
-                      type="radio"
-                      value={1}
-                      name="answer"
-                      id="dislike"
-                      onChange={() =>
+                    <button
+                      onClick={() =>
                         handleAnswerChange(currentQuestion.index, 1)
                       }
-                    />
-                    <label htmlFor="midDislike">🫤</label>
-                    <input
-                      type="radio"
-                      value={2}
-                      name="answer"
-                      id="midDislike"
-                      onChange={() =>
+                      className={`inputBtn ${
+                        selectedAnswer === 1 ? "selected" : "notSelected"
+                      }`}
+                    >
+                      <label htmlFor="dislike">☹️</label>
+                    </button>
+                    <button
+                      onClick={() =>
                         handleAnswerChange(currentQuestion.index, 2)
                       }
-                    />
-                    <label htmlFor="mid">😐</label>
-                    <input
-                      type="radio"
-                      value={3}
-                      name="answer"
-                      id="mid"
-                      onChange={() =>
+                      className={`inputBtn ${
+                        selectedAnswer === 2 ? "selected" : "notSelected"
+                      }`}
+                    >
+                      <label htmlFor="midDislike">🫤</label>
+                    </button>
+                    <button
+                      onClick={() =>
                         handleAnswerChange(currentQuestion.index, 3)
                       }
-                    />
-                    <label htmlFor="midLike">🙂</label>
-                    <input
-                      type="radio"
-                      value={4}
-                      name="answer"
-                      id="midLike"
-                      onChange={() =>
+                      className={`inputBtn ${
+                        selectedAnswer === 3 ? "selected" : "notSelected"
+                      }`}
+                    >
+                      <label htmlFor="mid">😐</label>
+                    </button>
+                    <button
+                      onClick={() =>
                         handleAnswerChange(currentQuestion.index, 4)
                       }
-                    />
-                    <label htmlFor="like">😆</label>
-                    <input
-                      type="radio"
-                      value={5}
-                      name="answer"
-                      id="like"
-                      onChange={() =>
+                      className={`inputBtn ${
+                        selectedAnswer === 4 ? "selected" : "notSelected"
+                      }`}
+                    >
+                      <label htmlFor="midLike">🙂</label>
+                    </button>
+                    <button
+                      onClick={() =>
                         handleAnswerChange(currentQuestion.index, 5)
                       }
-                    />
+                      className={`inputBtn ${
+                        selectedAnswer === 5 ? "selected" : "notSelected"
+                      }`}
+                    >
+                      <label htmlFor="like">😆</label>
+                    </button>
                   </div>
                 )}
                 {currentQuestion.index === data.current.end + 1 &&
@@ -426,42 +549,70 @@ const FindPage = ({ findPageInfo }) => {
                   )}
                 {currentQuestion.index !== data.current.end + 1 && (
                   <div className="buttonsCont">
-                    {findIndex() !== 1 && (
-                      <button onClick={() => handleQuestionChange("prev")}>
-                        Previous Question
-                      </button>
-                    )}
+                    <button
+                      style={{
+                        visibility: findIndex() !== 1 ? "visible" : "hidden",
+                      }}
+                      onClick={() => handleQuestionChange("prev")}
+                    >
+                      Previous Question
+                    </button>
                     <button onClick={() => handleQuestionChange("next")}>
                       Next Question
                     </button>
                   </div>
                 )}
-                {currentQuestion.index !== data.current.end + 1 && <p id="questionCount">{questionNum} / 60</p>}
+                {currentQuestion.index !== data.current.end + 1 && (
+                  <p id="questionCount">{questionNum} / 60</p>
+                )}
               </form>
             )}
           </>
         )}
         {currentQuizPage === "results" && (
           <>
-            <h3>Results</h3>
-            <ul className="resultsList">
-              {quizResults.map((result, index) => (
-                <li key={index + result} className="result">
-                  <h4>
-                    {result.area}: {result.score}
-                  </h4>
-                </li>
-              ))}
-            </ul>
-            <button onClick={handleGetJobs}>Get Recommended Jobs</button>
+            {(() => {
+              let total = 0;
+              quizResults.forEach((result) => {
+                total += result.score;
+              });
+              return (
+                <>
+                  <h3>Results</h3>
+                  <div className="prevResultCont">
+                    <div className="scores-wrapper">
+                      {quizResults.map((result, i) => (
+                        <div
+                          key={result.area + i}
+                          className="scoreCont"
+                          style={{
+                            backgroundColor: findBackStyle(result.area),
+                          }}
+                        >
+                          <p className="score-area">{result.area}</p>
+                          <h3 className="area-score">
+                            {findPercent(result.score, total)}
+                          </h3>
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => {
+                        handleGetJobs();
+                        fromPrevResults.current = false;
+                      }}
+                    >
+                      Get Recommended Jobs
+                    </button>
+                  </div>
+                </>
+              );
+            })()}
           </>
         )}
         {currentQuizPage === "recommendations" && (
           <>
-            <p
-              onClick={() => setCurrentQuizPage("results")}
-              className="backButton"
-            >
+            <p onClick={goBack} className="backButton">
               ← Back
             </p>
             <h3>Recommendations</h3>
@@ -613,7 +764,7 @@ const FindPage = ({ findPageInfo }) => {
             </>
           )}
       </div>
-      <Footer></Footer>
+      <Footer style={{ color: true }}></Footer>
     </>
   );
 };

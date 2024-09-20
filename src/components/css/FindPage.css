@@ -7,11 +7,49 @@
   height: fit-content;
   min-height: calc(100vh - 160px);
   padding: 20px;
+  background: linear-gradient(180deg, #e9f2ff 0%, #9fc7ff 100%);
 }
 .findMain .question {
   font-size: 1.8rem;
   margin: 0 auto 10px auto;
   width: fit-content;
+}
+.inputsCont{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  gap: 10px;
+}
+.inputsCont label{
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+  font-size: 1.2rem;
+}
+.inputBtn{
+  border: 2px solid rgb(48, 48, 48);
+  cursor: pointer;
+  border-radius: 50%;
+  transition: 0.15s;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.notSelected {
+  background: transparent;
+}
+.selected{
+  background: #0073ff;
+}
+.findMain .answers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  height: fit-content;
 }
 .findMain ul {
   margin: 0;
@@ -24,7 +62,6 @@
   font-size: 1.2 rem;
   margin: 0;
 }
-.byPassQuizBtn,
 .advanceBtn {
   width: 200px;
   height: 40px;
@@ -39,16 +76,6 @@
   cursor: pointer;
   transition: 0.15s;
   font-family: var(--mainFont);
-}
-.byPassQuizBtn {
-  background-color: #ff0000;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-}
-.byPassQuizBtn:hover {
-  background-color: #cf0000;
 }
 .advanceBtn:hover {
   background-color: #0056b3;
@@ -102,12 +129,12 @@
   height: fit-content;
   margin: 0 auto 0 auto;
 }
-.findMain .inputsCont input {
-  margin-right: 20px;
-  cursor: pointer;
-}
-.findMain .inputsCont label {
-  cursor: pointer;
+.buttonsCont{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px auto 20px auto;
 }
 .relatedCareer {
   cursor: pointer;
@@ -119,4 +146,52 @@
 #questionCount {
   margin: 0 auto;
   width: max-content;
+}
+.prevResultCont{
+  border: 2px solid rgb(48, 48, 48);
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: flex-start;
+  width: 800px;
+  height: fit-content;
+  margin: 10px auto 10px auto;
+  gap: 20px;
+}
+.scores-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 60%;
+  height: fit-content;
+  gap: 20px;
+}
+.scoreCont{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  border: 2px solid rgb(48, 48, 48);
+  border-radius: 50%;
+  aspect-ratio: 1;
+  width: calc(33.333333% - 15px);
+}
+.score-area{
+  margin: 0;
+  color: rgb(64, 64, 64);
+}
+.area-score{
+  margin: 0;
+  color:rgb(48, 48, 48);
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+.dateComp{
+  margin: 0;
 }

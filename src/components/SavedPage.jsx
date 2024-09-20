@@ -301,7 +301,7 @@ const SavedPage = () => {
           )}
         </div>
       )}
-      <Footer />
+      <Footer style={{color: true, opacity: false}} />
     </>
   );
 };

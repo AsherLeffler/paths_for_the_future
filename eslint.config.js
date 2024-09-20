@@ -5,22 +5,22 @@ import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
-// Custom rule to flag "http://localhost:5000" with a warning
+// Custom rule to flag "http://localhost" with a warning
 const noLocalhostUrl = {
   meta: {
     type: 'problem',
     docs: {
-      description: 'disallow http://localhost:5000',
+      description: 'disallow http://localhost',
     },
     schema: [], // no options for this rule
   },
   create(context) {
     return {
       Literal(node) {
-        if (typeof node.value === 'string' && node.value.includes('http://localhost:5000')) {
+        if (typeof node.value === 'string' && node.value.includes('http://localhost')) {
           context.report({
             node,
-            message: '"http://localhost:5000" should not be used in Prod.',
+            message: '"http://localhost" should not be used in Prod.',
             severity: 1,  // 1 means "warning"
           });
         }
