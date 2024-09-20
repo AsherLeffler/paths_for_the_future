@@ -43,6 +43,7 @@ const MainPage = ({ mainPageInfo }) => {
               "https://pathsforthefuture.vercel.app.vercel.app/api/search",
               { keyword }
             );
+            console.log(response);
             if (response.statusText === "OK") {
               setDisplayingLoader(true);
               setTimeout(() => {

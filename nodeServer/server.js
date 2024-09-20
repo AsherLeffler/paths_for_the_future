@@ -10,7 +10,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["https://pathsforthefuture.vercel.app"] // Allow requests from your React app
+    origin: ["https://pathsforthefuture.vercel.app"], // Allow requests from your React app
   })
 );
 
@@ -26,25 +26,24 @@ const ONET_PASSWORD = process.env.ONET_PASSWORD;
 // POST route to handle API requests from the front-end
 app.post("/api/search", async (req, res) => {
   const { keyword } = req.body; // Extract keyword from the request body
-  console.log(keyword);
   const ONET_API_URL = `https://services.onetcenter.org/ws/mnm/search?keyword=${encodeURIComponent(
     keyword ? keyword : ""
   )}`;
-  console.log(ONET_USERNAME, ONET_PASSWORD);
 
   try {
-    const externalApiResponse = await axios.get(ONET_API_URL, {
-      auth: {
-        username: ONET_USERNAME,
-        password: ONET_PASSWORD,
-      },
-      headers: {
-        Accept: "application/json",
-      },
-    });
+    // const externalApiResponse = await axios.get(ONET_API_URL, {
+    //   auth: {
+    //     username: ONET_USERNAME,
+    //     password: ONET_PASSWORD,
+    //   },
+    //   headers: {
+    //     Accept: "application/json",
+    //   },
+    // });
 
     // Send the external API's response data back to the frontend
-    res.json(externalApiResponse.data);
+    // res.json(externalApiResponse.data);
+    res.json(ONET_USERNAME, ONET_PASSWORD);
   } catch {
     // Handle errors (e.g., if the external API request fails)
     res.status(500).json({ error: "Failed to fetch data from external API" });
