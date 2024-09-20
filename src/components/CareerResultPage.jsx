@@ -29,7 +29,7 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
       const pageLink = careerInfo.link[indexOfNextLink].href;
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/nextPageSearch",
+          "https://pathsforthefuture/api/nextPageSearch",
           { pageLink }
         );
         if (response.statusText === "OK") {
@@ -52,7 +52,7 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
       const pageLink = careerInfo.link[indexOfPrevLink].href;
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/prevPageSearch",
+          "https://pathsforthefuture/api/prevPageSearch",
           { pageLink }
         );
         if (response.statusText === "OK") {
@@ -79,7 +79,7 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
           const keyword = input.value;
           try {
             const response = await axios.post(
-              "http://localhost:5000/api/search",
+              "https://pathsforthefuture/api/search",
               { keyword }
             );
             if (response.statusText === "OK") {
@@ -88,6 +88,7 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
                 results.current = response.data;
                 setCurrentPage("results");
                 setDisplayingLoader(false);
+                input.value = "";
               }, 1600);
             } else if (input.value === "") {
               window.alert("Please enter a valid keyword.");
@@ -119,6 +120,7 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
           />
         </div>
       </div>
+      <hr className="divider" />
       <div className="resultsCont">
         {careerInfo.career.map((career) => {
           return (

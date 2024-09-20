@@ -68,6 +68,9 @@ header nav h2 {
   font-size: 1.2rem;
   font-weight: normal;
 }
+.navActive{
+  color: #89d8ff !important;
+}
 .mainFooter {
   background-color: hsla(0, 0%, 83%, 0.2);
   color: white;

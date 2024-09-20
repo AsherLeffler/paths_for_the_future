@@ -21,6 +21,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.divider{
+  width: 100%;
+  height: 2px;
+  border-radius: 1px;
+  border: none;
+  background-color: #303030;
+  margin: 0 auto 0 auto;
 }
 #resultSearchInput:-webkit-autofill,
 #resultSearchInput:-webkit-autofill:hover,
@@ -30,7 +39,7 @@
 }
 #resultSearchInput {
   background-color: transparent;
-  color: white;
+  color: rgb(48, 48, 48);
   box-shadow: 0 0 0px 1000px transparent inset !important; /* Ensure no shadow effect */
 }
 .resultSearchBox {
@@ -40,7 +49,7 @@
   align-items: center;
   justify-content: center;
   border: 1px solid #303030;
-  border-radius: 5px;
+  border-radius: 25px;
   padding: 8px;
 }
 .careerBlock {

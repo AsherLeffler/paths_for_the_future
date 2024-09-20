@@ -2,12 +2,16 @@ import { Link } from "react-router-dom";
 import "./css/head&foot.css";
 import fistLogo from "/fist-logo.svg";
 import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 
 const Header = ({
   setSavedCurrentPage = () => {},
   setCurrentPage = () => {},
   setCurrentQuizPage = () => {},
 }) => {
+  const location = useLocation();
+  const currentRoute = location.pathname;
+
   return (
     <header>
       <Link
@@ -31,8 +35,14 @@ const Header = ({
               }
             }}
           >
-            <i className="fa-solid fa-search"></i>
-            <h2>Search</h2>
+            <i
+              className={`fa-solid fa-search ${
+                currentRoute === "/" ? "navActive" : ""
+              }`}
+            ></i>
+            <h2 className={currentRoute === "/" ? "navActive" : ""}>
+              Search
+            </h2>
           </Link>
         </div>
         <div className="divider"></div>
@@ -46,15 +56,23 @@ const Header = ({
               }
             }}
           >
-            <i className="fa-solid fa-plus"></i>
-            <h2>Find</h2>
+            <i
+              className={`fa-solid fa-plus ${
+                currentRoute === "/find" ? "navActive" : ""
+              }`}
+            ></i>
+            <h2 className={currentRoute === "/find" ? "navActive" : ""}>Find</h2>
           </Link>
         </div>
       </nav>
       <Link to={"/saved"} id="pathsLink">
         <i
-          className="fa-regular fa-bookmark"
-          onClick={() => setSavedCurrentPage("defaultPage")}
+          className={`fa-regular fa-bookmark ${
+            currentRoute === "/saved" ? "navActive" : ""
+          }`}
+          onClick={() => {
+            setSavedCurrentPage("defaultPage");
+          }}
         ></i>
       </Link>
     </header>

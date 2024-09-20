@@ -10,7 +10,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://pathsforthefuture.vercel.app"], // Allow requests from your React app
+    origin: ["https://pathsforthefuture.vercel.app"] // Allow requests from your React app
   })
 );
 
@@ -43,9 +43,8 @@ app.post("/api/search", async (req, res) => {
 
     // Send the external API's response data back to the frontend
     res.json(externalApiResponse.data);
-  } catch (error) {
+  } catch {
     // Handle errors (e.g., if the external API request fails)
-    console.error("Error making API call:", error.message);
     res.status(500).json({ error: "Failed to fetch data from external API" });
   }
 });
@@ -171,9 +170,8 @@ app.post("/api/careerSearch", async (req, res) => {
       resources: resourcesData.data,
     };
     res.json(dataToSend);
-  } catch (error) {
+  } catch {
     // Handle errors (e.g., if the external API request fails)
-    console.error("Error making API call:", error.message);
     res.status(500).json({ error: "Failed to fetch data from external API" });
   }
 });
@@ -193,9 +191,8 @@ app.post("/api/prevPageSearch", async (req, res) => {
 
     // Send the external API's response data back to the frontend
     res.json(externalApiResponse.data);
-  } catch (error) {
+  } catch {
     // Handle errors (e.g., if the external API request fails)
-    console.error("Error making API call:", error.message);
     res.status(500).json({ error: "Failed to fetch data from external API" });
   }
 });
@@ -215,9 +212,8 @@ app.post("/api/nextPageSearch", async (req, res) => {
 
     // Send the external API's response data back to the frontend
     res.json(externalApiResponse.data);
-  } catch (error) {
+  } catch {
     // Handle errors (e.g., if the external API request fails)
-    console.error("Error making API call:", error.message);
     res.status(500).json({ error: "Failed to fetch data from external API" });
   }
 });
@@ -237,9 +233,8 @@ app.post("/api/interestProfilerQuestions", async (req, res) => {
 
     // Send the external API's response data back to the frontend
     res.json(externalApiResponse.data);
-  } catch (error) {
+  } catch {
     // Handle errors (e.g., if the external API request fails)
-    console.error("Error making API call:", error.message);
     res.status(500).json({ error: "Failed to fetch data from external API" });
   }
 });
@@ -259,9 +254,8 @@ app.post("/api/getResultsForQuestions", async (req, res) => {
 
     // Send the external API's response data back to the frontend
     res.json(externalApiResponse.data);
-  } catch (error) {
+  } catch {
     // Handle errors (e.g., if the external API request fails)
-    console.error("Error making API call:", error.message);
     res.status(500).json({ error: "Failed to fetch data from external API" });
   }
 });
@@ -281,15 +275,12 @@ app.post("/api/getRecommendedJobs", async (req, res) => {
 
     // Send the external API's response data back to the frontend
     res.json(externalApiResponse.data);
-  } catch (error) {
+  } catch {
     // Handle errors (e.g., if the external API request fails)
-    console.error("Error making API call:", error.message);
     res.status(500).json({ error: "Failed to fetch data from external API" });
   }
 });
 
 // Start the server
 const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+app.listen(PORT);

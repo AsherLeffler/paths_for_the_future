@@ -97,9 +97,9 @@ const SavedPage = () => {
         savedCareerToLearnAbout.education.job_zone
       ).map((educationLevel, index) => {
         return (
-            <div key={educationLevel + index} className="pathWayBox">
-              <p key={educationLevel + index}>{educationLevel}</p>
-            </div>
+          <div key={educationLevel + index} className="pathWayBox">
+            <p key={educationLevel + index}>{educationLevel}</p>
+          </div>
         );
       });
     } else if (savedCareerToLearnAbout.education.job_zone < 3) {
@@ -119,7 +119,7 @@ const SavedPage = () => {
     const careerLink = link;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/careerSearch",
+        "https://pathsforthefuture/api/careerSearch",
         { careerLink }
       );
       if (response.statusText === "OK") {
@@ -301,7 +301,7 @@ const SavedPage = () => {
           )}
         </div>
       )}
-      <Footer style={{color: true, opacity: false}} />
+      <Footer style={{ color: true, opacity: false }} />
     </>
   );
 };

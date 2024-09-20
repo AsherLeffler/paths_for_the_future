@@ -62,7 +62,12 @@ const AppRouter = () => {
             />
           }
         />
-        <Route path="/saved" element={<SavedPage />} />
+        <Route
+          path="/saved"
+          element={
+            <SavedPage/>
+          }
+        />
       </Routes>
     </Router>
   );

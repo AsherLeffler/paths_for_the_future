@@ -14,20 +14,88 @@
   margin: 0 auto 10px auto;
   width: fit-content;
 }
-.inputsCont{
+.find-main-wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  margin-bottom: 200px;
+  gap: 30px;
+}
+.startBtn{
+  width: 350px;
+  height: 40px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0073ff;
+  color: white;
+  font-size: 1.4rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.15s;
+  font-family: var(--mainFont);
+}
+.startBtn:hover {
+  scale: 1.03;
+}
+.areaInfoPopUp{
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: opacity 0.3s ease;
+  z-index: 500;
+}
+.areaInfoPopUp.show{
+  display: flex !important;
+  opacity: 1 !important;
+}
+.areaInfoPopUp .menu{
+  width: 450px;
+  height: fit-content;
+  background: linear-gradient(135deg, #ffffff, #def0ff);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 502;
+}
+.exitClick{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 501;
+}
+.inputsCont {
   display: flex;
   justify-content: center;
   align-items: center;
   width: fit-content;
   gap: 10px;
 }
-.inputsCont label{
+.inputsCont label {
   cursor: pointer;
   width: fit-content;
   height: fit-content;
   font-size: 1.2rem;
 }
-.inputBtn{
+.inputBtn {
   border: 2px solid rgb(48, 48, 48);
   cursor: pointer;
   border-radius: 50%;
@@ -40,7 +108,7 @@
 .notSelected {
   background: transparent;
 }
-.selected{
+.selected {
   background: #0073ff;
 }
 .findMain .answers {
@@ -55,12 +123,14 @@
   margin: 0;
 }
 .quizTitle {
-  font-size: 2.2rem;
+  font-size: 2.76rem;
   margin: 0;
 }
 .quizDesc {
-  font-size: 1.2 rem;
+  font-size: 1.2rem;
   margin: 0;
+  text-align: center;
+  width: 60%;
 }
 .advanceBtn {
   width: 200px;
@@ -129,7 +199,7 @@
   height: fit-content;
   margin: 0 auto 0 auto;
 }
-.buttonsCont{
+.buttonsCont {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -147,51 +217,110 @@
   margin: 0 auto;
   width: max-content;
 }
-.prevResultCont{
-  border: 2px solid rgb(48, 48, 48);
-  background-color: rgba(255, 255, 255, 0.6);
-  padding: 10px;
-  border-radius: 8px;
+#prev-title {
+  font-size: 2rem;
+  margin: 0;
+  text-align: center;
+}
+.prev-results-break{
+  width: 95%;
+  height: 2px;
+  border: none;
+  background-color: rgb(48, 48, 48);
+  margin: 20px auto 20px auto;
+  border-radius: 1px;
+}
+.prev-results-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.prevResultCont {
+  background: linear-gradient(135deg, rgb(255, 255, 255, 0.8), rgb(255, 255, 255, 0.4));
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 10px 0;
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   align-content: flex-start;
-  width: 800px;
+  width: calc(50% - 20px);
   height: fit-content;
   margin: 10px auto 10px auto;
   gap: 20px;
+  position: relative;
 }
-.scores-wrapper{
+.scores-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  width: 60%;
+  width: 65%;
   height: fit-content;
   gap: 20px;
 }
-.scoreCont{
+.scoreCont {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 3px;
   border: 2px solid rgb(48, 48, 48);
   border-radius: 50%;
   aspect-ratio: 1;
   width: calc(33.333333% - 15px);
+  cursor: pointer;
 }
-.score-area{
+.score-area {
   margin: 0;
+  font-size: 0.8rem;
   color: rgb(64, 64, 64);
 }
-.area-score{
+.area-score {
   margin: 0;
-  color:rgb(48, 48, 48);
-  font-size: 1.8rem;
+  color: rgb(48, 48, 48);
+  font-size: 1.7rem;
   font-weight: 600;
 }
-.dateComp{
+.dateText {
   margin: 0;
+}
+.get-careers-btn{
+  width: 100%;
+  height: 50px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0073ff;
+  color: white;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: 0.15s;
+  font-family: var(--mainFont);
+}
+.get-careers-btn:hover {
+  background-color: #0056b3;
+}
+.removeResult{
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: linear-gradient(155deg, rgb(255, 136, 136), rgb(255, 61, 61));
+  width: fit-content;
+  height: fit-content;
+  padding: 7px 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 40px;
+  font-family: var(--mainFont);
+  box-sizing: unset;
+  font-weight: bolder;
+  transition: 0.2s ease;
+}
+.removeResult:hover {
+  filter: brightness(1.4);
 }

@@ -28,10 +28,13 @@ const FindPage = ({ findPageInfo }) => {
   const [explain, setExplain] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const previousAnswers = useRef(
-    JSON.parse(localStorage.getItem("lastAnswers")) || null
+    JSON.parse(localStorage.getItem("lastAnswers")) || []
   );
   const [prevResultsData, setPrevResultsData] = useState([]);
   const fromPrevResults = useRef(false);
+  const [areaInformationDisplaying, setAreaInformationDisplaying] =
+    useState(false);
+  const [informationToDisplay, setInformationToDisplay] = useState(null);
 
   useEffect(() => {
     async function getQuestions() {
@@ -39,7 +42,7 @@ const FindPage = ({ findPageInfo }) => {
         "https://services.onetcenter.org/ws/mnm/interestprofiler/questions";
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/interestProfilerQuestions",
+          "https://pathsforthefuture/api/interestProfilerQuestions",
           { link }
         );
         if (response.statusText === "OK") {
@@ -109,7 +112,7 @@ const FindPage = ({ findPageInfo }) => {
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/results?answers=${answersString}`;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/getResultsForQuestions",
+        "https://pathsforthefuture/api/getResultsForQuestions",
         { link }
       );
       if (response.statusText === "OK") {
@@ -128,7 +131,7 @@ const FindPage = ({ findPageInfo }) => {
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/results?answers=${answersString}`;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/getResultsForQuestions",
+        "https://pathsforthefuture/api/getResultsForQuestions",
         { link }
       );
       if (response.statusText === "OK") {
@@ -159,7 +162,7 @@ const FindPage = ({ findPageInfo }) => {
     const link = data.current.link[nextLinkIndex].href;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/interestProfilerQuestions",
+        "https://pathsforthefuture/api/interestProfilerQuestions",
         { link }
       );
       if (response.statusText === "OK") {
@@ -185,7 +188,7 @@ const FindPage = ({ findPageInfo }) => {
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/careers?answers=${answersString}`;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/getRecommendedJobs",
+        "https://pathsforthefuture/api/getRecommendedJobs",
         { link }
       );
       if (response.statusText === "OK") {
@@ -280,7 +283,7 @@ const FindPage = ({ findPageInfo }) => {
     const careerLink = link;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/careerSearch",
+        "https://pathsforthefuture/api/careerSearch",
         { careerLink }
       );
       if (response.statusText === "OK") {
@@ -357,7 +360,7 @@ const FindPage = ({ findPageInfo }) => {
       case "Artistic":
         return "#ddddff";
       case "Social":
-        return "#ddfdfd";
+        return "#ddfdff";
       case "Enterprising":
         return "#ddffdd";
       case "Conventional":
@@ -368,81 +371,134 @@ const FindPage = ({ findPageInfo }) => {
   };
 
   const goBack = () => {
-    fromPrevResults.current ? setCurrentQuizPage("main") : setCurrentQuizPage("results");
+    fromPrevResults.current
+      ? setCurrentQuizPage("main")
+      : setCurrentQuizPage("results");
+  };
+
+  const displayAreaInformation = (info) => {
+    setAreaInformationDisplaying(true);
+    setInformationToDisplay({ title: info.area, desc: info.description });
+  };
+
+  const removeItemFromStorage = (answer) => {
+    const userInput = window.confirm(
+      "Are you sure you want to remove this result?"
+    );
+    if (userInput) {
+      const newAnswers = previousAnswers.current.filter(
+        (item) => item.answers !== answer.answers
+      );
+      localStorage.setItem("lastAnswers", JSON.stringify(newAnswers));
+      previousAnswers.current = newAnswers;
+      setPrevResultsData((prev) =>
+        prev.filter((item) => item.answers !== answer.answers)
+      );
+    }
   };
 
   return (
     <>
       <Header setCurrentQuizPage={setCurrentQuizPage}></Header>
+      <div
+        className={`areaInfoPopUp ${areaInformationDisplaying ? "show" : ""}`}
+      >
+        <div className="menu">
+          <h2>{informationToDisplay?.title}</h2>
+          <p>{informationToDisplay?.desc}</p>
+        </div>
+        <div
+          className="exitClick"
+          onClick={() => setAreaInformationDisplaying(false)}
+        ></div>
+      </div>
       <div className="findMain">
         {currentQuizPage === "main" && (
           <>
             {!currentQuestion && !explain && (
               <>
-                <h1 className="quizTitle">
-                  Don&apos;t know what you want to be?
-                </h1>
-                <p className="quizDesc">
-                  Take our personality quiz to see what kind of person you are
-                  and find the perfect career for you!
-                </p>
-                <button className="advanceBtn" onClick={startExplanation}>
-                  Take the quiz
-                </button>
+                <div className="find-main-wrapper">
+                  <h1 className="quizTitle">
+                    Don&apos;t know what you want to be?
+                  </h1>
+                  <p className="quizDesc">
+                    If you happen to be unsure of what you want to do in the
+                    future, take our personality quiz to find out what careers
+                    might be best for you.
+                  </p>
+                  <button className="startBtn" onClick={startExplanation}>
+                    Take the quiz
+                  </button>
+                </div>
                 {previousAnswers.current && prevResultsData.length > 0 && (
-                  <h2>Previous Results</h2>
+                  <>
+                    <h2 id="prev-title">Previous Results</h2>
+                    <hr className="prev-results-break" />
+                    <div className="prev-results-wrapper">
+                      {previousAnswers.current
+                        .slice()
+                        .reverse()
+                        .map((answer, i) => {
+                          if (prevResultsData[i]) {
+                            const newData = prevResultsData[i];
+                            let total = 0;
+                            newData.forEach((result) => {
+                              total += result.score;
+                            });
+                            return (
+                              <div
+                                key={answer.date + answer.answers}
+                                className="prevResultCont"
+                              >
+                                <div className="scores-wrapper">
+                                  {newData &&
+                                    newData.map((result, i) => (
+                                      <div
+                                        key={result.area + i}
+                                        className="scoreCont"
+                                        style={{
+                                          backgroundColor: findBackStyle(
+                                            result.area
+                                          ),
+                                        }}
+                                        onClick={() =>
+                                          displayAreaInformation(result)
+                                        }
+                                      >
+                                        <p className="score-area">
+                                          {result.area}
+                                        </p>
+                                        <h3 className="area-score">
+                                          {findPercent(result.score, total)}
+                                        </h3>
+                                      </div>
+                                    ))}
+                                </div>
+                                <button
+                                  onClick={() => {
+                                    handleGetJobs(answer.answers);
+                                    fromPrevResults.current = true;
+                                  }}
+                                  className="get-careers-btn"
+                                >
+                                  Find Careers Related to These Results
+                                </button>
+                                <h3 className="dateText">
+                                  Date Completed: {answer.dateCompleted}
+                                </h3>
+                                <button
+                                  className="removeResult"
+                                  onClick={() => removeItemFromStorage(answer)}
+                                >
+                                  Remove
+                                </button>
+                              </div>
+                            );
+                          }
+                        })}
+                    </div>
+                  </>
                 )}
-                {previousAnswers.current &&
-                  prevResultsData.length > 0 &&
-                  previousAnswers.current
-                    .slice()
-                    .reverse()
-                    .map((answer, i) => {
-                      if (prevResultsData[i]) {
-                        const newData = prevResultsData[i];
-                        let total = 0;
-                        newData.forEach((result) => {
-                          total += result.score;
-                        });
-                        return (
-                          <div
-                            key={answer.date + answer.answers}
-                            className="prevResultCont"
-                          >
-                            <div className="scores-wrapper">
-                              {newData &&
-                                newData.map((result, i) => (
-                                  <div
-                                    key={result.area + i}
-                                    className="scoreCont"
-                                    style={{
-                                      backgroundColor: findBackStyle(
-                                        result.area
-                                      ),
-                                    }}
-                                  >
-                                    <p className="score-area">{result.area}</p>
-                                    <h3 className="area-score">
-                                      {findPercent(result.score, total)}
-                                    </h3>
-                                  </div>
-                                ))}
-                            </div>
-                            <button
-                              onClick={() => {
-                                handleGetJobs(answer.answers);
-                                fromPrevResults.current = true;
-                              }}
-                            >
-                              Find Jobs
-                            </button>
-                            <h3 className="dateComp">
-                              Date Completed: {answer.dateCompleted}
-                            </h3>
-                          </div>
-                        );
-                      }
-                    })}
               </>
             )}
             {!currentQuestion && explain && (
@@ -588,6 +644,7 @@ const FindPage = ({ findPageInfo }) => {
                           style={{
                             backgroundColor: findBackStyle(result.area),
                           }}
+                          onClick={() => displayAreaInformation(result)}
                         >
                           <p className="score-area">{result.area}</p>
                           <h3 className="area-score">
@@ -601,6 +658,7 @@ const FindPage = ({ findPageInfo }) => {
                         handleGetJobs();
                         fromPrevResults.current = false;
                       }}
+                      className="get-careers-btn"
                     >
                       Get Recommended Jobs
                     </button>
