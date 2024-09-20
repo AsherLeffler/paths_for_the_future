@@ -51,6 +51,7 @@ const MainPage = ({ mainPageInfo }) => {
                 setDisplayingLoader(false);
               }, 1600);
             } else {
+              console.error(response);
               alert("An error occurred. Please try again later.");
             }
           } catch(error) {
