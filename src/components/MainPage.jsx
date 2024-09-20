@@ -40,10 +40,9 @@ const MainPage = ({ mainPageInfo }) => {
           const keyword = input.value.trim();
           try {
             const response = await axios.post(
-              "https://pathsforthefuture.vercel.app.vercel.app/api/search",
+              "https://pathsforthefuture.vercel.app/api/search",
               { keyword }
             );
-            console.log(response);
             if (response.statusText === "OK") {
               setDisplayingLoader(true);
               setTimeout(() => {
