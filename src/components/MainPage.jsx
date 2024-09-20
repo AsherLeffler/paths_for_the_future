@@ -43,7 +43,7 @@ const MainPage = ({ mainPageInfo }) => {
               "http://localhost:5000/api/search",
               { keyword }
             );
-            if (response.statusText === "OK") {
+            if (response.status ===  200) {
               setDisplayingLoader(true);
               setTimeout(() => {
                 results.current = response.data;
