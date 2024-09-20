@@ -281,5 +281,4 @@ app.post("/api/getRecommendedJobs", async (req, res) => {
   }
 });
 
-// eslint-disable-next-line no-undef
-module.exports = app;
+export default app;
