@@ -29,7 +29,7 @@ app.post("/api/search", async (req, res) => {
   const ONET_API_URL = `https://services.onetcenter.org/ws/mnm/search?keyword=${encodeURIComponent(
     keyword ? keyword : ""
   )}`;
-
+  console.log(ONET_USERNAME, ONET_PASSWORD);
   try {
     const externalApiResponse = await axios.get(ONET_API_URL, {
       auth: {
