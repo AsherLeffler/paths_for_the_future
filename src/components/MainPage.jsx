@@ -43,7 +43,7 @@ const MainPage = ({ mainPageInfo }) => {
               "https://pathsforthefuture.vercel.app/api/search",
               { keyword }
             );
-            if (response.statusText === "OK") {
+            if (response.status === 200) {
               setDisplayingLoader(true);
               setTimeout(() => {
                 results.current = response.data;
@@ -51,11 +51,9 @@ const MainPage = ({ mainPageInfo }) => {
                 setDisplayingLoader(false);
               }, 1600);
             } else {
-              console.error(response);
               alert("An error occurred. Please try again later.");
             }
-          } catch(error) {
-            console.error(error);
+          } catch {
             alert("An error occurred. Please try again later.");
           }
         } else if (e.key === "Enter" && input.value.trim() === "") {
