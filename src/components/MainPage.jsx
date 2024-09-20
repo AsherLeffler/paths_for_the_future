@@ -53,7 +53,8 @@ const MainPage = ({ mainPageInfo }) => {
             } else {
               alert("An error occurred. Please try again later.");
             }
-          } catch {
+          } catch(error) {
+            console.error(error);
             alert("An error occurred. Please try again later.");
           }
         } else if (e.key === "Enter" && input.value.trim() === "") {
