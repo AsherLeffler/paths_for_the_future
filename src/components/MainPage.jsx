@@ -39,6 +39,7 @@ const MainPage = ({ mainPageInfo }) => {
         if (e.key === "Enter" && input.value.trim() !== "") {
           const keyword = input.value.trim();
           try {
+            console.log("searching API");
             const response = await axios.post(
               "https://pathsforthefuture/api/search",
               { keyword }

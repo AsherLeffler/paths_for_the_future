@@ -25,6 +25,7 @@ const ONET_PASSWORD = process.env.ONET_PASSWORD;
 
 // POST route to handle API requests from the front-end
 app.post("/api/search", async (req, res) => {
+  console.log("search");
   const { keyword } = req.body; // Extract keyword from the request body
   const ONET_API_URL = `https://services.onetcenter.org/ws/mnm/search?keyword=${encodeURIComponent(
     keyword ? keyword : ""
@@ -43,9 +44,8 @@ app.post("/api/search", async (req, res) => {
 
     // Send the external API's response data back to the frontend
     res.json(externalApiResponse.data);
-  } catch(error) {
+  } catch {
     // Handle errors (e.g., if the external API request fails)
-    console.error(error);
     res.status(500).json({ error: "Failed to fetch data from external API" });
   }
 });
