@@ -39,9 +39,8 @@ const MainPage = ({ mainPageInfo }) => {
         if (e.key === "Enter" && input.value.trim() !== "") {
           const keyword = input.value.trim();
           try {
-            console.log("searching API");
             const response = await axios.post(
-              "https://pathsforthefuture/api/search",
+              "https://pathsforthefuture.vercel.app.vercel.app/api/search",
               { keyword }
             );
             if (response.statusText === "OK") {
@@ -158,7 +157,7 @@ const MainPage = ({ mainPageInfo }) => {
     const careerLink = link;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture/api/careerSearch",
+        "https://pathsforthefuture.vercel.app/api/careerSearch",
         { careerLink }
       );
       if (response.statusText === "OK") {

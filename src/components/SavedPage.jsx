@@ -119,7 +119,7 @@ const SavedPage = () => {
     const careerLink = link;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture/api/careerSearch",
+        "https://pathsforthefuture.vercel.app/api/careerSearch",
         { careerLink }
       );
       if (response.statusText === "OK") {
