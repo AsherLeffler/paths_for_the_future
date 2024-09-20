@@ -42,7 +42,7 @@ const FindPage = ({ findPageInfo }) => {
         "https://services.onetcenter.org/ws/mnm/interestprofiler/questions";
       try {
         const response = await axios.post(
-          "https://pathsforthefuture/api/interestProfilerQuestions",
+          "http://localhost:5000/api/interestProfilerQuestions",
           { link }
         );
         if (response.statusText === "OK") {
@@ -112,7 +112,7 @@ const FindPage = ({ findPageInfo }) => {
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/results?answers=${answersString}`;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture/api/getResultsForQuestions",
+        "http://localhost:5000/api/getResultsForQuestions",
         { link }
       );
       if (response.statusText === "OK") {
@@ -131,7 +131,7 @@ const FindPage = ({ findPageInfo }) => {
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/results?answers=${answersString}`;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture/api/getResultsForQuestions",
+        "http://localhost:5000/api/getResultsForQuestions",
         { link }
       );
       if (response.statusText === "OK") {
@@ -162,7 +162,7 @@ const FindPage = ({ findPageInfo }) => {
     const link = data.current.link[nextLinkIndex].href;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture/api/interestProfilerQuestions",
+        "http://localhost:5000/api/interestProfilerQuestions",
         { link }
       );
       if (response.statusText === "OK") {
@@ -188,7 +188,7 @@ const FindPage = ({ findPageInfo }) => {
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/careers?answers=${answersString}`;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture/api/getRecommendedJobs",
+        "http://localhost:5000/api/getRecommendedJobs",
         { link }
       );
       if (response.statusText === "OK") {
@@ -283,7 +283,7 @@ const FindPage = ({ findPageInfo }) => {
     const careerLink = link;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture/api/careerSearch",
+        "http://localhost:5000/api/careerSearch",
         { careerLink }
       );
       if (response.statusText === "OK") {

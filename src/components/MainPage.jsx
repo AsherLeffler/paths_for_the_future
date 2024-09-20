@@ -40,7 +40,7 @@ const MainPage = ({ mainPageInfo }) => {
           const keyword = input.value.trim();
           try {
             const response = await axios.post(
-              "https://pathsforthefuture/api/search",
+              "http://localhost:5000/api/search",
               { keyword }
             );
             if (response.statusText === "OK") {
@@ -157,7 +157,7 @@ const MainPage = ({ mainPageInfo }) => {
     const careerLink = link;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture/api/careerSearch",
+        "http://localhost:5000/api/careerSearch",
         { careerLink }
       );
       if (response.statusText === "OK") {

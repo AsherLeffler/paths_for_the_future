@@ -10,7 +10,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["https://pathsforthefuture.vercel.app"] // Allow requests from your React app
+    origin: ["http://localhost:5173"] // Allow requests from your React app
   })
 );
 
@@ -281,5 +281,6 @@ app.post("/api/getRecommendedJobs", async (req, res) => {
   }
 });
 
-// eslint-disable-next-line no-undef
-module.exports = app;
+app.listen(5000, () => {
+  console.log("Server is running on port 5000");
+});
