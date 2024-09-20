@@ -43,8 +43,9 @@ app.post("/api/search", async (req, res) => {
 
     // Send the external API's response data back to the frontend
     res.json(externalApiResponse.data);
-  } catch {
+  } catch(error) {
     // Handle errors (e.g., if the external API request fails)
+    console.error(error);
     res.status(500).json({ error: "Failed to fetch data from external API" });
   }
 });
