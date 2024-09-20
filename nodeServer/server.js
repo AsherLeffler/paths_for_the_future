@@ -29,7 +29,6 @@ app.post("/api/search", async (req, res) => {
   const ONET_API_URL = `https://services.onetcenter.org/ws/mnm/search?keyword=${encodeURIComponent(
     keyword ? keyword : ""
   )}`;
-  console.log(ONET_USERNAME, ONET_PASSWORD);
   try {
     const externalApiResponse = await axios.get(ONET_API_URL, {
       auth: {
@@ -43,8 +42,9 @@ app.post("/api/search", async (req, res) => {
 
     // Send the external API's response data back to the frontend
     res.json(externalApiResponse.data);
-  } catch {
+  } catch(error) {
     // Handle errors (e.g., if the external API request fails)
+    console.error(error);
     res.status(500).json({ error: "Failed to fetch data from external API" });
   }
 });
