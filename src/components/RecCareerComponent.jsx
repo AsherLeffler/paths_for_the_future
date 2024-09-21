@@ -31,6 +31,12 @@ const RecCareerComponent = ({ info }) => {
 
   return (
     <div className="careerBlock">
+      <div className="tagsCont">
+        {job.tags.bright_outlook && <p>☀️</p>}
+        {job.tags.green && <p>🟩</p>}
+        {job.tags.apprenticeship && <p>🛠️</p>}
+      </div>
+
       <h3 className="recommendedJob">{job.title}</h3>
       <i
         className={`${
@@ -56,8 +62,14 @@ RecCareerComponent.propTypes = {
       title: PropTypes.string.isRequired,
       href: PropTypes.string.isRequired,
       code: PropTypes.string.isRequired,
+      tags: PropTypes.shape({
+        bright_outlook: PropTypes.bool.isRequired,
+        green: PropTypes.bool.isRequired,
+        apprenticeship: PropTypes.bool.isRequired,
+      }).isRequired,
     }).isRequired,
     handleRequestForCareer: PropTypes.func.isRequired,
+
     setCareerData: PropTypes.func.isRequired,
   }).isRequired,
 };

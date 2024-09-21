@@ -176,6 +176,9 @@ const SavedPage = () => {
         <div className="savedMain">
           <h1 id="savedTitle">Saved Paths</h1>
           <hr className="divider" />
+          <div className="tagLegend">
+            <p>☀️ Bright Outlook</p>|<p>🟩 Green</p>|<p>🛠️ Apprenticeship</p>
+          </div>
           <div className="resultsCont saved">
             {savedCareers.map((career) => (
               <SavedCareerComponent

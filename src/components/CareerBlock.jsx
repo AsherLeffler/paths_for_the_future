@@ -3,7 +3,12 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import "./css/CareerResultPage.css";
 
-const CareerBlock = ({ career, setCurrentPage, setCareerToLearnAbout, setSavedCareerData }) => {
+const CareerBlock = ({
+  career,
+  setCurrentPage,
+  setCareerToLearnAbout,
+  setSavedCareerData,
+}) => {
   const [savedCareers, setSavedCareers] = useState(
     JSON.parse(localStorage.getItem("savedCareers"))
       ? JSON.parse(localStorage.getItem("savedCareers"))
@@ -29,7 +34,7 @@ const CareerBlock = ({ career, setCurrentPage, setCareerToLearnAbout, setSavedCa
       localStorage.setItem("savedCareers", JSON.stringify(newCareerList));
     }
   };
-  
+
   const handleRequestForCareer = async () => {
     const careerLink = career.href;
     try {
@@ -42,18 +47,29 @@ const CareerBlock = ({ career, setCurrentPage, setCareerToLearnAbout, setSavedCa
         setSavedCareerData(career);
         setCurrentPage("learnMoreAboutCareer");
       } else {
-        window.alert("Sorry, there was an error trying to get information about this career. Please try again later.");
+        window.alert(
+          "Sorry, there was an error trying to get information about this career. Please try again later."
+        );
       }
     } catch {
-      window.alert("Sorry, there was an error trying to get information about this career. Please try again later.");
+      window.alert(
+        "Sorry, there was an error trying to get information about this career. Please try again later."
+      );
     }
-  }
-  
+  };
+
   return (
     <div className="careerBlock">
+      <div className="tagsCont">
+        {career.tags.bright_outlook && <p>☀️</p>}
+        {career.tags.green && <p>🟩</p>}
+        {career.tags.apprenticeship && <p>🛠️</p>}
+      </div>
       <h3>{career.title}</h3>
       <i
-        className={`${saved ? "fa-solid" : "fa-regular"} fa-bookmark saveIconButton`}
+        className={`${
+          saved ? "fa-solid" : "fa-regular"
+        } fa-bookmark saveIconButton`}
         onClick={() => handleSave()}
       ></i>
       <p className="clickToLearnMore">Click to learn more</p>
@@ -66,6 +82,11 @@ CareerBlock.propTypes = {
     title: PropTypes.string.isRequired,
     code: PropTypes.string.isRequired,
     href: PropTypes.string.isRequired,
+    tags: PropTypes.shape({
+      bright_outlook: PropTypes.bool,
+      green: PropTypes.bool,
+      apprenticeship: PropTypes.bool,
+    }),
   }).isRequired,
   setCurrentPage: PropTypes.func.isRequired,
   setCareerToLearnAbout: PropTypes.func.isRequired,

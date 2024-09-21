@@ -52,7 +52,13 @@ const SavedCareerComponent = ({
 
   return (
     <div className="careerBlock">
+      <div className="tagsCont">
+        {career.tags.bright_outlook && <p>☀️</p>}
+        {career.tags.green && <p>🟩</p>}
+        {career.tags.apprenticeship && <p>🛠️</p>}
+      </div>
       <h3>{career.title}</h3>
+
       <i className="fa-bookmark fa-solid saveIconButton" onClick={handleUnsave}></i>
       <p className="clickToLearnMore">Click to learn more</p>
       <div className="clickForContent" onClick={handleRequestForCareer}></div>
@@ -67,8 +73,14 @@ SavedCareerComponent.propTypes = {
       href: PropTypes.string,
       current: PropTypes.array,
       filter: PropTypes.func,
+      tags: PropTypes.shape({
+        bright_outlook: PropTypes.bool,
+        green: PropTypes.bool,
+        apprenticeship: PropTypes.bool,
+      }),
     })
   ).isRequired,
+
   setSavedCurrentPage: PropTypes.func.isRequired,
   setSavedCareerToLearnAbout: PropTypes.func.isRequired,
   setCareerData: PropTypes.func.isRequired,

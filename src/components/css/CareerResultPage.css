@@ -169,3 +169,28 @@
   right: 10px;
   bottom: 10px;
 }
+.tagsCont {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  translate: -50%;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  height: fit-content;
+}
+.tagsCont p {
+  font-size: 1.5rem;
+  margin: 0;
+}
+.tagLegend {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+

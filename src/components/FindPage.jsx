@@ -411,9 +411,7 @@ const FindPage = ({ findPageInfo }) => {
       : setCurrentQuizPage("results");
   };
 
-
   const displayAreaInformation = (info) => {
-
     setAreaInformationDisplaying(true);
     setInformationToDisplay({ title: info.area, desc: info.description });
   };
@@ -449,7 +447,11 @@ const FindPage = ({ findPageInfo }) => {
           onClick={() => setAreaInformationDisplaying(false)}
         ></div>
       </div>
-      <div className={`findMain ${currentQuizPage === "learnRecommendedCareer" ? "learn" : ""}`}>
+      <div
+        className={`findMain ${
+          currentQuizPage === "learnRecommendedCareer" ? "learn" : ""
+        }`}
+      >
         {currentQuizPage === "main" && (
           <>
             {!currentQuestion && !explain && (
@@ -745,6 +747,9 @@ const FindPage = ({ findPageInfo }) => {
               <ArrowLeft size={35} />
             </p>
             <h3 className="resultsTitle rec">Recommended Jobs</h3>
+            <div className="tagLegend">
+              <p>☀️ Bright Outlook</p>|<p>🟩 Green</p>|<p>🛠️ Apprenticeship</p>
+            </div>
             <div className="resultsCont">
               {recommendedJobs.map((job, index) => (
                 <RecCareerComponent
@@ -759,10 +764,7 @@ const FindPage = ({ findPageInfo }) => {
           recCareerToLearnAbout && (
             <>
               <div className="learnCareerCont">
-                <p
-                  onClick={otherGoBack}
-                  className="backButton"
-                >
+                <p onClick={otherGoBack} className="backButton">
                   <ArrowLeft size={35} />
                 </p>
                 <i

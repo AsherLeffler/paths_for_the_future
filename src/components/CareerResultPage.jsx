@@ -121,6 +121,9 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
         </div>
       </div>
       <hr className="divider" />
+      <div className="tagLegend">
+        <p>☀️ Bright Outlook</p>|<p>🟩 Green</p>|<p>🛠️ Apprenticeship</p>
+      </div>
       <div
         className="resultsCont"
         style={{ display: careerInfo.career ? "flex" : "block" }}
@@ -152,7 +155,9 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
             <h1 style={{ width: "100%", textAlign: "center" }}>
               Sorry! No careers found.
             </h1>
-            <p style={{width: "100%", textAlign: "center"}}>Please try again with a different keyword.</p>
+            <p style={{ width: "100%", textAlign: "center" }}>
+              Please try again with a different keyword.
+            </p>
           </>
         )}
 
