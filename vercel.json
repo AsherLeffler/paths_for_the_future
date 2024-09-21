@@ -19,8 +19,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/",
-      "check": true
+      "destination": "/"
     }
   ]
 }
