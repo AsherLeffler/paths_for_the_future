@@ -36,7 +36,7 @@
 #searchInput:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
-input[type="search" i]::-webkit-search-cancel-button {
+#searchInput[type="search" i]::-webkit-search-cancel-button {
   cursor: pointer;
   filter: brightness(2.8);
 }
@@ -45,21 +45,21 @@ input[type="search" i]::-webkit-search-cancel-button {
   color: white;
   box-shadow: 0 0 0px 1000px transparent inset !important; /* Ensure no shadow effect */
 }
-input:-moz-autofill {
+#searchInput:-moz-autofill {
   background-color: transparent !important;
   color: white !important;
 }
 
-input:-ms-autofill {
+#searchInput:-ms-autofill {
   background-color: transparent !important;
   color: white !important;
 }
 
-input:-o-autofill {
+#searchInput:-o-autofill {
   background-color: transparent !important;
   color: white !important;
 }
-input:-webkit-autofill {
+#searchInput:-webkit-autofill {
   background-color: transparent !important;
   color: white !important;
   -webkit-text-fill-color: rgb(255, 255, 255) !important;
@@ -93,7 +93,7 @@ input:-webkit-autofill {
   top: 45%;
   translate: -50% -50%;
 }
-.loadingCont{
+.loadingCont {
   width: 100%;
   height: 100%;
   top: 0;
@@ -150,7 +150,13 @@ input:-webkit-autofill {
 }
 .learnCareerCont {
   position: relative;
-  padding: 10px;
+  padding: 80px 10px 20px 10px;
+  background: linear-gradient(155deg, #d5e6ff 0%, #8dbcff 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
 }
 .learnCareerCont i {
   cursor: pointer;
@@ -162,7 +168,7 @@ input:-webkit-autofill {
   top: 10px;
 }
 .learnCareerCont i:hover {
-  scale: 1.1;
+  background-color: #8fc2ff;
 }
 .visualPathway {
   width: 100%;
@@ -172,7 +178,7 @@ input:-webkit-autofill {
   justify-content: center;
   align-items: center;
   gap: 40px;
-  margin-top: 20px;
+  margin-top: 60px;
 }
 .pathWayBox {
   border: 2px solid black;
@@ -249,7 +255,156 @@ input:-webkit-autofill {
 .relatedCareer {
   cursor: pointer;
   transition: 0.2s;
+  width: max-content;
 }
 .relatedCareer:hover {
   scale: 1.01;
+}
+.backButton {
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  cursor: pointer;
+  font-size: 1.3rem;
+  margin: 0;
+  transition: 0.2s;
+}
+.backButton:hover {
+  scale: 1.1;
+}
+
+.main-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0; /* Light grey placeholder */
+}
+
+.backImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#mainTitle {
+  position: relative;
+  z-index: 1;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.careerInfoCard {
+  width: 98%;
+  height: fit-content;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 30px;
+  margin: 0;
+}
+#careerInfoTitle {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+.careerInfoCardHeader {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+.careerInfoCardHeader.techHeader {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+}
+.careerInfoSection {
+  margin: 20px 0;
+  padding: 0;
+  height: 230px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+}
+.careerInfoSection .section {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
+}
+.techBoxCont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+}
+.techBox {
+  width: max-content;
+  height: fit-content;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background-color: #398cff;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.2s;
+  cursor: default;
+}
+.techBox:hover{
+  scale: 1.03;
+}
+.techBox p {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: rgb(240, 240, 240);
+}
+.resourceCont {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.resourceCont a {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  color: rgb(0, 102, 255);
+  width: fit-content;
+}
+.resourceCont a:hover {
+  text-decoration: underline;
+}
+.resourceDesc {
+  margin: 0;
+  color: rgb(126, 126, 126);
+  margin-bottom: 30px;
+}
+.resourceTitle {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.otherCareersTitle {
+  margin: 20px 0 10px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
 }

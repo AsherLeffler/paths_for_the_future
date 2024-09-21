@@ -9,10 +9,15 @@
   padding: 20px;
   background: linear-gradient(180deg, #e9f2ff 0%, #9fc7ff 100%);
 }
+.findMain.learn{
+  padding: 0 !important;
+}
 .findMain .question {
   font-size: 1.8rem;
-  margin: 0 auto 10px auto;
+  margin: 0 auto 20px auto;
   width: fit-content;
+  text-align: center;
+  font-weight: 600;
 }
 .find-main-wrapper{
   display: flex;
@@ -40,7 +45,53 @@
   font-family: var(--mainFont);
 }
 .startBtn:hover {
-  scale: 1.03;
+  background-color: #0061c9;
+}
+.nextSetBtn{
+  width: 200px;
+  height: 40px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #4699ff, #0054bc);
+  color: white;
+  font-size: 1.4rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.15s;
+  font-family: var(--mainFont);
+}
+.nextSetBtn:hover {
+  filter: brightness(1.2);
+}
+.nextSetBtn.endBtn{
+  background: transparent !important;
+  border: 2px solid #0073ff !important;
+  color: #0073ff !important;
+  transition: 0.25s !important;
+}
+.nextSetBtn.endBtn:hover{
+  background: linear-gradient(135deg, #4699ff, #0054bc) !important;
+  color: white !important;
+  border: none !important;
+  filter: none !important;
+}
+.cant_go_back_text{
+  position: absolute;
+  left: 50%;
+  bottom: 26%;
+  translate: -50%;
+  width: max-content;
+  color: red;
+}
+.resultsTitle{
+  font-size: 2.5rem;
+  text-align: center;
+  margin: 20px 0;
+}
+.resultsTitle.rec{
+  margin-bottom: 40px 0;
 }
 .areaInfoPopUp{
   display: none;
@@ -93,10 +144,10 @@
   cursor: pointer;
   width: fit-content;
   height: fit-content;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 .inputBtn {
-  border: 2px solid rgb(48, 48, 48);
+  border: 1.5px dashed rgb(48, 48, 48);
   cursor: pointer;
   border-radius: 50%;
   transition: 0.15s;
@@ -104,12 +155,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 60px;
+}
+.inputBtn:hover {
+  background-color: #bcdaff;
 }
 .notSelected {
   background: transparent;
 }
 .selected {
-  background: #0073ff;
+  background: #0073ff !important;
+  border-style: solid !important;
 }
 .findMain .answers {
   display: flex;
@@ -152,10 +208,10 @@
 }
 .recommendedJob {
   cursor: pointer;
+  transition: 0.2s;
 }
 .recommendedJob:hover {
   text-decoration: underline;
-  width: max-content;
 }
 .jobsList {
   display: flex;
@@ -174,12 +230,6 @@
   padding: 10px;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
-}
-.backButton {
-  position: absolute;
-  left: 5px;
-  top: 5px;
-  cursor: pointer;
 }
 .jobsList h2 {
   margin: 0;
@@ -216,6 +266,10 @@
 #questionCount {
   margin: 0 auto;
   width: max-content;
+  font-size: 1.3rem;
+  position: absolute;
+  top: 15px;
+  left: 15px;
 }
 #prev-title {
   font-size: 2rem;
@@ -268,14 +322,19 @@
   justify-content: center;
   align-items: center;
   gap: 3px;
-  border: 2px solid rgb(48, 48, 48);
   border-radius: 50%;
   aspect-ratio: 1;
   width: calc(33.333333% - 15px);
   cursor: pointer;
+  transition: 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.scoreCont:hover{
+  scale: 1.05;
 }
 .score-area {
   margin: 0;
+
   font-size: 0.8rem;
   color: rgb(64, 64, 64);
 }
@@ -315,12 +374,47 @@
   padding: 7px 14px;
   cursor: pointer;
   border: none;
-  border-radius: 40px;
+  border-radius: 4px;
   font-family: var(--mainFont);
   box-sizing: unset;
-  font-weight: bolder;
+  font-weight: 600;
   transition: 0.2s ease;
 }
 .removeResult:hover {
   filter: brightness(1.4);
+}
+.questionChangeButton{
+  width: 170px;
+  height: 35px;
+  border: none;
+  display: flex;
+  background: linear-gradient(135deg, #4699ff, #0054bc);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--mainFont);
+  font-size: 1.2rem;
+  transition: 0.15s ease;
+  border-radius: 4px;
+}
+.questionChangeButton:hover {
+  filter: brightness(1.2);
+  cursor: pointer;
+}
+#findForm{
+  width: 600px;
+  height: 350px;
+  background-color: rgba(255, 255, 255, 0.7);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  padding: 0 20px;
 }

@@ -121,18 +121,46 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
         </div>
       </div>
       <hr className="divider" />
-      <div className="resultsCont">
-        {careerInfo.career.map((career) => {
-          return (
-            <CareerBlock
-              key={career.title}
-              career={career}
-              setCurrentPage={setCurrentPage}
-              setCareerToLearnAbout={setCareerToLearnAbout}
-              setSavedCareerData={setSavedCareerData}
-            />
-          );
-        })}
+      <div className="tagLegend">
+        <p>☀️ Bright Outlook</p>|<p>🟩 Green</p>|<p>🛠️ Apprenticeship</p>
+      </div>
+      <div
+        className="resultsCont"
+        style={{ display: careerInfo.career ? "flex" : "block" }}
+      >
+        {careerInfo.career &&
+          careerInfo.career.map((career) => {
+            return (
+              <CareerBlock
+                key={career.title}
+                career={career}
+                setCurrentPage={setCurrentPage}
+                setCareerToLearnAbout={setCareerToLearnAbout}
+                setSavedCareerData={setSavedCareerData}
+              />
+            );
+          })}
+        {!careerInfo.career && (
+          <>
+            <h1
+              style={{
+                width: "100%",
+                textAlign: "center",
+                margin: 0,
+                fontSize: "6rem",
+              }}
+            >
+              😟
+            </h1>
+            <h1 style={{ width: "100%", textAlign: "center" }}>
+              Sorry! No careers found.
+            </h1>
+            <p style={{ width: "100%", textAlign: "center" }}>
+              Please try again with a different keyword.
+            </p>
+          </>
+        )}
+
         <div className="moreCareers">
           {isPrev() && (
             <h3

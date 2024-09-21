@@ -30,22 +30,28 @@ const RecCareerComponent = ({ info }) => {
   };
 
   return (
-    <div>
-      <h2
-        className="recommendedJob"
-        onClick={() => {
-          handleRequestForCareer(job.href);
-          setCareerData(job);
-        }}
-      >
-        {job.title}
-      </h2>
+    <div className="careerBlock">
+      <div className="tagsCont">
+        {job.tags.bright_outlook && <p>☀️</p>}
+        {job.tags.green && <p>🟩</p>}
+        {job.tags.apprenticeship && <p>🛠️</p>}
+      </div>
+
+      <h3 className="recommendedJob">{job.title}</h3>
       <i
         className={`${
           saved ? "fa-solid" : "fa-regular"
         } fa-bookmark recSaveIcon`}
         onClick={handleSaveCareer}
       ></i>
+      <p className="clickToLearnMore">Click to learn more</p>
+      <div
+        className="clickForContent"
+        onClick={() => {
+          handleRequestForCareer(job.href);
+          setCareerData(job);
+        }}
+      ></div>
     </div>
   );
 };
@@ -56,8 +62,14 @@ RecCareerComponent.propTypes = {
       title: PropTypes.string.isRequired,
       href: PropTypes.string.isRequired,
       code: PropTypes.string.isRequired,
+      tags: PropTypes.shape({
+        bright_outlook: PropTypes.bool.isRequired,
+        green: PropTypes.bool.isRequired,
+        apprenticeship: PropTypes.bool.isRequired,
+      }).isRequired,
     }).isRequired,
     handleRequestForCareer: PropTypes.func.isRequired,
+
     setCareerData: PropTypes.func.isRequired,
   }).isRequired,
 };

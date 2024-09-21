@@ -5,6 +5,7 @@ import "./css/FindPage.css";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useState, useRef, useCallback } from "react";
+import { Link, ExternalLink, ArrowLeft } from "lucide-react";
 
 const FindPage = ({ findPageInfo }) => {
   const {
@@ -70,21 +71,32 @@ const FindPage = ({ findPageInfo }) => {
       const newIndex =
         prev.index -
         Math.floor(data.current.end === 12 ? 0 : data.current.end - 12);
+
       if (direction === "next" && selectedAnswer !== null) {
-        if (currentQuestion.index !== data.current.end) {
-          setQuestionNum((prev) => prev + 1);
-          setSelectedAnswer(null);
-        }
         return questions.current[newIndex];
       } else if (direction === "prev" && newIndex !== 1) {
-        setQuestionNum((prev) => prev - 1);
-        setSelectedAnswer(null);
         return questions.current[newIndex - 2];
       } else {
         window.alert("Please select an answer before moving on.");
       }
-      return prev;
+      return prev; // Return the previous state if no updates
     });
+
+    // Handle question number and selected answer updates separately
+    const questionIndex =
+      currentQuestion.index -
+      Math.floor(data.current.end === 12 ? 0 : data.current.end - 12);
+    if (
+      direction === "next" &&
+      selectedAnswer !== null &&
+      currentQuestion.index !== data.current.end
+    ) {
+      setQuestionNum((prevNum) => prevNum + 1);
+      setSelectedAnswer(answers.current[currentQuestion.index] || null);
+    } else if (direction === "prev" && questionIndex !== 1) {
+      if (questionIndex !== 13) setQuestionNum((prevNum) => prevNum - 1);
+      setSelectedAnswer(answers.current[currentQuestion.index - 2]);
+    }
   };
 
   const handleAnswerChange = (question, answer) => {
@@ -183,8 +195,8 @@ const FindPage = ({ findPageInfo }) => {
     e.preventDefault();
   };
 
-  const handleGetJobs = async (answers = null) => {
-    const answersString = answers || answers.current.join("");
+  const handleGetJobs = async (prevAnswers) => {
+    const answersString = prevAnswers || answers.current.join("");
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/careers?answers=${answersString}`;
     try {
       const response = await axios.post(
@@ -205,17 +217,35 @@ const FindPage = ({ findPageInfo }) => {
   const check_job_zone = (job_zone) => {
     switch (job_zone) {
       case 1:
-        return "This occupation may require a high school diploma or GED certificate. Little or no previous work-related skill, knowledge, or experience is needed for this occupation.";
+        return [
+          "This occupation may require a high school diploma or GED certificate.",
+          "Little or no previous work-related skill, knowledge, or experience is needed for this occupation.",
+        ];
       case 2:
-        return "This occupation most likely requires a high school diploma or GED certificate. Some previous work-related skill, knowledge, or experience is usually needed.";
+        return [
+          "This occupation most likely requires a high school diploma or GED certificate.",
+          "Some previous work-related skill, knowledge, or experience is usually needed.",
+        ];
       case 3:
-        return "This occupation most likely requires training in it's vocational school, related on-the-job experience, or an associate's degree. Previous work-related skill, knowledge, or experience is required for this occupation.";
+        return [
+          "This occupation most likely requires training in it's vocational school, related on-the-job experience, or an associate's degree.",
+          "Previous work-related skill, knowledge, or experience is required for this occupation.",
+        ];
       case 4:
-        return "This occupation most likely will require a four-year bachelor's degree. A considerable amount of work-related skill, knowledge, or experience is needed for these occupations.";
+        return [
+          "This occupation most likely will require a four-year bachelor's degree.",
+          "A considerable amount of work-related skill, knowledge, or experience is needed for these occupations.",
+        ];
       case 5:
-        return "This occupation most likely requires graduate school that goes into the related field. Extensive skill, knowledge, and experience is needed for this occupation.";
+        return [
+          "This occupation most likely requires graduate school that goes into the related field.",
+          "Extensive skill, knowledge, and experience is needed for this occupation.",
+        ];
       default:
-        return "This occupation does not have a specified education level.";
+        return [
+          "This occupation does not have a specified education level.",
+          "This occupation does not have a specified experience level.",
+        ];
     }
   };
 
@@ -375,6 +405,11 @@ const FindPage = ({ findPageInfo }) => {
       ? setCurrentQuizPage("main")
       : setCurrentQuizPage("results");
   };
+  const otherGoBack = () => {
+    fromPrevResults.current
+      ? setCurrentQuizPage("recommendations")
+      : setCurrentQuizPage("results");
+  };
 
   const displayAreaInformation = (info) => {
     setAreaInformationDisplaying(true);
@@ -412,7 +447,11 @@ const FindPage = ({ findPageInfo }) => {
           onClick={() => setAreaInformationDisplaying(false)}
         ></div>
       </div>
-      <div className="findMain">
+      <div
+        className={`findMain ${
+          currentQuizPage === "learnRecommendedCareer" ? "learn" : ""
+        }`}
+      >
         {currentQuizPage === "main" && (
           <>
             {!currentQuestion && !explain && (
@@ -525,7 +564,7 @@ const FindPage = ({ findPageInfo }) => {
                 </p>
                 <p>
                   Once you move to the next section, YOU CANNOT GO BACK. Make
-                  sure you are certain of all of your answers before moving on
+                  sure you are certain of all of your answers before moving on.
                 </p>
                 <button className="advanceBtn" onClick={getTheFirstQuestion}>
                   Start
@@ -593,33 +632,67 @@ const FindPage = ({ findPageInfo }) => {
                 )}
                 {currentQuestion.index === data.current.end + 1 &&
                   data.current.end !== 60 && (
-                    <div className="inputsCont">
-                      <button onClick={goToNextSection}>Next Section</button>
-                    </div>
+                    <>
+                      <h3 className="cant_go_back_text">
+                        Once you move on, you can not go back
+                      </h3>
+                      <div className="inputsCont">
+                        <button
+                          className="nextSetBtn endBtn"
+                          onClick={() => handleQuestionChange("prev")}
+                        >
+                          Previous
+                        </button>
+                        <button
+                          className="nextSetBtn"
+                          onClick={goToNextSection}
+                        >
+                          Next Section
+                        </button>
+                      </div>
+                    </>
                   )}
                 {currentQuestion.index === data.current.end + 1 &&
                   data.current.end === 60 && (
                     <div className="inputsCont">
-                      <button onClick={getResults}>Get Results</button>
+                      <button
+                        className="nextSetBtn endBtn"
+                        onClick={() => handleQuestionChange("prev")}
+                      >
+                        Previous
+                      </button>
+
+                      <button className="nextSetBtn" onClick={getResults}>
+                        Get Results
+                      </button>
                     </div>
                   )}
                 {currentQuestion.index !== data.current.end + 1 && (
                   <div className="buttonsCont">
                     <button
                       style={{
-                        visibility: findIndex() !== 1 ? "visible" : "hidden",
+                        filter: findIndex() !== 1 ? "none" : "grayscale(100%)",
+                        cursor: findIndex() !== 1 ? "pointer" : "not-allowed",
                       }}
-                      onClick={() => handleQuestionChange("prev")}
+                      onClick={
+                        findIndex() !== 1
+                          ? () => handleQuestionChange("prev")
+                          : () => {}
+                      }
+                      className="questionChangeButton"
                     >
-                      Previous Question
+                      Previous
                     </button>
-                    <button onClick={() => handleQuestionChange("next")}>
-                      Next Question
+                    <button
+                      onClick={() => handleQuestionChange("next")}
+                      className="questionChangeButton"
+                    >
+                      Next
                     </button>
                   </div>
                 )}
                 {currentQuestion.index !== data.current.end + 1 && (
-                  <p id="questionCount">{questionNum} / 60</p>
+                  <p id="questionCount">Question: {questionNum} / 60</p>
                 )}
               </form>
             )}
@@ -634,7 +707,7 @@ const FindPage = ({ findPageInfo }) => {
               });
               return (
                 <>
-                  <h3>Results</h3>
+                  <h3 className="resultsTitle">Results</h3>
                   <div className="prevResultCont">
                     <div className="scores-wrapper">
                       {quizResults.map((result, i) => (
@@ -671,10 +744,13 @@ const FindPage = ({ findPageInfo }) => {
         {currentQuizPage === "recommendations" && (
           <>
             <p onClick={goBack} className="backButton">
-              ← Back
+              <ArrowLeft size={35} />
             </p>
-            <h3>Recommendations</h3>
-            <div className="jobsList">
+            <h3 className="resultsTitle rec">Recommended Jobs</h3>
+            <div className="tagLegend">
+              <p>☀️ Bright Outlook</p>|<p>🟩 Green</p>|<p>🛠️ Apprenticeship</p>
+            </div>
+            <div className="resultsCont">
               {recommendedJobs.map((job, index) => (
                 <RecCareerComponent
                   key={job.title + index}
@@ -688,136 +764,197 @@ const FindPage = ({ findPageInfo }) => {
           recCareerToLearnAbout && (
             <>
               <div className="learnCareerCont">
-                <p onClick={() => setCurrentQuizPage("recommendations")}>
-                  ← Back
+                <p onClick={otherGoBack} className="backButton">
+                  <ArrowLeft size={35} />
                 </p>
                 <i
                   className="fa-regular fa-bookmark saveIcon"
                   onClick={handleSave}
                 ></i>
-                <h1>{recCareerToLearnAbout.career.title}</h1>
-                <h2>What They Do</h2>
-                <p>{recCareerToLearnAbout.career.what_they_do}</p>
-                {recCareerToLearnAbout.education && (
-                  <>
-                    <h2>Education</h2>
-                    <p>
-                      {check_job_zone(recCareerToLearnAbout.education.job_zone)}
-                    </p>
-                  </>
-                )}
-                {recCareerToLearnAbout.career.on_the_job && (
-                  <>
-                    <h2>What You&apos;ll Do On the Job</h2>
-                    <ul>
-                      {recCareerToLearnAbout.career.on_the_job.task.map(
-                        (skill, index) => (
-                          <li key={`${skill} is at the index of ${index}`}>
-                            {skill}
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </>
-                )}
-                {recCareerToLearnAbout.technology && (
-                  <>
-                    <h2>Technology</h2>
-                    <ul>
-                      {recCareerToLearnAbout.technology.category.map((tech) =>
-                        tech.example.map((techSkill, i) => (
-                          <li key={techSkill.name + `index of ${i}`}>
-                            {techSkill.name}
-                          </li>
-                        ))
-                      )}
-                    </ul>
-                  </>
-                )}
-                {recCareerToLearnAbout.outlook && (
-                  <>
-                    <h2>Annual Median Salary</h2>
-                    <p>
-                      ${findSalary(recCareerToLearnAbout.outlook.salary)}
-                      {recCareerToLearnAbout.outlook.salary.annual_median_over
-                        ? "+"
-                        : ""}
-                    </p>
-                    <br />
-                    <h2>Job Outlook</h2>
-                    <h3>{recCareerToLearnAbout.outlook.outlook.category}</h3>
-                    <p>{recCareerToLearnAbout.outlook.outlook.description}</p>
-                  </>
-                )}
-                <div className="visualPathway">
-                  <h2>Visual Pathway</h2>
-                  <div className="pathWayBox" id="finalResultBox">
-                    <p>{recCareerToLearnAbout.career.title}</p>
-                  </div>
-                  {recCareerToLearnAbout.education.apprenticeships && (
-                    <div className="apprenticeShipCont">
-                      {recCareerToLearnAbout.education.apprenticeships.title.map(
-                        (apprenticeship, index) => (
-                          <div
-                            key={apprenticeship + index}
-                            className="apprenticeshipPathway pathWayBox"
-                          >
-                            {apprenticeship.name}
+                <div className="careerInfoCard">
+                  <h1 id="careerInfoTitle">
+                    {recCareerToLearnAbout.career.title}
+                  </h1>
+                  <h2 className="careerInfoCardHeader">What They Do</h2>
+                  <p>{recCareerToLearnAbout.career.what_they_do}</p>
+
+                  <div className="careerInfoSection">
+                    <div className="section">
+                      {recCareerToLearnAbout.education && (
+                        <>
+                          <div>
+                            <h2 className="careerInfoCardHeader">Education</h2>
+                            <p>
+                              {
+                                check_job_zone(
+                                  recCareerToLearnAbout.education.job_zone
+                                )[0]
+                              }
+                            </p>
                           </div>
-                        )
+                          <div>
+                            <h2 className="careerInfoCardHeader">Experience</h2>
+                            <p>
+                              {
+                                check_job_zone(
+                                  recCareerToLearnAbout.education.job_zone
+                                )[1]
+                              }
+                            </p>
+                          </div>
+                        </>
                       )}
                     </div>
+                    <div className="section">
+                      {recCareerToLearnAbout.outlook && (
+                        <>
+                          <div>
+                            <h2 className="careerInfoCardHeader">
+                              Median Salary
+                            </h2>
+                            <p>
+                              $
+                              {findSalary(recCareerToLearnAbout.outlook.salary)}
+                              {recCareerToLearnAbout.outlook.salary
+                                .annual_median_over
+                                ? "+"
+                                : ""}{" "}
+                              per year
+                            </p>
+                          </div>
+                          <div>
+                            <h2 className="careerInfoCardHeader">
+                              Job Outlook
+                            </h2>
+                            <p>
+                              {recCareerToLearnAbout.outlook.outlook.category}:{" "}
+                              {
+                                recCareerToLearnAbout.outlook.outlook
+                                  .description
+                              }
+                            </p>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  {recCareerToLearnAbout.career.on_the_job && (
+                    <>
+                      <h2 className="careerInfoCardHeader">
+                        What You&apos;ll Do On the Job
+                      </h2>
+                      <ul>
+                        {recCareerToLearnAbout.career.on_the_job.task.map(
+                          (skill, index) => (
+                            <li key={`${skill} is at the index of ${index}`}>
+                              {skill}
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </>
                   )}
                   {recCareerToLearnAbout.technology && (
-                    <div className="techCont">
-                      {recCareerToLearnAbout.technology.category.map((tech) =>
-                        tech.example.map((tech, i) => (
-                          <div key={tech.name + i} className="pathWayBox">
-                            <p key={`${tech} at index: ${i}`}>{tech.name}</p>
-                          </div>
-                        ))
-                      )}
-                    </div>
+                    <>
+                      <h2 className="careerInfoCardHeader techHeader">
+                        Technology
+                      </h2>
+                      <div className="techBoxCont">
+                        {recCareerToLearnAbout.technology.category.map((tech) =>
+                          tech.example.map((techSkill, i) => (
+                            <div
+                              className="techBox"
+                              key={techSkill.name + `index of ${i}`}
+                            >
+                              <p>{techSkill.name}</p>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </>
                   )}
-                  {recCareerToLearnAbout.education && (
-                    <div className="pathWayBoxCont">{see_career_info()}</div>
+                  <div className="visualPathway">
+                    <h2 className="careerInfoCardHeader">Visual Pathway</h2>
+                    <div className="pathWayBox" id="finalResultBox">
+                      <p>{recCareerToLearnAbout.career.title}</p>
+                    </div>
+                    {recCareerToLearnAbout.education.apprenticeships && (
+                      <div className="apprenticeShipCont">
+                        {recCareerToLearnAbout.education.apprenticeships.title.map(
+                          (apprenticeship, index) => (
+                            <div
+                              key={apprenticeship + index}
+                              className="apprenticeshipPathway pathWayBox"
+                            >
+                              {apprenticeship.name}
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )}
+                    {recCareerToLearnAbout.technology && (
+                      <div className="techCont">
+                        {recCareerToLearnAbout.technology.category.map((tech) =>
+                          tech.example.map((tech, i) => (
+                            <div key={tech.name + i} className="pathWayBox">
+                              <p key={`${tech} at index: ${i}`}>{tech.name}</p>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    )}
+                    {recCareerToLearnAbout.education && (
+                      <div className="pathWayBoxCont">{see_career_info()}</div>
+                    )}
+                  </div>
+                </div>
+                <div className="careerInfoCard">
+                  {recCareerToLearnAbout.resources && (
+                    <>
+                      <h2 className="resourceTitle">Additional Resources</h2>
+                      <p className="resourceDesc">
+                        Explore these links to learn more about this career.
+                      </p>
+                      <div className="resourceCont">
+                        {recCareerToLearnAbout.resources.source.map(
+                          (resource, i) => (
+                            <a
+                              key={resource.url + i}
+                              href={resource.url}
+                              target="_blank"
+                              className="relatedCareer"
+                            >
+                              {resource.name}
+                              <ExternalLink size={20} />
+                            </a>
+                          )
+                        )}
+                      </div>
+                    </>
+                  )}
+                  {recCareerToLearnAbout.otherJobs && (
+                    <>
+                      <h2 className="otherCareersTitle">Related Careers</h2>
+                      <p className="resourceDesc">
+                        Explore other careers like this one.
+                      </p>
+                      <div className="resourceCont">
+                        {recCareerToLearnAbout.otherJobs.careers.career.map(
+                          (job, i) => (
+                            <a
+                              className="relatedCareer"
+                              key={`${job.title} index is: ${i}; Code is ${job.code}`}
+                              onClick={() => handleRequestForCareer(job.href)}
+                            >
+                              <Link size={20} />
+                              {job.title}
+                            </a>
+                          )
+                        )}
+                      </div>
+                    </>
                   )}
                 </div>
-                {recCareerToLearnAbout.resources && (
-                  <>
-                    <h2>Additional Resources</h2>
-                    <ul>
-                      {recCareerToLearnAbout.resources.source.map(
-                        (resource, i) => (
-                          <li key={resource.url + i}>
-                            <p>{resource.name}</p>
-                            <a href={resource.url} target="_blank">
-                              {resource.url}
-                            </a>
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </>
-                )}
-                {recCareerToLearnAbout.otherJobs && (
-                  <>
-                    <h2>Related Careers</h2>
-                    <ul>
-                      {recCareerToLearnAbout.otherJobs.careers.career.map(
-                        (job, i) => (
-                          <li
-                            key={`${job.title} index is: ${i}`}
-                            className="relatedCareer"
-                            onClick={() => handleRequestForCareer(job.href)}
-                          >
-                            {job.title}
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </>
-                )}
               </div>
             </>
           )}

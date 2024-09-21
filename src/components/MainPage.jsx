@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import CareerResultPage from "./CareerResultPage";
 import "./css/MainPage.css";
 import backImg from "../assets/backImg.jpg";
+import { ArrowLeft, ExternalLink, Link } from "lucide-react";
 
 const MainPage = ({ mainPageInfo }) => {
   const [placeholderCareer, setPlaceholderCareer] = useState("Teacher");
@@ -81,17 +82,35 @@ const MainPage = ({ mainPageInfo }) => {
   const check_job_zone = (job_zone) => {
     switch (job_zone) {
       case 1:
-        return "This occupation may require a high school diploma or GED certificate. Little or no previous work-related skill, knowledge, or experience is needed for this occupation.";
+        return [
+          "This occupation may require a high school diploma or GED certificate.",
+          "Little or no previous work-related skill, knowledge, or experience is needed for this occupation.",
+        ];
       case 2:
-        return "This occupation most likely requires a high school diploma or GED certificate. Some previous work-related skill, knowledge, or experience is usually needed.";
+        return [
+          "This occupation most likely requires a high school diploma or GED certificate.",
+          "Some previous work-related skill, knowledge, or experience is usually needed.",
+        ];
       case 3:
-        return "This occupation most likely requires training in it's vocational school, related on-the-job experience, or an associate's degree. Previous work-related skill, knowledge, or experience is required for this occupation.";
+        return [
+          "This occupation most likely requires training in it's vocational school, related on-the-job experience, or an associate's degree.",
+          "Previous work-related skill, knowledge, or experience is required for this occupation.",
+        ];
       case 4:
-        return "This occupation most likely will require a four-year bachelor's degree. A considerable amount of work-related skill, knowledge, or experience is needed for these occupations.";
+        return [
+          "This occupation most likely will require a four-year bachelor's degree.",
+          "A considerable amount of work-related skill, knowledge, or experience is needed for these occupations.",
+        ];
       case 5:
-        return "This occupation most likely requires graduate school that goes into the related field. Extensive skill, knowledge, and experience is needed for this occupation.";
+        return [
+          "This occupation most likely requires graduate school that goes into the related field.",
+          "Extensive skill, knowledge, and experience is needed for this occupation.",
+        ];
       default:
-        return "This occupation does not have a specified education level.";
+        return [
+          "This occupation does not have a specified education level.",
+          "This occupation does not have a specified experience level.",
+        ];
     }
   };
 
@@ -213,7 +232,7 @@ const MainPage = ({ mainPageInfo }) => {
       <Header setCurrentPage={setCurrentPage}></Header>
       <div
         className="loadingCont"
-        style={{ display: displayingLoader ? "flex" : "none"}}
+        style={{ display: displayingLoader ? "flex" : "none" }}
       >
         <div className="loader">
           <div className="dot"></div>
@@ -247,136 +266,198 @@ const MainPage = ({ mainPageInfo }) => {
         <CareerResultPage
           careerInfo={results.current}
           results={results}
-          hooks={{setCurrentPage, setCareerToLearnAbout, setSavedCareerData, setDisplayingLoader}}
+          hooks={{
+            setCurrentPage,
+            setCareerToLearnAbout,
+            setSavedCareerData,
+            setDisplayingLoader,
+          }}
         />
       )}
       {currentPage === "learnMoreAboutCareer" && careerToLearnAbout && (
         <div className="learnCareerCont">
-          <p onClick={() => setCurrentPage("results")}>← Back</p>
+          <p onClick={() => setCurrentPage("results")} className="backButton">
+            <ArrowLeft size={35} />
+          </p>
           <i
             className="fa-regular fa-bookmark saveIcon"
             onClick={handleSave}
           ></i>
-          <h1>{careerToLearnAbout.career.title}</h1>
-          <h2>What They Do</h2>
-          <p>{careerToLearnAbout.career.what_they_do}</p>
-          {careerToLearnAbout.education && (
-            <>
-              <h2>Education</h2>
-              <p>{check_job_zone(careerToLearnAbout.education.job_zone)}</p>
-            </>
-          )}
-          {careerToLearnAbout.career.on_the_job && (
-            <>
-              <h2>What You&apos;ll Do On the Job</h2>
-              <ul>
-                {careerToLearnAbout.career.on_the_job.task.map(
-                  (skill, index) => (
-                    <li key={`${skill} is at the index of ${index}`}>
-                      {skill}
-                    </li>
-                  )
-                )}
-              </ul>
-            </>
-          )}
-          {careerToLearnAbout.technology && (
-            <>
-              <h2>Technology</h2>
-              <ul>
-                {careerToLearnAbout.technology.category.map((tech) =>
-                  tech.example.map((techSkill) => (
-                    <li key={techSkill.name + `index of ${i}`}>
-                      {techSkill.name}
-                    </li>
-                  ))
-                )}
-              </ul>
-            </>
-          )}
-          {careerToLearnAbout.outlook && (
-            <>
-              <h2>Annual Median Salary</h2>
-              <p>
-                ${findSalary(careerToLearnAbout.outlook.salary)}
-                {careerToLearnAbout.outlook.salary.annual_median_over
-                  ? "+"
-                  : ""}
-              </p>
-              <br />
-              <h2>Job Outlook</h2>
-              <h3>{careerToLearnAbout.outlook.outlook.category}</h3>
-              <p>{careerToLearnAbout.outlook.outlook.description}</p>
-            </>
-          )}
-          <div className="visualPathway">
-            <h2>Visual Pathway</h2>
-            <div className="pathWayBox" id="finalResultBox">
-              <p>{careerToLearnAbout.career.title}</p>
-            </div>
-            {careerToLearnAbout.education.apprenticeships && (
-              <div className="apprenticeShipCont">
-                {careerToLearnAbout.education.apprenticeships.title.map(
-                  (apprenticeship, index) => (
-                    <div
-                      key={apprenticeship + index}
-                      className="apprenticeshipPathway pathWayBox"
-                    >
-                      {apprenticeship.name}
+          <div className="careerInfoCard">
+            <h1 id="careerInfoTitle">{careerToLearnAbout.career.title}</h1>
+            <h2 className="careerInfoCardHeader">What They Do</h2>
+            <p>{careerToLearnAbout.career.what_they_do}</p>
+
+            <div className="careerInfoSection">
+              <div className="section">
+                {careerToLearnAbout.education && (
+                  <>
+                    <div>
+                      <h2 className="careerInfoCardHeader">Education</h2>
+                      <p>
+                        {
+                          check_job_zone(
+                            careerToLearnAbout.education.job_zone
+                          )[0]
+                        }
+                      </p>
                     </div>
-                  )
+                    <div>
+                      <h2 className="careerInfoCardHeader">Experience</h2>
+                      <p>
+                        {
+                          check_job_zone(
+                            careerToLearnAbout.education.job_zone
+                          )[1]
+                        }
+                      </p>
+                    </div>
+                  </>
                 )}
               </div>
+              <div className="section">
+                {careerToLearnAbout.outlook && (
+                  <>
+                    <div>
+                      <h2 className="careerInfoCardHeader">Median Salary</h2>
+                      <p>
+                        ${findSalary(careerToLearnAbout.outlook.salary)}
+                        {careerToLearnAbout.outlook.salary.annual_median_over
+                          ? "+"
+                          : ""}{" "}
+                        per year
+                      </p>
+                    </div>
+                    <div>
+                      <h2 className="careerInfoCardHeader">Job Outlook</h2>
+                      <p>
+                        {careerToLearnAbout.outlook.outlook.category}:{" "}
+                        {careerToLearnAbout.outlook.outlook.description}
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+            {careerToLearnAbout.career.on_the_job && (
+              <>
+                <h2 className="careerInfoCardHeader">
+                  What You&apos;ll Do On the Job
+                </h2>
+                <ul>
+                  {careerToLearnAbout.career.on_the_job.task.map(
+                    (skill, index) => (
+                      <li key={`${skill} is at the index of ${index}`}>
+                        {skill}
+                      </li>
+                    )
+                  )}
+                </ul>
+              </>
             )}
             {careerToLearnAbout.technology && (
-              <div className="techCont">
-                {careerToLearnAbout.technology.category.map((tech) =>
-                  tech.example.map((tech, i) => (
-                    <div key={tech.name + i} className="pathWayBox">
-                      <p key={`${tech} at index: ${i}`}>{tech.name}</p>
-                    </div>
-                  ))
-                )}
-              </div>
+              <>
+                <h2 className="careerInfoCardHeader techHeader">Technology</h2>
+                <div className="techBoxCont">
+                  {careerToLearnAbout.technology.category.map((tech) =>
+                    tech.example.map((techSkill) => (
+                      <div
+                        className="techBox"
+                        key={techSkill.name + `index of ${i}`}
+                      >
+                        <p>{techSkill.name}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </>
             )}
-            {careerToLearnAbout.education && (
-              <div className="pathWayBoxCont">{see_career_info()}</div>
+            <div className="visualPathway">
+              <h2 className="careerInfoCardHeader">Visual Pathway</h2>
+              <div className="pathWayBox" id="finalResultBox">
+                <p>{careerToLearnAbout.career.title}</p>
+              </div>
+              {careerToLearnAbout.education.apprenticeships && (
+                <div className="apprenticeShipCont">
+                  {careerToLearnAbout.education.apprenticeships.title.map(
+                    (apprenticeship, index) => (
+                      <div
+                        key={apprenticeship + index}
+                        className="apprenticeshipPathway pathWayBox"
+                      >
+                        {apprenticeship.name}
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+              {careerToLearnAbout.technology && (
+                <div className="techCont">
+                  {careerToLearnAbout.technology.category.map((tech) =>
+                    tech.example.map((tech, i) => (
+                      <div key={tech.name + i} className="pathWayBox">
+                        <p key={`${tech} at index: ${i}`}>{tech.name}</p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+              {careerToLearnAbout.education && (
+                <div className="pathWayBoxCont">{see_career_info()}</div>
+              )}
+            </div>
+          </div>
+          <div className="careerInfoCard">
+            {careerToLearnAbout.resources && (
+              <>
+                <h2 className="resourceTitle">Additional Resources</h2>
+                <p className="resourceDesc">
+                  Explore these links to learn more about this career.
+                </p>
+                <div className="resourceCont">
+                  {careerToLearnAbout.resources.source.map((resource, i) => (
+                    <a
+                      key={resource.url + i}
+                      href={resource.url}
+                      target="_blank"
+                      className="relatedCareer"
+                    >
+                      {resource.name}
+                      <ExternalLink size={20} />
+                    </a>
+                  ))}
+                </div>
+              </>
+            )}
+            {careerToLearnAbout.otherJobs && (
+              <>
+                <h2 className="otherCareersTitle">Related Careers</h2>
+                <p className="resourceDesc">
+                  Explore other careers like this one.
+                </p>
+                <div className="resourceCont">
+                  {careerToLearnAbout.otherJobs.careers.career.map((job, i) => (
+                    <a
+                      className="relatedCareer"
+                      key={`${job.title} index is: ${i}; Code is ${job.code}`}
+                      onClick={() => handleRequestForCareer(job.href)}
+                    >
+                      <Link size={20} />
+                      {job.title}
+                    </a>
+                  ))}
+                </div>
+              </>
             )}
           </div>
-          {careerToLearnAbout.resources && (
-            <>
-              <h2>Additional Resources</h2>
-              <ul>
-                {careerToLearnAbout.resources.source.map((resource, i) => (
-                  <li key={resource.url + i}>
-                    <p>{resource.name}</p>
-                    <a href={resource.url} target="_blank">
-                      {resource.url}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-          {careerToLearnAbout.otherJobs && (
-            <>
-              <h2>Related Careers</h2>
-              <ul>
-                {careerToLearnAbout.otherJobs.careers.career.map((job, i) => (
-                  <li
-                    className="relatedCareer"
-                    key={`${job.title} index is: ${i}; Code is ${job.code}`}
-                    onClick={() => handleRequestForCareer(job.href)}
-                  >
-                    {job.title}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
         </div>
       )}
-      <Footer style={{opacity: currentPage === "default" ? true : false, color: currentPage === "results" ? true : false}}></Footer>
+      <Footer
+        style={{
+          opacity: currentPage === "default" ? true : false,
+          color: currentPage === "results" || currentPage === "learnMoreAboutCareer" ? true : false,
+        }}
+      ></Footer>
     </>
   );
 };
