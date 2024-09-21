@@ -42,7 +42,7 @@ const CareerBlock = ({
         "https://pathsforthefuture.vercel.app/api/careerSearch",
         { careerLink }
       );
-      if (response.statusText === "OK") {
+      if (response.status === 200) {
         setCareerToLearnAbout(response.data);
         setSavedCareerData(career);
         setCurrentPage("learnMoreAboutCareer");

@@ -34,7 +34,7 @@ const SavedCareerComponent = ({
         "https://pathsforthefuture.vercel.app/api/careerSearch",
         { careerLink }
       );
-      if (response.statusText === "OK") {
+      if (response.status === 200) {
         setSavedCareerToLearnAbout(response.data);
         setSavedCurrentPage("savedLearn");
         setCareerData(career);

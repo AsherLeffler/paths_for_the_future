@@ -32,7 +32,7 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
           "https://pathsforthefuture.vercel.app/api/nextPageSearch",
           { pageLink }
         );
-        if (response.statusText === "OK") {
+        if (response.status === 200) {
           results.current = response.data;
           setCurrentPage("results");
         } else {
@@ -55,7 +55,7 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
           "https://pathsforthefuture.vercel.app/api/prevPageSearch",
           { pageLink }
         );
-        if (response.statusText === "OK") {
+        if (response.status === 200) {
           results.current = response.data;
           setCurrentPage("results");
         } else {
@@ -82,7 +82,7 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
               "https://pathsforthefuture.vercel.app/api/search",
               { keyword }
             );
-            if (response.statusText === "OK") {
+            if (response.status === 200) {
               setDisplayingLoader(true);
               setTimeout(() => {
                 results.current = response.data;

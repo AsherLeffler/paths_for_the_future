@@ -46,7 +46,7 @@ const FindPage = ({ findPageInfo }) => {
           "https://pathsforthefuture.vercel.app/api/interestProfilerQuestions",
           { link }
         );
-        if (response.statusText === "OK") {
+        if (response.status === 200) {
           questions.current = response.data.question;
           questions.current.push({ index: 13 }); // Add an empty object to the end of the array
           data.current = response.data;
@@ -127,7 +127,7 @@ const FindPage = ({ findPageInfo }) => {
         "https://pathsforthefuture.vercel.app/api/getResultsForQuestions",
         { link }
       );
-      if (response.statusText === "OK") {
+      if (response.status === 200) {
         setQuizResults(response.data.result);
         setCurrentQuizPage("results");
       } else {
@@ -146,7 +146,7 @@ const FindPage = ({ findPageInfo }) => {
         "https://pathsforthefuture.vercel.app/api/getResultsForQuestions",
         { link }
       );
-      if (response.statusText === "OK") {
+      if (response.status === 200) {
         dataToAddRef.current = [...dataToAddRef.current, response.data.result];
       } else {
         window.alert("Sorry, an error occured. Please try again later.");
@@ -177,7 +177,7 @@ const FindPage = ({ findPageInfo }) => {
         "https://pathsforthefuture.vercel.app/api/interestProfilerQuestions",
         { link }
       );
-      if (response.statusText === "OK") {
+      if (response.status === 200) {
         questions.current = response.data.question;
         questions.current.push({ index: response.data.end + 1 }); // Add an empty object to the end of the array
         setCurrentQuestion(questions.current[0]);
@@ -203,7 +203,7 @@ const FindPage = ({ findPageInfo }) => {
         "https://pathsforthefuture.vercel.app/api/getRecommendedJobs",
         { link }
       );
-      if (response.statusText === "OK") {
+      if (response.status === 200) {
         setRecommendedJobs(response.data.career);
         setCurrentQuizPage("recommendations");
       } else {
@@ -316,7 +316,7 @@ const FindPage = ({ findPageInfo }) => {
         "https://pathsforthefuture.vercel.app/api/careerSearch",
         { careerLink }
       );
-      if (response.statusText === "OK") {
+      if (response.status === 200) {
         setRecCareerToLearnAbout(response.data);
         setCurrentQuizPage("learnRecommendedCareer");
       } else {

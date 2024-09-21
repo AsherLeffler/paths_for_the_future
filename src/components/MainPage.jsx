@@ -179,7 +179,7 @@ const MainPage = ({ mainPageInfo }) => {
         "https://pathsforthefuture.vercel.app/api/careerSearch",
         { careerLink }
       );
-      if (response.statusText === "OK") {
+      if (response.status === 200) {
         setCareerToLearnAbout(response.data);
         setCurrentPage("learnMoreAboutCareer");
       } else {
