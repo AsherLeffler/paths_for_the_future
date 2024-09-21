@@ -31,21 +31,21 @@ const RecCareerComponent = ({ info }) => {
 
   return (
     <div className="careerBlock">
-      <h3
-        className="recommendedJob"
-        onClick={() => {
-          handleRequestForCareer(job.href);
-          setCareerData(job);
-        }}
-      >
-        {job.title}
-      </h3>
+      <h3 className="recommendedJob">{job.title}</h3>
       <i
         className={`${
           saved ? "fa-solid" : "fa-regular"
         } fa-bookmark recSaveIcon`}
         onClick={handleSaveCareer}
       ></i>
+      <p className="clickToLearnMore">Click to learn more</p>
+      <div
+        className="clickForContent"
+        onClick={() => {
+          handleRequestForCareer(job.href);
+          setCareerData(job);
+        }}
+      ></div>
     </div>
   );
 };

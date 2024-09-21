@@ -48,14 +48,16 @@ const CareerBlock = ({ career, setCurrentPage, setCareerToLearnAbout, setSavedCa
       window.alert("Sorry, there was an error trying to get information about this career. Please try again later.");
     }
   }
-
+  
   return (
     <div className="careerBlock">
-      <h3 onClick={handleRequestForCareer}>{career.title}</h3>
+      <h3>{career.title}</h3>
       <i
-        className={`${saved ? "fa-solid" : "fa-regular"} fa-bookmark`}
+        className={`${saved ? "fa-solid" : "fa-regular"} fa-bookmark saveIconButton`}
         onClick={() => handleSave()}
       ></i>
+      <p className="clickToLearnMore">Click to learn more</p>
+      <div className="clickForContent" onClick={handleRequestForCareer}></div>
     </div>
   );
 };

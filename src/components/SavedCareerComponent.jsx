@@ -52,8 +52,10 @@ const SavedCareerComponent = ({
 
   return (
     <div className="careerBlock">
-      <h3 onClick={handleRequestForCareer}>{career.title}</h3>
-      <i className="fa-bookmark fa-solid" onClick={handleUnsave}></i>
+      <h3>{career.title}</h3>
+      <i className="fa-bookmark fa-solid saveIconButton" onClick={handleUnsave}></i>
+      <p className="clickToLearnMore">Click to learn more</p>
+      <div className="clickForContent" onClick={handleRequestForCareer}></div>
     </div>
   );
 };

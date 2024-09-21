@@ -1,19 +1,23 @@
-.resultPage{
+.resultPage {
   width: 100%;
   height: fit-content;
   min-height: 100%;
-  background: linear-gradient(180deg, #e9f2ff 0%, #9fc7ff 100%);
+  background: linear-gradient(155deg, #e9f2ff 0%, #9fc7ff 100%);
 }
 .resultsCont {
   width: 100%;
   height: fit-content;
-  min-height: calc(100vh - 160px);
   display: flex;
-  flex-direction: column;
   align-items: center;
+  min-height: calc(100vh - 160px);
+  justify-content: center;
+  flex-wrap: wrap;
   padding: 20px;
   padding-bottom: 10px;
   gap: 10px;
+}
+.resultsCont.saved {
+  min-height: unset;
 }
 .searchCont {
   width: 100%;
@@ -23,7 +27,7 @@
   align-items: center;
   background-color: rgba(255, 255, 255, 0.6);
 }
-.divider{
+.divider {
   width: 100%;
   height: 2px;
   border-radius: 1px;
@@ -31,11 +35,34 @@
   background-color: #303030;
   margin: 0 auto 0 auto;
 }
+#resultSearchInput[type="search" i]::-webkit-search-cancel-button {
+  cursor: pointer;
+  filter: brightness(0);
+}
 #resultSearchInput:-webkit-autofill,
 #resultSearchInput:-webkit-autofill:hover,
 #resultSearchInput:-webkit-autofill:focus,
 #resultSearchInput:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
+}
+#resultSearchInput:-moz-autofill {
+  background-color: transparent !important;
+  color: rgb(48, 48, 48) !important;
+}
+
+#resultSearchInput:-ms-autofill {
+  background-color: transparent !important;
+  color: rgb(48, 48, 48) !important;
+}
+
+#resultSearchInput:-o-autofill {
+  background-color: transparent !important;
+  color: rgb(48, 48, 48) !important;
+}
+#resultSearchInput:-webkit-autofill {
+  background-color: transparent !important;
+  color: rgb(48, 48, 48) !important;
+  -webkit-text-fill-color: rgb(48, 48, 48) !important;
 }
 #resultSearchInput {
   background-color: transparent;
@@ -53,14 +80,28 @@
   padding: 8px;
 }
 .careerBlock {
-  width: 100%;
-  height: fit-content;
+  width: 45%;
+  height: 160px;
   min-height: 40px;
-  border: 2px solid #303030;
+  border: 1px solid #757575;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
   padding: 10px;
+  position: relative;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.6);
+  transition: 0.2s;
+}
+.careerBlock:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+.saveIconButton,
+.recSaveIcon {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
 }
 .careerBlock h3 {
   font-family: var(--mainFont);
@@ -69,9 +110,27 @@
   cursor: pointer;
   font-weight: normal;
   margin: 0;
+  text-align: center;
 }
 .careerBlock h3:hover {
   text-decoration: underline;
+}
+.clickToLearnMore {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 0.8rem;
+  color: #787878;
+  margin: 0;
+}
+.clickForContent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  cursor: pointer;
 }
 .careerBlock i {
   color: #0073ff;
@@ -79,12 +138,17 @@
   cursor: pointer;
   margin-right: 10px;
   transition: 0.2s;
+  z-index: 11;
 }
 .careerBlock i:hover {
-  transform: scale(1.1);
+  background-color: #bfdcff;
+}
+.careerBlock i.fa-solid:hover {
+  background-color: transparent !important;
 }
 .moreCareers {
   display: flex;
+
   width: 100%;
   position: relative;
   height: 40px;
