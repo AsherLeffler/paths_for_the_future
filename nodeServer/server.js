@@ -10,7 +10,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"] // Allow requests from your React app
+    origin: ["https://pathsforthefuture.vercel.app"], // Allow requests from your React app
   })
 );
 
@@ -29,7 +29,6 @@ app.post("/api/search", async (req, res) => {
   const ONET_API_URL = `https://services.onetcenter.org/ws/mnm/search?keyword=${encodeURIComponent(
     keyword ? keyword : ""
   )}`;
-
   try {
     const externalApiResponse = await axios.get(ONET_API_URL, {
       auth: {
@@ -281,6 +280,4 @@ app.post("/api/getRecommendedJobs", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-  console.log("Server is running on port 5000");
-});
+export default app;
