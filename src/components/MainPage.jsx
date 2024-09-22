@@ -6,7 +6,15 @@ import Footer from "./Footer";
 import CareerResultPage from "./CareerResultPage";
 import "./css/MainPage.css";
 import backImg from "../assets/backImg.jpg";
-import { ArrowLeft, ExternalLink, Link } from "lucide-react";
+import {
+  ArrowLeft,
+  ExternalLink,
+  Link,
+  Briefcase,
+  Cpu,
+  GraduationCap,
+  School,
+} from "lucide-react";
 
 const MainPage = ({ mainPageInfo }) => {
   const [placeholderCareer, setPlaceholderCareer] = useState("Teacher");
@@ -41,7 +49,7 @@ const MainPage = ({ mainPageInfo }) => {
           const keyword = input.value.trim();
           try {
             const response = await axios.post(
-              "https://pathsforthefuture.vercel.app/api/search",
+              "http://localhost:5000/api/search",
               { keyword }
             );
             if (response.status === 200) {
@@ -150,33 +158,11 @@ const MainPage = ({ mainPageInfo }) => {
     return salaryNum;
   };
 
-  const see_career_info = () => {
-    if (careerToLearnAbout.education.job_zone >= 3) {
-      return check_visualJobZone(careerToLearnAbout.education.job_zone).map(
-        (educationLevel, index) => {
-          return (
-            <div key={`${educationLevel}${index}`} className="pathWayBox">
-              <p>{educationLevel}</p>
-            </div>
-          );
-        }
-      );
-    } else if (careerToLearnAbout.education.job_zone < 3) {
-      return (
-        <>
-          <div className="pathWayBox">
-            <p>{check_visualJobZone(careerToLearnAbout.education.job_zone)}</p>
-          </div>
-        </>
-      );
-    }
-  };
-
   const handleRequestForCareer = async (link) => {
     const careerLink = link;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture.vercel.app/api/careerSearch",
+        "http://localhost:5000/api/careerSearch",
         { careerLink }
       );
       if (response.statusText === "OK") {
@@ -226,6 +212,202 @@ const MainPage = ({ mainPageInfo }) => {
         icon.classList.replace("fa-regular", "fa-solid");
     }
   }, [savedCareerData]);
+
+  const lineSegment = (direction, info, index) => {
+    const checkForColor = () => {
+      switch (index % 4) {
+        case 0:
+          return "#66ff66"; // Lighter green
+        case 1:
+          return "#ffeb99"; // Lighter yellow
+        case 2:
+          return "#66b3ff"; // Lighter blue
+        case 3:
+          return "#ff6666"; // Lighter red
+        default:
+          return "#ffffff"; // White as a fallback
+      }
+    };
+
+    const getIcon = () => {
+      if (info.rapids) {
+        return <Briefcase size={28} />;
+      } else if (info === careerToLearnAbout.technology.category) {
+        return <Cpu size={28} />;
+      } else if (info === "High school diploma or GED certificate") {
+        return <School size={28} />;
+      } else {
+        return <GraduationCap size={28} />;
+      }
+    };
+    return (
+      <div
+        className="lineSegment"
+        style={{
+          bottom: `${index * 160}px`,
+          left: direction === "right" ? "67px" : "-65px",
+        }}
+      >
+        {info.rapids && (
+          <>
+            <h2
+              className="pathHeader"
+              style={{
+                [direction === "left" ? "right" : "left"]: "130px",
+              }}
+            >
+              Internship
+            </h2>
+            <div
+              className="infoBox"
+              style={{
+                [direction === "left" ? "right" : "left"]: "130px",
+              }}
+            >
+              <p>{info.name}</p>
+            </div>
+          </>
+        )}
+        {info !== careerToLearnAbout.technology.category && !info.rapids && (
+          <>
+            <h2
+              className="pathHeader"
+              style={{
+                [direction === "left" ? "right" : "left"]: "130px",
+              }}
+            >
+              Education
+            </h2>
+            <div
+              className="infoBox"
+              style={{
+                [direction === "left" ? "right" : "left"]: "130px",
+              }}
+            >
+              <p>{info}</p>
+            </div>
+          </>
+        )}
+        {info === careerToLearnAbout.technology.category && (
+          <>
+            <h2
+              className="pathHeader"
+              style={{
+                [direction === "left" ? "right" : "left"]: "130px",
+              }}
+            >
+              Technology
+            </h2>
+            <div
+              className="infoBox tech"
+              style={{
+                [direction === "left" ? "right" : "left"]: "130px",
+              }}
+            >
+              {info.map((tech) =>
+                tech.example.map((tech, i) => (
+                  <div key={tech.name + i} className="techBox">
+                    <p>{tech.name}</p>
+                  </div>
+                ))
+              )}
+            </div>
+          </>
+        )}
+        <div
+          className="circle"
+          style={{
+            top: "-5px",
+            [direction === "left" ? "left" : "right"]: "-110px",
+            backgroundColor: checkForColor(),
+          }}
+        >
+          {getIcon()}
+        </div>
+        <div
+          className="line"
+          style={{
+            transform:
+              direction === "right" ? "rotate(55deg)" : "rotate(-55deg)",
+            borderLeft: info.rapids ? "4px dashed black" : "4px solid black",
+          }}
+        ></div>
+      </div>
+    );
+  };
+  const see_career_info = (indexOfLine) => {
+    if (careerToLearnAbout.education.job_zone >= 3) {
+      return check_visualJobZone(careerToLearnAbout.education.job_zone)
+        .slice()
+        .reverse()
+        .map((educationLevel) => {
+          return lineSegment(
+            indexOfLine % 2 === 0 ? "left" : "right",
+            educationLevel,
+            indexOfLine++
+          );
+        });
+    } else if (careerToLearnAbout.education.job_zone < 3) {
+      return lineSegment(
+        indexOfLine % 2 === 0 ? "left" : "right",
+        check_visualJobZone(careerToLearnAbout.education.job_zone),
+        indexOfLine++
+      );
+    }
+  };
+
+  const create_pathway = () => {
+    let indexOfLine = 0;
+    const elements = [];
+
+    if (careerToLearnAbout.education) {
+      const educationElements = see_career_info(indexOfLine);
+      elements.push(
+        ...(Array.isArray(educationElements)
+          ? educationElements
+          : [educationElements])
+      );
+      indexOfLine += Array.isArray(educationElements)
+        ? educationElements.length
+        : 1;
+    }
+
+    elements.push(
+      lineSegment(
+        indexOfLine % 2 === 0 ? "left" : "right",
+        careerToLearnAbout.technology.category,
+        indexOfLine++
+      )
+    );
+
+    if (careerToLearnAbout.education.apprenticeships) {
+      careerToLearnAbout.education.apprenticeships.title.forEach(
+        (apprenticeship) => {
+          elements.push(
+            lineSegment(
+              indexOfLine % 2 === 0 ? "left" : "right",
+              apprenticeship,
+              indexOfLine++
+            )
+          );
+        }
+      );
+    }
+
+    return (
+      <>
+        {elements}
+        <div
+          className="mainLine"
+          style={{ height: `${indexOfLine * 160 + 80}px` }}
+        ></div>
+        <h2 className="pathHeader" style={{ top: "-80px", width: "max-content" }}>Your Career</h2>
+        <div id="endResult">
+          <p>{careerToLearnAbout.career.title}</p>
+        </div>
+      </>
+    );
+  };
 
   return (
     <>
@@ -277,7 +459,7 @@ const MainPage = ({ mainPageInfo }) => {
       {currentPage === "learnMoreAboutCareer" && careerToLearnAbout && (
         <div className="learnCareerCont">
           <p onClick={() => setCurrentPage("results")} className="backButton">
-            <ArrowLeft size={35} />
+            <ArrowLeft size={35} color="#0073ff" />
           </p>
           <i
             className="fa-regular fa-bookmark saveIcon"
@@ -372,39 +554,10 @@ const MainPage = ({ mainPageInfo }) => {
                 </div>
               </>
             )}
+            <hr className="divider" style={{ marginTop: "60px" }} />
             <div className="visualPathway">
-              <h2 className="careerInfoCardHeader">Visual Pathway</h2>
-              <div className="pathWayBox" id="finalResultBox">
-                <p>{careerToLearnAbout.career.title}</p>
-              </div>
-              {careerToLearnAbout.education.apprenticeships && (
-                <div className="apprenticeShipCont">
-                  {careerToLearnAbout.education.apprenticeships.title.map(
-                    (apprenticeship, index) => (
-                      <div
-                        key={apprenticeship + index}
-                        className="apprenticeshipPathway pathWayBox"
-                      >
-                        {apprenticeship.name}
-                      </div>
-                    )
-                  )}
-                </div>
-              )}
-              {careerToLearnAbout.technology && (
-                <div className="techCont">
-                  {careerToLearnAbout.technology.category.map((tech) =>
-                    tech.example.map((tech, i) => (
-                      <div key={tech.name + i} className="pathWayBox">
-                        <p key={`${tech} at index: ${i}`}>{tech.name}</p>
-                      </div>
-                    ))
-                  )}
-                </div>
-              )}
-              {careerToLearnAbout.education && (
-                <div className="pathWayBoxCont">{see_career_info()}</div>
-              )}
+              <h2 className="careerInfoCardHeader pathContHeader">Visual Pathway</h2>
+              <div className="pathCont">{create_pathway()}</div>
             </div>
           </div>
           <div className="careerInfoCard">
@@ -455,7 +608,10 @@ const MainPage = ({ mainPageInfo }) => {
       <Footer
         style={{
           opacity: currentPage === "default" ? true : false,
-          color: currentPage === "results" || currentPage === "learnMoreAboutCareer" ? true : false,
+          color:
+            currentPage === "results" || currentPage === "learnMoreAboutCareer"
+              ? true
+              : false,
         }}
       ></Footer>
     </>

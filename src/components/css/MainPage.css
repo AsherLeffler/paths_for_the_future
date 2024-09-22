@@ -177,8 +177,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 40px;
-  margin-top: 60px;
+  margin-top: 40px;
 }
 .pathWayBox {
   border: 2px solid black;
@@ -191,22 +190,6 @@
   justify-content: center;
   align-items: center;
   position: relative;
-}
-.pathWayBox:not(.techCont .pathWayBox)::before,
-.techCont::before {
-  --height: 44px;
-  content: "";
-  position: absolute;
-  width: 4px;
-  height: var(--height);
-  background-color: black;
-  z-index: 1;
-  top: calc(var(--height) * -1);
-  border-bottom: 4px solid grey;
-  border-top: 4px solid grey;
-}
-#finalResultBox::before {
-  display: none;
 }
 .pathWayBox * {
   margin: 0;
@@ -226,7 +209,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 40px;
 }
 .techCont {
   display: flex;
@@ -327,6 +309,9 @@
   font-weight: 700;
   margin: 0;
 }
+.careerInfoCardHeader.pathContHeader {
+  font-size: 2.5rem;
+}
 .careerInfoCardHeader.techHeader {
   width: 100%;
   text-align: center;
@@ -367,7 +352,7 @@
   transition: 0.2s;
   cursor: default;
 }
-.techBox:hover{
+.techBox:hover {
   scale: 1.03;
 }
 .techBox p {
@@ -407,4 +392,112 @@
   margin: 20px 0 10px 0;
   font-size: 1.5rem;
   font-weight: 700;
+}
+.mainLine {
+  width: 6px;
+  background-color: black;
+  position: relative;
+}
+.mainLine::before{
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  translate: -50%;
+  width: 80px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: black;
+}
+.pathCont {
+  width: fit-content;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 110px;
+}
+.lineSegment {
+  position: absolute;
+}
+.lineSegment .line {
+  height: 160px;
+  border-left: 4px solid black;
+  z-index: 2;
+}
+.pathCont .circle {
+  width: 60px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pathCont .infoBox {
+  position: absolute;
+  top: 0;
+  width: 200px;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #0073ff;
+  border-radius: 5px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+.pathCont .infoBox.tech {
+  background-color: #0073ff;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.pathCont .infoBox.tech .techBox {
+  background-color: #479aff !important;
+}
+.pathCont .infoBox.tech p {
+  font-size: 0.7rem;
+}
+.pathCont .infoBox p {
+  margin: 0;
+  font-size: 1rem;
+  color: white;
+}
+#endResult {
+  width: fit-content;
+  height: fit-content;
+  padding: 10px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  position: absolute;
+  z-index: 3;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #0073ff;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+#endResult p {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+}
+.pathHeader{
+  margin: 0;
+  position: absolute;
+  top: -40px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: rgb(48, 48, 48);
+  text-align: center;
 }

@@ -29,7 +29,7 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
       const pageLink = careerInfo.link[indexOfNextLink].href;
       try {
         const response = await axios.post(
-          "https://pathsforthefuture.vercel.app/api/nextPageSearch",
+          "http://localhost:5000/api/nextPageSearch",
           { pageLink }
         );
         if (response.statusText === "OK") {
@@ -52,7 +52,7 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
       const pageLink = careerInfo.link[indexOfPrevLink].href;
       try {
         const response = await axios.post(
-          "https://pathsforthefuture.vercel.app/api/prevPageSearch",
+          "http://localhost:5000/api/prevPageSearch",
           { pageLink }
         );
         if (response.statusText === "OK") {
@@ -79,7 +79,7 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
           const keyword = input.value;
           try {
             const response = await axios.post(
-              "https://pathsforthefuture.vercel.app/api/search",
+              "http://localhost:5000/api/search",
               { keyword }
             );
             if (response.statusText === "OK") {

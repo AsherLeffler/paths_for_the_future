@@ -4,7 +4,15 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import SavedCareerComponent from "./SavedCareerComponent";
 import axios from "axios";
 import "./css/SavedPage.css";
-import { Link, ExternalLink, ArrowLeft } from "lucide-react";
+import {
+  Link,
+  ExternalLink,
+  ArrowLeft,
+  Cpu,
+  Briefcase,
+  GraduationCap,
+  School,
+} from "lucide-react";
 
 const SavedPage = () => {
   const usersCareers = useRef([]);
@@ -36,7 +44,9 @@ const SavedPage = () => {
       localStorage.getItem("savedCareers")
     );
     usersCareers.current = savedCareersFromLocalStorage || [];
-    setSavedCareers(usersCareers.current);
+    setSavedCareers(
+      usersCareers.current.sort((a, b) => a.title.localeCompare(b.title))
+    );
   }, [handleSave, savedCurrentPage]);
 
   const check_job_zone = (job_zone) => {
@@ -110,35 +120,11 @@ const SavedPage = () => {
     return salaryNum;
   };
 
-  const see_career_info = () => {
-    if (savedCareerToLearnAbout.education.job_zone >= 3) {
-      return check_visualJobZone(
-        savedCareerToLearnAbout.education.job_zone
-      ).map((educationLevel, index) => {
-        return (
-          <div key={educationLevel + index} className="pathWayBox">
-            <p key={educationLevel + index}>{educationLevel}</p>
-          </div>
-        );
-      });
-    } else if (savedCareerToLearnAbout.education.job_zone < 3) {
-      return (
-        <>
-          <div className="pathWayBox">
-            <p>
-              {check_visualJobZone(savedCareerToLearnAbout.education.job_zone)}
-            </p>
-          </div>
-        </>
-      );
-    }
-  };
-
   const handleRequestForCareer = async (link) => {
     const careerLink = link;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture.vercel.app/api/careerSearch",
+        "http://localhost:5000/api/careerSearch",
         { careerLink }
       );
       if (response.statusText === "OK") {
@@ -169,6 +155,205 @@ const SavedPage = () => {
     }
   }, [careerData]);
 
+  const lineSegment = (direction, info, index) => {
+    const checkForColor = () => {
+      switch (index % 4) {
+        case 0:
+          return "#66ff66"; // Lighter green
+        case 1:
+          return "#ffeb99"; // Lighter yellow
+        case 2:
+          return "#66b3ff"; // Lighter blue
+        case 3:
+          return "#ff6666"; // Lighter red
+        default:
+          return "#ffffff"; // White as a fallback
+      }
+    };
+
+    const getIcon = () => {
+      if (info.rapids) {
+        return <Briefcase size={28} />;
+      } else if (info === savedCareerToLearnAbout.technology.category) {
+        return <Cpu size={28} />;
+      } else if (info === "High school diploma or GED certificate") {
+        return <School size={28} />;
+      } else {
+        return <GraduationCap size={28} />;
+      }
+    };
+
+    return (
+      <div
+        className="lineSegment"
+        style={{
+          bottom: `${index * 160}px`,
+          left: direction === "right" ? "67px" : "-65px",
+        }}
+      >
+        {info.rapids && (
+          <>
+            <h2
+              className="pathHeader"
+              style={{
+                [direction === "left" ? "right" : "left"]: "130px",
+              }}
+            >
+              Internship
+            </h2>
+            <div
+              className="infoBox"
+              style={{
+                [direction === "left" ? "right" : "left"]: "130px",
+              }}
+            >
+              <p>{info.name}</p>
+            </div>
+          </>
+        )}
+        {info !== savedCareerToLearnAbout.technology.category &&
+          !info.rapids && (
+            <>
+              <h2
+                className="pathHeader"
+                style={{
+                  [direction === "left" ? "right" : "left"]: "130px",
+                }}
+              >
+                Education
+              </h2>
+              <div
+                className="infoBox"
+                style={{
+                  [direction === "left" ? "right" : "left"]: "130px",
+                }}
+              >
+                <p>{info}</p>
+              </div>
+            </>
+          )}
+        {info === savedCareerToLearnAbout.technology.category && (
+          <>
+            <h2
+              className="pathHeader"
+              style={{
+                [direction === "left" ? "right" : "left"]: "130px",
+              }}
+            >
+              Technology
+            </h2>
+            <div
+              className="infoBox tech"
+              style={{
+                [direction === "left" ? "right" : "left"]: "130px",
+              }}
+            >
+              {info.map((tech) =>
+                tech.example.map((tech, i) => (
+                  <div key={tech.name + i} className="techBox">
+                    <p>{tech.name}</p>
+                  </div>
+                ))
+              )}
+            </div>
+          </>
+        )}
+        <div
+          className="circle"
+          style={{
+            top: "-5px",
+            [direction === "left" ? "left" : "right"]: "-110px",
+            backgroundColor: checkForColor(),
+          }}
+        >
+          {getIcon()}
+        </div>
+        <div
+          className="line"
+          style={{
+            transform:
+              direction === "right" ? "rotate(55deg)" : "rotate(-55deg)",
+            borderLeft: info.rapids ? "4px dashed black" : "4px solid black",
+          }}
+        ></div>
+      </div>
+    );
+  };
+
+  const see_career_info = (indexOfLine) => {
+    if (savedCareerToLearnAbout.education.job_zone >= 3) {
+      return check_visualJobZone(savedCareerToLearnAbout.education.job_zone)
+        .slice()
+        .reverse()
+        .map((educationLevel) => {
+          return lineSegment(
+            indexOfLine % 2 === 0 ? "left" : "right",
+            educationLevel,
+            indexOfLine++
+          );
+        });
+    } else if (savedCareerToLearnAbout.education.job_zone < 3) {
+      return lineSegment(
+        indexOfLine % 2 === 0 ? "left" : "right",
+        check_visualJobZone(savedCareerToLearnAbout.education.job_zone),
+        indexOfLine++
+      );
+    }
+  };
+
+  const create_pathway = () => {
+    let indexOfLine = 0;
+    const elements = [];
+
+    if (savedCareerToLearnAbout.education) {
+      const educationElements = see_career_info(indexOfLine);
+      elements.push(
+        ...(Array.isArray(educationElements)
+          ? educationElements
+          : [educationElements])
+      );
+      indexOfLine += Array.isArray(educationElements)
+        ? educationElements.length
+        : 1;
+    }
+
+    elements.push(
+      lineSegment(
+        indexOfLine % 2 === 0 ? "left" : "right",
+        savedCareerToLearnAbout.technology.category,
+        indexOfLine++
+      )
+    );
+
+    if (savedCareerToLearnAbout.education.apprenticeships) {
+      savedCareerToLearnAbout.education.apprenticeships.title.forEach(
+        (apprenticeship) => {
+          elements.push(
+            lineSegment(
+              indexOfLine % 2 === 0 ? "left" : "right",
+              apprenticeship,
+              indexOfLine++
+            )
+          );
+        }
+      );
+    }
+
+    return (
+      <>
+        {elements}
+        <div
+          className="mainLine"
+          style={{ height: `${indexOfLine * 160 + 80}px` }}
+        ></div>
+        <h2 className="pathHeader" style={{ top: "-80px", width: "max-content" }}>Your Career</h2>
+        <div id="endResult">
+          <p>{savedCareerToLearnAbout.career.title}</p>
+        </div>
+      </>
+    );
+  };
+
   return (
     <>
       <Header setSavedCurrentPage={setSavedCurrentPage} />
@@ -198,7 +383,7 @@ const SavedPage = () => {
             onClick={() => setSavedCurrentPage("defaultPage")}
             className="backButton"
           >
-            <ArrowLeft size={35} />
+            <ArrowLeft size={35} color="#0073ff" />
           </p>
           <i
             className="fa-regular fa-bookmark saveIcon"
@@ -294,39 +479,10 @@ const SavedPage = () => {
                 </div>
               </>
             )}
+            <hr className="divider" style={{ marginTop: "60px" }} />
             <div className="visualPathway">
-              <h2 className="careerInfoCardHeader">Visual Pathway</h2>
-              <div className="pathWayBox" id="finalResultBox">
-                <p>{savedCareerToLearnAbout.career.title}</p>
-              </div>
-              {savedCareerToLearnAbout.education.apprenticeships && (
-                <div className="apprenticeShipCont">
-                  {savedCareerToLearnAbout.education.apprenticeships.title.map(
-                    (apprenticeship, index) => (
-                      <div
-                        key={apprenticeship + index}
-                        className="apprenticeshipPathway pathWayBox"
-                      >
-                        {apprenticeship.name}
-                      </div>
-                    )
-                  )}
-                </div>
-              )}
-              {savedCareerToLearnAbout.technology && (
-                <div className="techCont">
-                  {savedCareerToLearnAbout.technology.category.map((tech) =>
-                    tech.example.map((tech, i) => (
-                      <div key={tech.name + i} className="pathWayBox">
-                        <p key={`${tech} at index: ${i}`}>{tech.name}</p>
-                      </div>
-                    ))
-                  )}
-                </div>
-              )}
-              {savedCareerToLearnAbout.education && (
-                <div className="pathWayBoxCont">{see_career_info()}</div>
-              )}
+              <h2 className="careerInfoCardHeader pathContHeader">Visual Pathway</h2>
+              <div className="pathCont">{create_pathway()}</div>
             </div>
           </div>
           <div className="careerInfoCard">
