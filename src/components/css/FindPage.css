@@ -427,6 +427,16 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   padding: 0 20px;
 }
+.explain-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
 @media screen and (max-width: 768px) {
   .careerMain {
     padding: 20px;
@@ -470,9 +480,61 @@
   .removeResult {
     font-size: 0.7rem;
   }
+  #findForm {
+    width: 90%;
+    height: fit-content;
+    padding: 50px 0 30px 0;
+  }
+  #questionCount {
+    font-size: 1rem;
+  }
+  .cant_go_back_text {
+    top: 10px;
+  }
+  .pathCont .infoBox.tech .techBox {
+    max-width: 200px;
+    text-align: center;
+  }
 }
-
 @media screen and (max-width: 480px) {
+  .inputBtn {
+    width: 40px;
+  }
+  .inputsCont label {
+    font-size: 1.1rem;
+  }
+  .findMain .question{
+    font-size: 1.4rem;
+    width: 95%;
+  }
+  .questionChangeButton{
+    width: 100px;
+    height: 30px;
+    font-size: 1rem;
+  }
+  .nextSetBtn{
+    width: 120px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+  .cant_go_back_text{
+    font-size: 0.8rem;
+  }
+  .quizTitle {
+    font-size: 1.6rem;
+  }
+  .quizDesc {
+    width: 100%;
+    font-size: 1rem;
+  }
+  .startBtn {
+    width: 100%;
+    font-size: 1.1rem;
+    height: 35px;
+  }
+  .pathCont .infoBox.tech .techBox{
+    max-width: 170px;
+  }
   .careerMain {
     padding: 15px;
   }
@@ -491,16 +553,41 @@
   .area-score {
     font-size: 1.2rem;
   }
-  .careerBlock {
-    padding: 10px;
+  .explain-wrapper {
+    gap: 20px;
   }
-
+  .explain-wrapper h1{
+    font-size: 1.4rem;
+    margin: 0;
+  }
+  .explain-wrapper p {
+    font-size: 0.8rem;
+    margin: 0;
+  }
+  .explain-wrapper ul {
+    margin: 0;
+  }
+  .explain-wrapper ul li {
+    font-size: 0.8rem;
+    margin: 0;
+  }
   .careerBlock h3 {
     font-size: 1.2rem;
   }
-
+  .get-careers-btn {
+    font-size: 0.8rem;
+    height: auto;
+  }
+  .advanceBtn {
+    font-size: 1rem;
+    width: 150px;
+    height: 30px;
+  }
   .careerBlock button {
     font-size: 0.9rem;
     padding: 5px 10px;
+  }
+  .dateText {
+    font-size: 0.7rem;
   }
 }

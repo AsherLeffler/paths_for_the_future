@@ -12,6 +12,7 @@ import {
   Briefcase,
   GraduationCap,
   School,
+  Frown,
 } from "lucide-react";
 
 const SavedPage = () => {
@@ -196,7 +197,8 @@ const SavedPage = () => {
             <h2
               className="pathHeader"
               style={{
-                [direction === "left" ? "right" : "left"]: "130px",
+                [direction === "left" ? "right" : "left"]:
+                  window.innerWidth <= 480 ? "20px" : "130px",
               }}
             >
               Internship
@@ -204,7 +206,8 @@ const SavedPage = () => {
             <div
               className="infoBox"
               style={{
-                [direction === "left" ? "right" : "left"]: "130px",
+                [direction === "left" ? "right" : "left"]:
+                  window.innerWidth <= 480 ? "20px" : "130px",
               }}
             >
               <p>{info.name}</p>
@@ -217,7 +220,8 @@ const SavedPage = () => {
               <h2
                 className="pathHeader"
                 style={{
-                  [direction === "left" ? "right" : "left"]: "130px",
+                  [direction === "left" ? "right" : "left"]:
+                    window.innerWidth <= 480 ? "20px" : "130px",
                 }}
               >
                 Education
@@ -225,7 +229,8 @@ const SavedPage = () => {
               <div
                 className="infoBox"
                 style={{
-                  [direction === "left" ? "right" : "left"]: "130px",
+                  [direction === "left" ? "right" : "left"]:
+                    window.innerWidth <= 480 ? "20px" : "130px",
                 }}
               >
                 <p>{info}</p>
@@ -237,7 +242,8 @@ const SavedPage = () => {
             <h2
               className="pathHeader"
               style={{
-                [direction === "left" ? "right" : "left"]: "130px",
+                [direction === "left" ? "right" : "left"]:
+                  window.innerWidth <= 480 ? "20px" : "130px",
               }}
             >
               Technology
@@ -245,15 +251,23 @@ const SavedPage = () => {
             <div
               className="infoBox tech"
               style={{
-                [direction === "left" ? "right" : "left"]: "130px",
+                [direction === "left" ? "right" : "left"]:
+                  window.innerWidth <= 480 ? "20px" : "130px",
               }}
             >
-              {info.map((tech) =>
-                tech.example.map((tech, i) => (
-                  <div key={tech.name + i} className="techBox">
-                    <p>{tech.name}</p>
-                  </div>
-                ))
+              {window.innerWidth > 480 &&
+                info.map((tech) =>
+                  tech.example.map((tech, i) => (
+                    <div key={tech.name + i} className="techBox">
+                      <p>{tech.name}</p>
+                    </div>
+                  ))
+                )}
+              {window.innerWidth <= 480 && (
+                <div className="techBox" style={{ width: "100px" }}>
+                  <Frown size={32} color="white" />
+                  <p>Sorry! See technology for information</p>
+                </div>
               )}
             </div>
           </>
@@ -346,7 +360,12 @@ const SavedPage = () => {
           className="mainLine"
           style={{ height: `${indexOfLine * 160 + 80}px` }}
         ></div>
-        <h2 className="pathHeader" style={{ top: "-80px", width: "max-content" }}>Your Career</h2>
+        <h2
+          className="pathHeader"
+          style={{ top: "-80px", width: "max-content" }}
+        >
+          Your Career
+        </h2>
         <div id="endResult">
           <p>{savedCareerToLearnAbout.career.title}</p>
         </div>
@@ -362,7 +381,11 @@ const SavedPage = () => {
           <h1 id="savedTitle">Saved Paths</h1>
           <hr className="divider" />
           <div className="tagLegend">
-            <p>☀️ Bright Outlook</p><p>|</p><p>🟩 Green</p><p>|</p><p>🛠️ Apprenticeship</p>
+            <p>☀️ Bright Outlook</p>
+            <p>|</p>
+            <p>🟩 Green</p>
+            <p>|</p>
+            <p>🛠️ Apprenticeship</p>
           </div>
           <div className="resultsCont saved">
             {savedCareers.map((career) => (
@@ -481,7 +504,9 @@ const SavedPage = () => {
             )}
             <hr className="divider" style={{ marginTop: "60px" }} />
             <div className="visualPathway">
-              <h2 className="careerInfoCardHeader pathContHeader">Visual Pathway</h2>
+              <h2 className="careerInfoCardHeader pathContHeader">
+                Visual Pathway
+              </h2>
               <div className="pathCont">{create_pathway()}</div>
             </div>
           </div>

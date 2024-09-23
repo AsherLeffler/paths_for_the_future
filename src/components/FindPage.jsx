@@ -5,7 +5,16 @@ import "./css/FindPage.css";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useState, useRef, useCallback } from "react";
-import { Link, ExternalLink, ArrowLeft, Briefcase, Cpu, GraduationCap, School } from "lucide-react";
+import {
+  Link,
+  ExternalLink,
+  ArrowLeft,
+  Briefcase,
+  Cpu,
+  GraduationCap,
+  School,
+  Frown,
+} from "lucide-react";
 
 const FindPage = ({ findPageInfo }) => {
   const {
@@ -449,7 +458,8 @@ const FindPage = ({ findPageInfo }) => {
             <h2
               className="pathHeader"
               style={{
-                [direction === "left" ? "right" : "left"]: "130px",
+                [direction === "left" ? "right" : "left"]:
+                  window.innerWidth <= 480 ? "20px" : "130px",
               }}
             >
               Internship
@@ -457,40 +467,43 @@ const FindPage = ({ findPageInfo }) => {
             <div
               className="infoBox"
               style={{
-                [direction === "left" ? "right" : "left"]: "130px",
+                [direction === "left" ? "right" : "left"]:
+                  window.innerWidth <= 480 ? "20px" : "130px",
               }}
             >
               <p>{info.name}</p>
             </div>
           </>
         )}
-        {info !== recCareerToLearnAbout.technology.category &&
-          !info.rapids && (
-            <>
-              <h2
-                className="pathHeader"
-                style={{
-                  [direction === "left" ? "right" : "left"]: "130px",
-                }}
-                >
-                  Education
-                </h2>  
-                <div
-                className="infoBox"
-                style={{
-                  [direction === "left" ? "right" : "left"]: "130px",
-                }}
-              >
-                <p>{info}</p>
-              </div>
-            </>
-          )}
+        {info !== recCareerToLearnAbout.technology.category && !info.rapids && (
+          <>
+            <h2
+              className="pathHeader"
+              style={{
+                [direction === "left" ? "right" : "left"]:
+                  window.innerWidth <= 480 ? "20px" : "130px",
+              }}
+            >
+              Education
+            </h2>
+            <div
+              className="infoBox"
+              style={{
+                [direction === "left" ? "right" : "left"]:
+                  window.innerWidth <= 480 ? "20px" : "130px",
+              }}
+            >
+              <p>{info}</p>
+            </div>
+          </>
+        )}
         {info === recCareerToLearnAbout.technology.category && (
           <>
             <h2
               className="pathHeader"
               style={{
-                [direction === "left" ? "right" : "left"]: "130px",
+                [direction === "left" ? "right" : "left"]:
+                  window.innerWidth <= 480 ? "20px" : "130px",
               }}
             >
               Technology
@@ -498,15 +511,23 @@ const FindPage = ({ findPageInfo }) => {
             <div
               className="infoBox tech"
               style={{
-                [direction === "left" ? "right" : "left"]: "130px",
+                [direction === "left" ? "right" : "left"]:
+                  window.innerWidth <= 480 ? "20px" : "130px",
               }}
             >
-              {info.map((tech) =>
-                tech.example.map((tech, i) => (
-                  <div key={tech.name + i} className="techBox">
-                    <p>{tech.name}</p>
-                  </div>
-                ))
+              {window.innerWidth > 480 &&
+                info.map((tech) =>
+                  tech.example.map((tech, i) => (
+                    <div key={tech.name + i} className="techBox">
+                      <p>{tech.name}</p>
+                    </div>
+                  ))
+                )}
+              {window.innerWidth <= 480 && (
+                <div className="techBox" style={{ width: "100px" }}>
+                  <Frown size={32} color="white" />
+                  <p>Sorry! See technology for information</p>
+                </div>
               )}
             </div>
           </>
@@ -598,14 +619,18 @@ const FindPage = ({ findPageInfo }) => {
           className="mainLine"
           style={{ height: `${indexOfLine * 160 + 80}px` }}
         ></div>
-        <h2 className="pathHeader" style={{ top: "-80px", width: "max-content" }}>Your Career</h2>
+        <h2
+          className="pathHeader"
+          style={{ top: "-80px", width: "max-content" }}
+        >
+          Your Career
+        </h2>
         <div id="endResult">
           <p>{recCareerToLearnAbout.career.title}</p>
         </div>
       </>
     );
   };
-
 
   return (
     <>
@@ -716,7 +741,7 @@ const FindPage = ({ findPageInfo }) => {
               </>
             )}
             {!currentQuestion && explain && (
-              <>
+              <div className="explain-wrapper">
                 <h1>What to do</h1>
                 <p>
                   Answer the following questions to the best of your ability.
@@ -744,10 +769,20 @@ const FindPage = ({ findPageInfo }) => {
                 <button className="advanceBtn" onClick={getTheFirstQuestion}>
                   Start
                 </button>
-              </>
+              </div>
             )}
             {questions.current.length > 0 && currentQuestion && (
-              <form id="findForm" onSubmit={handleSubmit}>
+              <form
+                id="findForm"
+                onSubmit={handleSubmit}
+                style={{
+                  padding:
+                    currentQuestion.index === data.current.end + 1 &&
+                    data.current.end === 60
+                      ? "0 0 10px 0"
+                      : "",
+                }}
+              >
                 <h3 className="question">
                   {currentQuestion && currentQuestion.text}
                 </h3>
@@ -829,18 +864,20 @@ const FindPage = ({ findPageInfo }) => {
                   )}
                 {currentQuestion.index === data.current.end + 1 &&
                   data.current.end === 60 && (
-                    <div className="inputsCont">
-                      <button
-                        className="nextSetBtn endBtn"
-                        onClick={() => handleQuestionChange("prev")}
-                      >
-                        Previous
-                      </button>
-
-                      <button className="nextSetBtn" onClick={getResults}>
-                        Get Results
-                      </button>
-                    </div>
+                    <>
+                      <h2>Finished!</h2>
+                      <div className="inputsCont">
+                        <button
+                          className="nextSetBtn endBtn"
+                          onClick={() => handleQuestionChange("prev")}
+                        >
+                          Previous
+                        </button>
+                        <button className="nextSetBtn" onClick={getResults}>
+                          Get Results
+                        </button>
+                      </div>
+                    </>
                   )}
                 {currentQuestion.index !== data.current.end + 1 && (
                   <div className="buttonsCont">
@@ -923,7 +960,11 @@ const FindPage = ({ findPageInfo }) => {
             </p>
             <h3 className="resultsTitle rec">Recommended Jobs</h3>
             <div className="tagLegend">
-              <p>☀️ Bright Outlook</p><p>|</p><p>🟩 Green</p><p>|</p><p>🛠️ Apprenticeship</p>
+              <p>☀️ Bright Outlook</p>
+              <p>|</p>
+              <p>🟩 Green</p>
+              <p>|</p>
+              <p>🛠️ Apprenticeship</p>
             </div>
             <div className="resultsCont">
               {recommendedJobs.map((job, index) => (
@@ -1048,11 +1089,13 @@ const FindPage = ({ findPageInfo }) => {
                       </div>
                     </>
                   )}
-            <hr className="divider" style={{ marginTop: "60px" }} />
-            <div className="visualPathway">
-              <h2 className="careerInfoCardHeader pathContHeader">Visual Pathway</h2>
-              <div className="pathCont">{create_pathway()}</div>
-            </div>
+                  <hr className="divider" style={{ marginTop: "60px" }} />
+                  <div className="visualPathway">
+                    <h2 className="careerInfoCardHeader pathContHeader">
+                      Visual Pathway
+                    </h2>
+                    <div className="pathCont">{create_pathway()}</div>
+                  </div>
                 </div>
                 <div className="careerInfoCard">
                   {recCareerToLearnAbout.resources && (

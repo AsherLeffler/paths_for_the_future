@@ -617,7 +617,10 @@
     font-size: 1.5rem;
     margin-bottom: 20px;
   }
-
+  .pathCont .infoBox{
+    top: 75px;
+    width: 115px;
+  }
   .careerInfoCardHeader {
     font-size: 1.2rem;
   }
@@ -644,6 +647,6 @@
   }
 
   .pathHeader {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
   }
 }

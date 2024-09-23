@@ -20,6 +20,7 @@ const AppRouter = () => {
   const answers = useRef([]);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [recommendedJobs, setRecommendedJobs] = useState([]);
+  const currentKeyword = useRef("");
 
   return (
     <Router>
@@ -34,6 +35,7 @@ const AppRouter = () => {
                 results,
                 careerToLearnAbout,
                 setCareerToLearnAbout,
+                currentKeyword,
               }}
             />
           }
