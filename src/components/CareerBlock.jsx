@@ -65,7 +65,7 @@ const CareerBlock = ({
     const careerLink = career.href;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/careerSearch",
+        "https://pathsforthefuture.vercel.app/api/careerSearch",
         { careerLink }
       );
       if (response.statusText === "OK") {

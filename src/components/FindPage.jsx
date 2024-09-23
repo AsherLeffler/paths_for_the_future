@@ -52,7 +52,7 @@ const FindPage = ({ findPageInfo }) => {
         "https://services.onetcenter.org/ws/mnm/interestprofiler/questions";
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/interestProfilerQuestions",
+          "https://pathsforthefuture.vercel.app/api/interestProfilerQuestions",
           { link }
         );
         if (response.statusText === "OK") {
@@ -133,7 +133,7 @@ const FindPage = ({ findPageInfo }) => {
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/results?answers=${answersString}`;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/getResultsForQuestions",
+        "https://pathsforthefuture.vercel.app/api/getResultsForQuestions",
         { link }
       );
       if (response.statusText === "OK") {
@@ -152,7 +152,7 @@ const FindPage = ({ findPageInfo }) => {
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/results?answers=${answersString}`;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/getResultsForQuestions",
+        "https://pathsforthefuture.vercel.app/api/getResultsForQuestions",
         { link }
       );
       if (response.statusText === "OK") {
@@ -183,7 +183,7 @@ const FindPage = ({ findPageInfo }) => {
     const link = data.current.link[nextLinkIndex].href;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/interestProfilerQuestions",
+        "https://pathsforthefuture.vercel.app/api/interestProfilerQuestions",
         { link }
       );
       if (response.statusText === "OK") {
@@ -209,7 +209,7 @@ const FindPage = ({ findPageInfo }) => {
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/careers?answers=${answersString}`;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/getRecommendedJobs",
+        "https://pathsforthefuture.vercel.app/api/getRecommendedJobs",
         { link }
       );
       if (response.statusText === "OK") {
@@ -298,7 +298,7 @@ const FindPage = ({ findPageInfo }) => {
     const careerLink = link;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/careerSearch",
+        "https://pathsforthefuture.vercel.app/api/careerSearch",
         { careerLink }
       );
       if (response.statusText === "OK") {
