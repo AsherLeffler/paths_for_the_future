@@ -398,7 +398,7 @@
   background-color: black;
   position: relative;
 }
-.mainLine::before{
+.mainLine::before {
   content: "";
   position: absolute;
   bottom: 0;
@@ -492,7 +492,7 @@
   color: white;
   text-align: center;
 }
-.pathHeader{
+.pathHeader {
   margin: 0;
   position: absolute;
   top: -40px;
@@ -500,4 +500,150 @@
   font-weight: 700;
   color: rgb(48, 48, 48);
   text-align: center;
+}
+
+@media screen and (max-width: 1024px) {
+  .mainBody #mainTitle {
+    font-size: 3rem;
+    margin: 60px 0 0 0;
+  }
+
+  .searchBox {
+    width: 90%;
+  }
+
+  .careerInfoSection {
+    flex-direction: column;
+    height: auto;
+    gap: 40px;
+  }
+
+  .careerInfoSection .section {
+    width: 100%;
+  }
+
+  .apprenticeShipCont {
+    flex-direction: column;
+  }
+
+  .pathCont {
+    transform: scale(0.9);
+    margin-top: 80px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mainBody #mainTitle {
+    font-size: 2.5rem;
+  }
+
+  .searchBox {
+    width: 70%;
+    height: 40px;
+  }
+
+  .mainBody #searchInput,
+  #resultSearchInput {
+    font-size: 1rem;
+  }
+
+  .careerInfoCard {
+    padding: 20px;
+  }
+
+  #careerInfoTitle {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+
+  .careerInfoCardHeader {
+    font-size: 1.3rem;
+  }
+
+  .careerInfoCardHeader.pathContHeader {
+    font-size: 2rem;
+  }
+
+  .techBoxCont {
+    gap: 8px;
+  }
+
+  .techBox {
+    padding: 3px 8px;
+  }
+
+  .techBox p {
+    font-size: 0.8rem;
+  }
+
+  .pathCont {
+    transform: scale(0.8);
+    margin-top: 60px;
+  }
+
+  #endResult {
+    padding: 8px 30px;
+  }
+
+  #endResult p {
+    font-size: 1rem;
+  }
+
+  .pathHeader {
+    font-size: 1.3rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .mainBody #mainTitle {
+    font-size: 2rem;
+  }
+
+  .searchBox {
+    height: 40px;
+    width: 80%;
+  }
+
+  #searchInput,
+  #resultSearchInput {
+    font-size: 0.9rem;
+  }
+
+  .careerInfoCard {
+    padding: 15px;
+  }
+
+  #careerInfoTitle {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .careerInfoCardHeader {
+    font-size: 1.2rem;
+  }
+
+  .careerInfoCardHeader.pathContHeader {
+    font-size: 1.8rem;
+  }
+
+  .techBox p {
+    font-size: 0.7rem;
+  }
+
+  .resourceTitle {
+    font-size: 1.3rem;
+  }
+
+  .otherCareersTitle {
+    font-size: 1.3rem;
+  }
+
+  .pathCont {
+    transform: scale(0.7);
+    margin-top: 40px;
+  }
+
+  .pathHeader {
+    font-size: 1.1rem;
+  }
 }

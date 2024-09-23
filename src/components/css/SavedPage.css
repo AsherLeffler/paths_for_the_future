@@ -44,3 +44,42 @@
 .relatedCareer:hover {
   scale: 1.01;
 }
+
+@media screen and (max-width: 768px) {
+  #savedTitle {
+    font-size: 2rem;
+  }
+
+  .savedCareerBlock {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px 10px;
+  }
+
+  .savedCareerBlock h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+
+  .savedCareerBlock i {
+    align-self: flex-end;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .savedMain {
+    padding: 15px;
+  }
+
+  #savedTitle {
+    font-size: 1.8rem;
+  }
+
+  .savedCareerBlock h3 {
+    font-size: 1.2rem;
+  }
+
+  .savedCareerBlock i {
+    font-size: 1.2rem;
+  }
+}

@@ -173,13 +173,13 @@ const SavedPage = () => {
 
     const getIcon = () => {
       if (info.rapids) {
-        return <Briefcase size={28} />;
+        return <Briefcase size={28} color="rgb(48, 48, 48)" />;
       } else if (info === savedCareerToLearnAbout.technology.category) {
-        return <Cpu size={28} />;
+        return <Cpu size={28} color="rgb(48, 48, 48)" />;
       } else if (info === "High school diploma or GED certificate") {
-        return <School size={28} />;
+        return <School size={28} color="rgb(48, 48, 48)" />;
       } else {
-        return <GraduationCap size={28} />;
+        return <GraduationCap size={28} color="rgb(48, 48, 48)" />;
       }
     };
 
@@ -362,7 +362,7 @@ const SavedPage = () => {
           <h1 id="savedTitle">Saved Paths</h1>
           <hr className="divider" />
           <div className="tagLegend">
-            <p>☀️ Bright Outlook</p>|<p>🟩 Green</p>|<p>🛠️ Apprenticeship</p>
+            <p>☀️ Bright Outlook</p><p>|</p><p>🟩 Green</p><p>|</p><p>🛠️ Apprenticeship</p>
           </div>
           <div className="resultsCont saved">
             {savedCareers.map((career) => (

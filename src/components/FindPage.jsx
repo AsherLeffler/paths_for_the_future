@@ -426,13 +426,13 @@ const FindPage = ({ findPageInfo }) => {
 
     const getIcon = () => {
       if (info.rapids) {
-        return <Briefcase size={28} />;
+        return <Briefcase size={28} color="rgb(48, 48, 48)" />;
       } else if (info === recCareerToLearnAbout.technology.category) {
-        return <Cpu size={28} />;
+        return <Cpu size={28} color="rgb(48, 48, 48)" />;
       } else if (info === "High school diploma or GED certificate") {
-        return <School size={28} />;
+        return <School size={28} color="rgb(48, 48, 48)" />;
       } else {
-        return <GraduationCap size={28} />;
+        return <GraduationCap size={28} color="rgb(48, 48, 48)" />;
       }
     };
 
@@ -923,7 +923,7 @@ const FindPage = ({ findPageInfo }) => {
             </p>
             <h3 className="resultsTitle rec">Recommended Jobs</h3>
             <div className="tagLegend">
-              <p>☀️ Bright Outlook</p>|<p>🟩 Green</p>|<p>🛠️ Apprenticeship</p>
+              <p>☀️ Bright Outlook</p><p>|</p><p>🟩 Green</p><p>|</p><p>🛠️ Apprenticeship</p>
             </div>
             <div className="resultsCont">
               {recommendedJobs.map((job, index) => (
