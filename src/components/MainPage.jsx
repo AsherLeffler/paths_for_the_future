@@ -27,11 +27,20 @@ const MainPage = ({ mainPageInfo }) => {
     careerToLearnAbout,
     setCareerToLearnAbout,
     currentKeyword,
+    setExplainPopupIsShowing,
+    popupDisplayed,
+    explainPopupIsShowing,
   } = mainPageInfo;
   const [savedCareerData, setSavedCareerData] = useState(null);
   const i = useRef(0);
 
   useEffect(() => {
+    const doNotShowAgain = localStorage.getItem("doNotShowAgain");
+    if (!popupDisplayed.current && !doNotShowAgain) {
+      setExplainPopupIsShowing(true);
+      popupDisplayed.current = true;
+    }
+
     let placeholderArray = [
       "Teacher...",
       "Doctor...",
@@ -88,7 +97,13 @@ const MainPage = ({ mainPageInfo }) => {
         clearInterval(intervalID);
       };
     }
-  }, [results, setCurrentPage, currentKeyword]);
+  }, [
+    results,
+    setCurrentPage,
+    currentKeyword,
+    setExplainPopupIsShowing,
+    popupDisplayed,
+  ]);
 
   const check_job_zone = (job_zone) => {
     switch (job_zone) {
@@ -445,6 +460,41 @@ const MainPage = ({ mainPageInfo }) => {
           <div className="dot"></div>
         </div>
       </div>
+      <div
+        className="loadingCont"
+        style={{ display: explainPopupIsShowing ? "flex" : "none" }}
+      >
+        <div className="menu">
+          <h1>Welcome to Paths for the Future!</h1>
+          <p>
+            Paths for the Future is a career exploration tool that helps you
+            find the right career path for you.
+          </p>
+          <p>
+            To get started, enter a keyword into the search bar above.
+          </p>
+          <p>
+            You can also click on the &quot;Find&quot; button above to start a
+            quiz that will recommend a career for you.
+          </p>
+          <p>
+            Go to the &quot;Saved&quot; page to view careers you have saved.
+          </p>
+          <div className="showPopupButtonsCont">
+            <button onClick={() => setExplainPopupIsShowing(false)}>
+              Got it!
+            </button>
+            <button
+              onClick={() => {
+                setExplainPopupIsShowing(false);
+                localStorage.setItem("doNotShowAgain", true);
+              }}
+            >
+              Don&apos;t show this message again
+            </button>
+          </div>
+        </div>
+      </div>
       {currentPage === "default" && (
         <div className="mainBody">
           <img
@@ -648,7 +698,10 @@ MainPage.propTypes = {
     results: PropTypes.object.isRequired,
     careerToLearnAbout: PropTypes.object,
     setCareerToLearnAbout: PropTypes.func.isRequired,
-    currentKeyword: PropTypes.string.isRequired,
+    currentKeyword: PropTypes.object.isRequired,
+    setExplainPopupIsShowing: PropTypes.func.isRequired,
+    popupDisplayed: PropTypes.object.isRequired,
+    explainPopupIsShowing: PropTypes.bool.isRequired,    
   }).isRequired,
 };
 
