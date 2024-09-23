@@ -115,3 +115,38 @@ footer img {
   height: 60px;
   border: none;
 }
+
+@media screen and (max-width: 768px) {
+  header nav h2 {
+    font-size: 1rem;
+  }
+
+  .mainFooter, .elseFooter {
+    height: auto;
+    padding: 10px 0;
+  }
+
+  footer img {
+    width: 100px;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  header i {
+    font-size: 1.2rem;
+  }
+
+  header nav a {
+    flex-direction: column;
+  }
+
+  .mainFooter .textCredit,
+  .elseFooter .textCredit {
+    font-size: 0.9rem;
+  }
+
+  footer img {
+    width: 80px;
+  }
+}

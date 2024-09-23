@@ -177,8 +177,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 40px;
-  margin-top: 60px;
+  margin-top: 40px;
 }
 .pathWayBox {
   border: 2px solid black;
@@ -191,22 +190,6 @@
   justify-content: center;
   align-items: center;
   position: relative;
-}
-.pathWayBox:not(.techCont .pathWayBox)::before,
-.techCont::before {
-  --height: 44px;
-  content: "";
-  position: absolute;
-  width: 4px;
-  height: var(--height);
-  background-color: black;
-  z-index: 1;
-  top: calc(var(--height) * -1);
-  border-bottom: 4px solid grey;
-  border-top: 4px solid grey;
-}
-#finalResultBox::before {
-  display: none;
 }
 .pathWayBox * {
   margin: 0;
@@ -226,7 +209,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 40px;
 }
 .techCont {
   display: flex;
@@ -327,6 +309,9 @@
   font-weight: 700;
   margin: 0;
 }
+.careerInfoCardHeader.pathContHeader {
+  font-size: 2.5rem;
+}
 .careerInfoCardHeader.techHeader {
   width: 100%;
   text-align: center;
@@ -367,7 +352,7 @@
   transition: 0.2s;
   cursor: default;
 }
-.techBox:hover{
+.techBox:hover {
   scale: 1.03;
 }
 .techBox p {
@@ -407,4 +392,261 @@
   margin: 20px 0 10px 0;
   font-size: 1.5rem;
   font-weight: 700;
+}
+.mainLine {
+  width: 6px;
+  background-color: black;
+  position: relative;
+}
+.mainLine::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  translate: -50%;
+  width: 80px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: black;
+}
+.pathCont {
+  width: fit-content;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 110px;
+}
+.lineSegment {
+  position: absolute;
+}
+.lineSegment .line {
+  height: 160px;
+  border-left: 4px solid black;
+  z-index: 2;
+}
+.pathCont .circle {
+  width: 60px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pathCont .infoBox {
+  position: absolute;
+  top: 0;
+  width: 200px;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #0073ff;
+  border-radius: 5px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+.pathCont .infoBox.tech {
+  background-color: #0073ff;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.pathCont .infoBox.tech .techBox {
+  background-color: #479aff !important;
+}
+.pathCont .infoBox.tech p {
+  font-size: 0.7rem;
+}
+.pathCont .infoBox p {
+  margin: 0;
+  font-size: 1rem;
+  color: white;
+}
+#endResult {
+  width: fit-content;
+  height: fit-content;
+  padding: 10px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  position: absolute;
+  z-index: 3;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #0073ff;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+#endResult p {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+}
+.pathHeader {
+  margin: 0;
+  position: absolute;
+  top: -40px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: rgb(48, 48, 48);
+  text-align: center;
+}
+
+@media screen and (max-width: 1024px) {
+  .mainBody #mainTitle {
+    font-size: 3rem;
+    margin: 60px 0 0 0;
+  }
+
+  .searchBox {
+    width: 90%;
+  }
+
+  .careerInfoSection {
+    flex-direction: column;
+    height: auto;
+    gap: 40px;
+  }
+
+  .careerInfoSection .section {
+    width: 100%;
+  }
+
+  .apprenticeShipCont {
+    flex-direction: column;
+  }
+
+  .pathCont {
+    transform: scale(0.9);
+    margin-top: 80px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mainBody #mainTitle {
+    font-size: 2.5rem;
+  }
+
+  .searchBox {
+    width: 70%;
+    height: 40px;
+  }
+
+  .mainBody #searchInput,
+  #resultSearchInput {
+    font-size: 1rem;
+  }
+
+  .careerInfoCard {
+    padding: 20px;
+  }
+
+  #careerInfoTitle {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+
+  .careerInfoCardHeader {
+    font-size: 1.3rem;
+  }
+
+  .careerInfoCardHeader.pathContHeader {
+    font-size: 2rem;
+  }
+
+  .techBoxCont {
+    gap: 8px;
+  }
+
+  .techBox {
+    padding: 3px 8px;
+  }
+
+  .techBox p {
+    font-size: 0.8rem;
+  }
+
+  .pathCont {
+    transform: scale(0.8);
+    margin-top: 60px;
+  }
+
+  #endResult {
+    padding: 8px 30px;
+  }
+
+  #endResult p {
+    font-size: 1rem;
+  }
+
+  .pathHeader {
+    font-size: 1.3rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .mainBody #mainTitle {
+    font-size: 2rem;
+  }
+
+  .searchBox {
+    height: 40px;
+    width: 80%;
+  }
+
+  #searchInput,
+  #resultSearchInput {
+    font-size: 0.9rem;
+  }
+
+  .careerInfoCard {
+    padding: 15px;
+  }
+
+  #careerInfoTitle {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  .pathCont .infoBox{
+    top: 75px;
+    width: 115px;
+  }
+  .careerInfoCardHeader {
+    font-size: 1.2rem;
+  }
+
+  .careerInfoCardHeader.pathContHeader {
+    font-size: 1.8rem;
+  }
+
+  .techBox p {
+    font-size: 0.7rem;
+  }
+
+  .resourceTitle {
+    font-size: 1.3rem;
+  }
+
+  .otherCareersTitle {
+    font-size: 1.3rem;
+  }
+
+  .pathCont {
+    transform: scale(0.7);
+    margin-top: 40px;
+  }
+
+  .pathHeader {
+    font-size: 1.3rem;
+  }
 }

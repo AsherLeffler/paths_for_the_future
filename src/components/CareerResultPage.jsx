@@ -4,7 +4,7 @@ import axios from "axios";
 import "./css/CareerResultPage.css";
 import { useEffect } from "react";
 
-const CareerResultPage = ({ careerInfo, results, hooks }) => {
+const CareerResultPage = ({ careerInfo, results, hooks, currentKeyword }) => {
   const {
     setCurrentPage,
     setCareerToLearnAbout,
@@ -117,12 +117,13 @@ const CareerResultPage = ({ careerInfo, results, hooks }) => {
             id="resultSearchInput"
             type="search"
             placeholder={"Type your career"}
+            defaultValue={`${currentKeyword.current}`}
           />
         </div>
       </div>
       <hr className="divider" />
       <div className="tagLegend">
-        <p>☀️ Bright Outlook</p>|<p>🟩 Green</p>|<p>🛠️ Apprenticeship</p>
+        <p>☀️ Bright Outlook</p><p>|</p><p>🟩 Green</p><p>|</p><p>🛠️ Apprenticeship</p>
       </div>
       <div
         className="resultsCont"
@@ -204,6 +205,7 @@ CareerResultPage.propTypes = {
     setSavedCareerData: PropTypes.func.isRequired,
     setDisplayingLoader: PropTypes.func.isRequired,
   }).isRequired,
+  currentKeyword: PropTypes.string.isRequired,
 };
 
 export default CareerResultPage;
