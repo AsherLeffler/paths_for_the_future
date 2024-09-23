@@ -1,5 +1,5 @@
 .mainBody {
-  height: calc(100vh - 80px);
+  height: calc(100dvh - 80px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -275,7 +275,7 @@
 }
 .backImg {
   width: 100%;
-  height: calc(100vh - 80px);
+  height: calc(100dvh - 80px);
   object-fit: cover;
   position: absolute;
   top: 0;
@@ -306,7 +306,7 @@
 
 .main-container {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;

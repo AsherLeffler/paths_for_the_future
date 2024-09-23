@@ -9,7 +9,7 @@
   height: fit-content;
   display: flex;
   align-items: center;
-  min-height: calc(100vh - 160px);
+  min-height: calc(100dvh - 160px);
   justify-content: center;
   flex-wrap: wrap;
   padding: 0;

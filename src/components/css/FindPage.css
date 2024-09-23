@@ -5,7 +5,7 @@
   padding-top: 40px;
   width: 100%;
   height: fit-content;
-  min-height: calc(100vh - 160px);
+  min-height: calc(100dvh - 160px);
   padding: 20px;
   background: linear-gradient(180deg, #e9f2ff 0%, #9fc7ff 100%);
 }
