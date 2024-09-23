@@ -471,11 +471,11 @@ const MainPage = ({ mainPageInfo }) => {
             find the right career path for you.
           </p>
           <p>
-            To get started, enter a keyword into the search bar above.
+            To get started, enter a keyword into the search bar and press enter.
           </p>
           <p>
-            You can also click on the &quot;Find&quot; button above to start a
-            quiz that will recommend a career for you.
+            You can also go to the &quot;Find&quot; page and
+            follow the guide to find careers that are best suited for you.
           </p>
           <p>
             Go to the &quot;Saved&quot; page to view careers you have saved.
@@ -701,7 +701,7 @@ MainPage.propTypes = {
     currentKeyword: PropTypes.object.isRequired,
     setExplainPopupIsShowing: PropTypes.func.isRequired,
     popupDisplayed: PropTypes.object.isRequired,
-    explainPopupIsShowing: PropTypes.bool.isRequired,    
+    explainPopupIsShowing: PropTypes.bool.isRequired,
   }).isRequired,
 };
 
