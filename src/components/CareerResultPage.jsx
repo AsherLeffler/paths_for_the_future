@@ -123,7 +123,7 @@ const CareerResultPage = ({ careerInfo, results, hooks, currentKeyword }) => {
       </div>
       <hr className="divider" />
       <div className="tagLegend">
-        <p>☀️ Bright Outlook</p><p>|</p><p>🟩 Green</p><p>|</p><p>🛠️ Apprenticeship</p>
+        <p>☀️ Bright Outlook</p><p>|</p><p>🟩 Environment Friendly</p><p>|</p><p>🛠️ Apprenticeship</p>
       </div>
       <div
         className="resultsCont"

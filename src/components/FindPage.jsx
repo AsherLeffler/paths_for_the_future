@@ -962,7 +962,7 @@ const FindPage = ({ findPageInfo }) => {
             <div className="tagLegend">
               <p>☀️ Bright Outlook</p>
               <p>|</p>
-              <p>🟩 Green</p>
+              <p>🟩 Environment Friendly</p>
               <p>|</p>
               <p>🛠️ Apprenticeship</p>
             </div>
