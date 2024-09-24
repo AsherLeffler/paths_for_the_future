@@ -26,13 +26,13 @@
   align-items: center;
   width: 100%;
   height: fit-content;
+  aspect-ratio: 1;
   margin-bottom: 160px;
   gap: 30px;
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   padding: 20px;
-  padding-bottom: 80px;
 }
 .startBtn {
   width: 350px;
