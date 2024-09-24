@@ -167,14 +167,16 @@ const MainPage = ({ mainPageInfo }) => {
     }
   };
 
-  const findSalary = (salary) => {
+  const findSalary = (salary) => {if(salary){
     const salaryPropInData = salary.annual_median
       ? salary.annual_median
       : salary.annual_median_over;
     let salaryNum = salaryPropInData
       .toString()
       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return salaryNum;
+    return salaryNum;} else{
+      return "Salary not available"
+    }
   };
 
   const handleRequestForCareer = async (link) => {

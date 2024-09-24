@@ -638,6 +638,7 @@ const FindPage = ({ findPageInfo }) => {
       <Header
         setCurrentQuizPage={setCurrentQuizPage}
         setExplain={setExplain}
+        setCurrentQuestion={setCurrentQuestion}
       ></Header>
       <div
         className={`areaInfoPopUp ${areaInformationDisplaying ? "show" : ""}`}

@@ -9,6 +9,7 @@ const Header = ({
   setCurrentPage = () => {},
   setCurrentQuizPage = () => {},
   setExplain = () => {},
+  setCurrentQuestion = () => {},
 }) => {
   const location = useLocation();
   const currentRoute = location.pathname;
@@ -50,6 +51,7 @@ const Header = ({
               if (window.location.pathname === "/find") {
                 setCurrentQuizPage("main");
                 setExplain(false);
+                setCurrentQuestion(null);
               }
             }}
           >
@@ -82,6 +84,7 @@ Header.propTypes = {
   setCurrentPage: PropTypes.func,
   setCurrentQuizPage: PropTypes.func,
   setExplain: PropTypes.func,
+  setCurrentQuestion: PropTypes.func,
 };
 
 export default Header;
