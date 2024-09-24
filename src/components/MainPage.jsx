@@ -61,7 +61,7 @@ const MainPage = ({ mainPageInfo }) => {
           currentKeyword.current = keyword;
           try {
             const response = await axios.post(
-              "http://localhost:5000/api/search",
+              "https://pathsforthefuture.vercel.app/api/search",
               { keyword }
             );
             if (response.status === 200) {
@@ -181,7 +181,7 @@ const MainPage = ({ mainPageInfo }) => {
     const careerLink = link;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/careerSearch",
+        "https://pathsforthefuture.vercel.app/api/careerSearch",
         { careerLink }
       );
       if (response.status === 200) {

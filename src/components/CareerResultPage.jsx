@@ -29,7 +29,7 @@ const CareerResultPage = ({ careerInfo, results, hooks, currentKeyword }) => {
       const pageLink = careerInfo.link[indexOfNextLink].href;
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/nextPageSearch",
+          "https://pathsforthefuture.vercel.app/api/nextPageSearch",
           { pageLink }
         );
         if (response.status === 200) {
@@ -52,7 +52,7 @@ const CareerResultPage = ({ careerInfo, results, hooks, currentKeyword }) => {
       const pageLink = careerInfo.link[indexOfPrevLink].href;
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/prevPageSearch",
+          "https://pathsforthefuture.vercel.app/api/prevPageSearch",
           { pageLink }
         );
         if (response.status === 200) {
@@ -79,7 +79,7 @@ const CareerResultPage = ({ careerInfo, results, hooks, currentKeyword }) => {
           const keyword = input.value;
           try {
             const response = await axios.post(
-              "http://localhost:5000/api/search",
+              "https://pathsforthefuture.vercel.app/api/search",
               { keyword }
             );
             if (response.status === 200) {
@@ -205,7 +205,7 @@ CareerResultPage.propTypes = {
     setSavedCareerData: PropTypes.func.isRequired,
     setDisplayingLoader: PropTypes.func.isRequired,
   }).isRequired,
-  currentKeyword: PropTypes.object.isRequired,
+  currentKeyword: PropTypes.string.isRequired,
 };
 
 export default CareerResultPage;
