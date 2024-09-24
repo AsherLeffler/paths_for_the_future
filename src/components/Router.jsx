@@ -40,7 +40,7 @@ const AppRouter = () => {
                 currentKeyword,
                 setExplainPopupIsShowing,
                 popupDisplayed,
-                explainPopupIsShowing
+                explainPopupIsShowing,
               }}
             />
           }
@@ -68,13 +68,16 @@ const AppRouter = () => {
                 setExplainPopupIsShowing,
                 popupDisplayed,
               }}
+              popupInfo={{ setExplainPopupIsShowing, popupDisplayed }}
             />
           }
         />
         <Route
           path="/saved"
           element={
-            <SavedPage popupInfo={{ setExplainPopupIsShowing, popupDisplayed }} />
+            <SavedPage
+              popupInfo={{ setExplainPopupIsShowing, popupDisplayed }}
+            />
           }
         />
       </Routes>
