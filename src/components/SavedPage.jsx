@@ -3,7 +3,6 @@ import Header from "./Header"; // Assuming Header is also imported
 import { useEffect, useState, useRef, useCallback } from "react";
 import SavedCareerComponent from "./SavedCareerComponent";
 import axios from "axios";
-import PropTypes from "prop-types";
 import "./css/SavedPage.css";
 import {
   Link,
@@ -16,7 +15,7 @@ import {
   Frown,
 } from "lucide-react";
 
-const SavedPage = ({ popupInfo }) => {
+const SavedPage = () => {
   const usersCareers = useRef([]);
   const [savedCareers, setSavedCareers] = useState([]);
   const [savedCurrentPage, setSavedCurrentPage] = useState("defaultPage");
@@ -126,7 +125,7 @@ const SavedPage = ({ popupInfo }) => {
     const careerLink = link;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture.vercel.app/api/careerSearch",
+        "http://localhost:5000/api/careerSearch",
         { careerLink }
       );
       if (response.status === 200) {
@@ -378,9 +377,6 @@ const SavedPage = ({ popupInfo }) => {
     <>
       <Header
         setSavedCurrentPage={setSavedCurrentPage}
-        popupInfo={{
-          popupInfo,
-        }}
       />
       {savedCurrentPage === "defaultPage" && (
         <div className="savedMain">
@@ -568,10 +564,6 @@ const SavedPage = ({ popupInfo }) => {
       <Footer style={{ color: true, opacity: false }} />
     </>
   );
-};
-
-SavedPage.propTypes = {
-  popupInfo: PropTypes.object,
 };
 
 export default SavedPage;

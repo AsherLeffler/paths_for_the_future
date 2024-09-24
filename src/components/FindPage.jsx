@@ -16,7 +16,7 @@ import {
   Frown,
 } from "lucide-react";
 
-const FindPage = ({ findPageInfo, popupInfo }) => {
+const FindPage = ({ findPageInfo }) => {
   const {
     questions,
     data,
@@ -33,10 +33,10 @@ const FindPage = ({ findPageInfo, popupInfo }) => {
     setCurrentQuestion,
     recommendedJobs,
     setRecommendedJobs,
+    setExplain,
+    explain,
   } = findPageInfo;
-  const { setExplainPopupIsShowing, popupDisplayed } = popupInfo;
   const [careerData, setCareerData] = useState(null);
-  const [explain, setExplain] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const previousAnswers = useRef(
     JSON.parse(localStorage.getItem("lastAnswers")) || []
@@ -53,7 +53,7 @@ const FindPage = ({ findPageInfo, popupInfo }) => {
         "https://services.onetcenter.org/ws/mnm/interestprofiler/questions";
       try {
         const response = await axios.post(
-          "https://pathsforthefuture.vercel.app/api/interestProfilerQuestions",
+          "http://localhost:5000/api/interestProfilerQuestions",
           { link }
         );
         if (response.status === 200) {
@@ -134,7 +134,7 @@ const FindPage = ({ findPageInfo, popupInfo }) => {
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/results?answers=${answersString}`;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture.vercel.app/api/getResultsForQuestions",
+        "http://localhost:5000/api/getResultsForQuestions",
         { link }
       );
       if (response.status === 200) {
@@ -153,7 +153,7 @@ const FindPage = ({ findPageInfo, popupInfo }) => {
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/results?answers=${answersString}`;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture.vercel.app/api/getResultsForQuestions",
+        "http://localhost:5000/api/getResultsForQuestions",
         { link }
       );
       if (response.status === 200) {
@@ -184,7 +184,7 @@ const FindPage = ({ findPageInfo, popupInfo }) => {
     const link = data.current.link[nextLinkIndex].href;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture.vercel.app/api/interestProfilerQuestions",
+        "http://localhost:5000/api/interestProfilerQuestions",
         { link }
       );
       if (response.status === 200) {
@@ -210,7 +210,7 @@ const FindPage = ({ findPageInfo, popupInfo }) => {
     const link = `https://services.onetcenter.org/ws/mnm/interestprofiler/careers?answers=${answersString}`;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture.vercel.app/api/getRecommendedJobs",
+        "http://localhost:5000/api/getRecommendedJobs",
         { link }
       );
       if (response.status === 200) {
@@ -299,7 +299,7 @@ const FindPage = ({ findPageInfo, popupInfo }) => {
     const careerLink = link;
     try {
       const response = await axios.post(
-        "https://pathsforthefuture.vercel.app/api/careerSearch",
+        "http://localhost:5000/api/careerSearch",
         { careerLink }
       );
       if (response.status === 200) {
@@ -637,10 +637,7 @@ const FindPage = ({ findPageInfo, popupInfo }) => {
     <>
       <Header
         setCurrentQuizPage={setCurrentQuizPage}
-        popupInfo={{
-          setExplainPopupIsShowing,
-          popupDisplayed,
-        }}
+        setExplain={setExplain}
       ></Header>
       <div
         className={`areaInfoPopUp ${areaInformationDisplaying ? "show" : ""}`}
@@ -1176,8 +1173,9 @@ FindPage.propTypes = {
     setCurrentQuestion: PropTypes.func.isRequired,
     recommendedJobs: PropTypes.array,
     setRecommendedJobs: PropTypes.func.isRequired,
+    setExplain: PropTypes.func.isRequired,
+    explain: PropTypes.bool.isRequired,
   }).isRequired,
-  popupInfo: PropTypes.object,
 };
 
 export default FindPage;
