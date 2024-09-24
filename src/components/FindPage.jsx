@@ -16,7 +16,7 @@ import {
   Frown,
 } from "lucide-react";
 
-const FindPage = ({ findPageInfo }) => {
+const FindPage = ({ findPageInfo, popupInfo }) => {
   const {
     questions,
     data,
@@ -33,9 +33,8 @@ const FindPage = ({ findPageInfo }) => {
     setCurrentQuestion,
     recommendedJobs,
     setRecommendedJobs,
-    setExplainPopupIsShowing,
-    popupDisplayed,
   } = findPageInfo;
+  const { setExplainPopupIsShowing, popupDisplayed } = popupInfo;
   const [careerData, setCareerData] = useState(null);
   const [explain, setExplain] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -1177,9 +1176,8 @@ FindPage.propTypes = {
     setCurrentQuestion: PropTypes.func.isRequired,
     recommendedJobs: PropTypes.array,
     setRecommendedJobs: PropTypes.func.isRequired,
-    setExplainPopupIsShowing: PropTypes.func.isRequired,
-    popupDisplayed: PropTypes.object.isRequired,
   }).isRequired,
+  popupInfo: PropTypes.object,
 };
 
 export default FindPage;
