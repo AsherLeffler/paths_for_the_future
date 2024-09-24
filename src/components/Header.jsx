@@ -8,11 +8,10 @@ const Header = ({
   setSavedCurrentPage = () => {},
   setCurrentPage = () => {},
   setCurrentQuizPage = () => {},
-  popupInfo,
+  setExplain = () => {},
 }) => {
   const location = useLocation();
   const currentRoute = location.pathname;
-  const { setExplainPopupIsShowing, popupDisplayed } = popupInfo;
 
   return (
     <header>
@@ -20,10 +19,7 @@ const Header = ({
         to="/"
         id="logoLink"
         onClick={() => {
-          window.location.reload();
           window.location.href = "/";
-          popupDisplayed.current = true;
-          setExplainPopupIsShowing(false);
         }}
       >
         <img src={fistLogo} alt="" />
@@ -35,9 +31,6 @@ const Header = ({
             onClick={() => {
               if (window.location.pathname === "/") {
                 setCurrentPage("default");
-                window.location.reload();
-                popupDisplayed.current = true;
-                setExplainPopupIsShowing(false);      
               }
             }}
           >
@@ -55,10 +48,8 @@ const Header = ({
             to={"/find"}
             onClick={() => {
               if (window.location.pathname === "/find") {
-                window.location.reload();
-                popupDisplayed.current = true;
-                setExplainPopupIsShowing(false);      
                 setCurrentQuizPage("main");
+                setExplain(false);
               }
             }}
           >
@@ -90,7 +81,7 @@ Header.propTypes = {
   setSavedCurrentPage: PropTypes.func,
   setCurrentPage: PropTypes.func,
   setCurrentQuizPage: PropTypes.func,
-  popupInfo: PropTypes.object,
+  setExplain: PropTypes.func,
 };
 
 export default Header;

@@ -23,6 +23,7 @@ const AppRouter = () => {
   const currentKeyword = useRef("");
   const [explainPopupIsShowing, setExplainPopupIsShowing] = useState(false);
   const popupDisplayed = useRef(false);
+  const [explain, setExplain] = useState(false);
 
   return (
     <Router>
@@ -65,21 +66,13 @@ const AppRouter = () => {
                 setCurrentQuestion,
                 recommendedJobs,
                 setRecommendedJobs,
-                setExplainPopupIsShowing,
-                popupDisplayed,
+                setExplain,
+                explain,
               }}
-              popupInfo={{ setExplainPopupIsShowing, popupDisplayed }}
             />
           }
         />
-        <Route
-          path="/saved"
-          element={
-            <SavedPage
-              popupInfo={{ setExplainPopupIsShowing, popupDisplayed }}
-            />
-          }
-        />
+        <Route path="/saved" element={<SavedPage />} />
       </Routes>
     </Router>
   );

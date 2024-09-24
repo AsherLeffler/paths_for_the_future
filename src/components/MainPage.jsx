@@ -99,6 +99,7 @@ const MainPage = ({ mainPageInfo }) => {
     }
   }, [
     results,
+    currentPage,
     setCurrentPage,
     currentKeyword,
     setExplainPopupIsShowing,
