@@ -186,6 +186,7 @@
 .quizTitle {
   font-size: 2.76rem;
   margin: 0;
+  text-align: center;
 }
 .quizDesc {
   font-size: 1.2rem;
