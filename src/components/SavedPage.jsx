@@ -3,6 +3,7 @@ import Header from "./Header"; // Assuming Header is also imported
 import { useEffect, useState, useRef, useCallback } from "react";
 import SavedCareerComponent from "./SavedCareerComponent";
 import axios from "axios";
+import PropTypes from "prop-types";
 import "./css/SavedPage.css";
 import {
   Link,
@@ -15,7 +16,7 @@ import {
   Frown,
 } from "lucide-react";
 
-const SavedPage = () => {
+const SavedPage = ({ popupInfo }) => {
   const usersCareers = useRef([]);
   const [savedCareers, setSavedCareers] = useState([]);
   const [savedCurrentPage, setSavedCurrentPage] = useState("defaultPage");
@@ -375,7 +376,12 @@ const SavedPage = () => {
 
   return (
     <>
-      <Header setSavedCurrentPage={setSavedCurrentPage} />
+      <Header
+        setSavedCurrentPage={setSavedCurrentPage}
+        popupInfo={{
+          popupInfo,
+        }}
+      />
       {savedCurrentPage === "defaultPage" && (
         <div className="savedMain">
           <h1 id="savedTitle">Saved Paths</h1>
@@ -562,6 +568,10 @@ const SavedPage = () => {
       <Footer style={{ color: true, opacity: false }} />
     </>
   );
+};
+
+SavedPage.propTypes = {
+  popupInfo: PropTypes.object,
 };
 
 export default SavedPage;

@@ -8,9 +8,11 @@ const Header = ({
   setSavedCurrentPage = () => {},
   setCurrentPage = () => {},
   setCurrentQuizPage = () => {},
+  popupInfo,
 }) => {
   const location = useLocation();
   const currentRoute = location.pathname;
+  const { setExplainPopupIsShowing, popupDisplayed } = popupInfo;
 
   return (
     <header>
@@ -20,6 +22,8 @@ const Header = ({
         onClick={() => {
           window.location.reload();
           window.location.href = "/";
+          popupDisplayed.current = true;
+          setExplainPopupIsShowing(false);
         }}
       >
         <img src={fistLogo} alt="" />
@@ -32,6 +36,8 @@ const Header = ({
               if (window.location.pathname === "/") {
                 setCurrentPage("default");
                 window.location.reload();
+                popupDisplayed.current = true;
+                setExplainPopupIsShowing(false);      
               }
             }}
           >
@@ -40,9 +46,7 @@ const Header = ({
                 currentRoute === "/" ? "navActive" : ""
               }`}
             ></i>
-            <h2 className={currentRoute === "/" ? "navActive" : ""}>
-              Search
-            </h2>
+            <h2 className={currentRoute === "/" ? "navActive" : ""}>Search</h2>
           </Link>
         </div>
         <div className="divider"></div>
@@ -52,6 +56,8 @@ const Header = ({
             onClick={() => {
               if (window.location.pathname === "/find") {
                 window.location.reload();
+                popupDisplayed.current = true;
+                setExplainPopupIsShowing(false);      
                 setCurrentQuizPage("main");
               }
             }}
@@ -61,7 +67,9 @@ const Header = ({
                 currentRoute === "/find" ? "navActive" : ""
               }`}
             ></i>
-            <h2 className={currentRoute === "/find" ? "navActive" : ""}>Find</h2>
+            <h2 className={currentRoute === "/find" ? "navActive" : ""}>
+              Find
+            </h2>
           </Link>
         </div>
       </nav>
@@ -82,6 +90,7 @@ Header.propTypes = {
   setSavedCurrentPage: PropTypes.func,
   setCurrentPage: PropTypes.func,
   setCurrentQuizPage: PropTypes.func,
+  popupInfo: PropTypes.object,
 };
 
 export default Header;

@@ -447,7 +447,13 @@ const MainPage = ({ mainPageInfo }) => {
 
   return (
     <>
-      <Header setCurrentPage={setCurrentPage}></Header>
+      <Header
+        setCurrentPage={setCurrentPage}
+        popupInfo={{
+          setExplainPopupIsShowing,
+          popupDisplayed,
+        }}
+      ></Header>
       <div
         className="loadingCont"
         style={{ display: displayingLoader ? "flex" : "none" }}
@@ -474,8 +480,8 @@ const MainPage = ({ mainPageInfo }) => {
             To get started, enter a keyword into the search bar and press enter.
           </p>
           <p>
-            You can also go to the &quot;Find&quot; page and
-            follow the guide to find careers that are best suited for you.
+            You can also go to the &quot;Find&quot; page and follow the guide to
+            find careers that are best suited for you.
           </p>
           <p>
             Go to the &quot;Saved&quot; page to view careers you have saved.

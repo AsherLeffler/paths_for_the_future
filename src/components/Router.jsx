@@ -65,6 +65,8 @@ const AppRouter = () => {
                 setCurrentQuestion,
                 recommendedJobs,
                 setRecommendedJobs,
+                setExplainPopupIsShowing,
+                popupDisplayed,
               }}
             />
           }
@@ -72,7 +74,7 @@ const AppRouter = () => {
         <Route
           path="/saved"
           element={
-            <SavedPage/>
+            <SavedPage popupInfo={{ setExplainPopupIsShowing, popupDisplayed }} />
           }
         />
       </Routes>

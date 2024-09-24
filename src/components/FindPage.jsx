@@ -33,6 +33,8 @@ const FindPage = ({ findPageInfo }) => {
     setCurrentQuestion,
     recommendedJobs,
     setRecommendedJobs,
+    setExplainPopupIsShowing,
+    popupDisplayed,
   } = findPageInfo;
   const [careerData, setCareerData] = useState(null);
   const [explain, setExplain] = useState(false);
@@ -634,7 +636,13 @@ const FindPage = ({ findPageInfo }) => {
 
   return (
     <>
-      <Header setCurrentQuizPage={setCurrentQuizPage}></Header>
+      <Header
+        setCurrentQuizPage={setCurrentQuizPage}
+        popupInfo={{
+          setExplainPopupIsShowing,
+          popupDisplayed,
+        }}
+      ></Header>
       <div
         className={`areaInfoPopUp ${areaInformationDisplaying ? "show" : ""}`}
       >
@@ -1169,6 +1177,8 @@ FindPage.propTypes = {
     setCurrentQuestion: PropTypes.func.isRequired,
     recommendedJobs: PropTypes.array,
     setRecommendedJobs: PropTypes.func.isRequired,
+    setExplainPopupIsShowing: PropTypes.func.isRequired,
+    popupDisplayed: PropTypes.object.isRequired,
   }).isRequired,
 };
 
