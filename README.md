@@ -18,4 +18,4 @@ Unlike other career planning tools, Paths for the Future allows you to see your 
 
 ## Getting Started
 
-Go to [Paths for the Future](https://pathsforthefuture.vercel.app/) to start exploring careers and visualizing your pathway to success!
+Go to [pathsforthefuture.vercel.app](https://pathsforthefuture.vercel.app/) to start exploring careers and visualizing your pathway to success!

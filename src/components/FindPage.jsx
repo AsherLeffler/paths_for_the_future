@@ -16,7 +16,7 @@ import {
   Frown,
 } from "lucide-react";
 
-const FindPage = ({ findPageInfo, popupInfo }) => {
+const FindPage = ({ findPageInfo }) => {
   const {
     questions,
     data,
@@ -33,10 +33,10 @@ const FindPage = ({ findPageInfo, popupInfo }) => {
     setCurrentQuestion,
     recommendedJobs,
     setRecommendedJobs,
+    setExplain,
+    explain,
   } = findPageInfo;
-  const { setExplainPopupIsShowing, popupDisplayed } = popupInfo;
   const [careerData, setCareerData] = useState(null);
-  const [explain, setExplain] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const previousAnswers = useRef(
     JSON.parse(localStorage.getItem("lastAnswers")) || []
@@ -637,10 +637,7 @@ const FindPage = ({ findPageInfo, popupInfo }) => {
     <>
       <Header
         setCurrentQuizPage={setCurrentQuizPage}
-        popupInfo={{
-          setExplainPopupIsShowing,
-          popupDisplayed,
-        }}
+        setExplain={setExplain}
       ></Header>
       <div
         className={`areaInfoPopUp ${areaInformationDisplaying ? "show" : ""}`}
@@ -1176,8 +1173,9 @@ FindPage.propTypes = {
     setCurrentQuestion: PropTypes.func.isRequired,
     recommendedJobs: PropTypes.array,
     setRecommendedJobs: PropTypes.func.isRequired,
+    setExplain: PropTypes.func.isRequired,
+    explain: PropTypes.bool.isRequired,
   }).isRequired,
-  popupInfo: PropTypes.object,
 };
 
 export default FindPage;
