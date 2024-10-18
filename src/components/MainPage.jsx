@@ -64,13 +64,14 @@ const MainPage = ({ mainPageInfo }) => {
               "https://pathsforthefuture.vercel.app/api/search",
               { keyword }
             );
+            const ranTime = Math.random() * (1800 - 1000) + 1000;
             if (response.status === 200) {
               setDisplayingLoader(true);
               setTimeout(() => {
                 results.current = response.data;
                 setCurrentPage("results");
                 setDisplayingLoader(false);
-              }, 1600);
+              }, ranTime);
             } else {
               alert("An error occurred. Please try again later.");
             }
