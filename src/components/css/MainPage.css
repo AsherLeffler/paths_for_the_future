@@ -76,7 +76,7 @@
   border: 2px solid #0055be;
 }
 .loadingCont .showPopupButtonsCont button:nth-of-type(2):hover{
-  background-color: #0073ff;
+  background-color: hsla(213, 100%, 50%, 0.15);
   color: white;
 }
 #searchInput:-webkit-autofill,
